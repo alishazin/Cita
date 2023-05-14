@@ -1,0 +1,13 @@
+:root {
+    --primary-clr: #373fc5;
+    --secondary-clr: #111422;
+    --tertiary-clr: #757b80;
+    --quaternary-clr: #a7abb0;
+    --bg-clr: #e7e8f1;
+}
+
+.user-flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
