@@ -29,6 +29,8 @@ function signUpView(app, passport, User) {
             res.render("auth/signup.ejs", {errorMsg: "Confirm password does not match!"});
         } else if (duplicateVerifiedUser) {
             res.render("auth/signup.ejs", {errorMsg: "User with email exist!"});
+        } else if (password.length < 8) {
+            res.render("auth/signup.ejs", {errorMsg: "Password should have atleast 8 characters."});
         } else {
             User.register(
                 {

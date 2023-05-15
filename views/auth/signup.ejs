@@ -32,15 +32,15 @@
                 <p class="description align-self-start">please enter your details.</p>
                 <form class="mt-4" action="/auth/signup" method="post">
                     <label>First Name</label>
-                    <input type="text" class="mt-1 mb-3" name="fname" id="fname" required>
+                    <input type="text" class="mt-1 mb-3" name="fname" id="fname" minlength="2" maxlength="20" required>
                     <label>Last Name</label>
-                    <input type="text" class="mt-1 mb-3" name="lname" id="lname" required>
+                    <input type="text" class="mt-1 mb-3" name="lname" id="lname" minlength="2" maxlength="20" required>
                     <label>Email</label>
                     <input type="email" class="mt-1 mb-3" name="email" id="email" required>
                     <label>Password</label>
-                    <input type="password" class="mt-1 mb-3" name="password" id="password" required>
+                    <input type="password" class="mt-1 mb-3" name="password" id="password" minlength="8" required>
                     <label>Confirm Password</label>
-                    <input type="password" class="mt-1 mb-2" name="confirm_password" id="confirm_password" required>
+                    <input type="password" class="mt-1 mb-2" name="confirm_password" id="confirm_password" minlength="8" required>
                     <p class="error-msg"><%= errorMsg %></p>
                     <button>Sign up</button>
                     <a class="social-sign-up mt-3" href="#" role="button">
