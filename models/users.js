@@ -2,17 +2,44 @@
 module.exports = initializeCollection;
 
 const mongoose = require("mongoose");
+const passportLocalMongoose = require('passport-local-mongoose');
+const findOrCreate = require("mongoose-findorcreate");
 
 function initializeCollection() {
+
+    const userSchema = new mongoose.Schema({
+        firstName: {
+            required: true,
+            type: String,
+            minLength: 2,
+            maxLength: 20,
+            trim: true,
+            lowercase: true,
+        },
+        lastName: {
+            required: true,
+            type: String,
+            minLength: 2,
+            maxLength: 20,
+            trim: true,
+            lowercase: true,
+        },
+        username: {
+            required: true,
+            type: String,
+            trim: true,
+            lowercase: true,
+        },
+        verified: {
+            required: true,
+            type: Boolean,
+        }
+        
+    })
+    userSchema.plugin(passportLocalMongoose);
+    userSchema.plugin(findOrCreate);
     
-    const User = mongoose.model("User", new mongoose.Schema({
-        provider: String,
-        email: String,
-        password: String,
-        googleId: String,
-        details: Object,
-        secret: String,
-    }));
+    const User = mongoose.model("User", userSchema);
 
     return User;
 }

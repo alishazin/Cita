@@ -1,3 +1,5 @@
 node_modules/
-plan.txt
 trash/
+
+plan.txt
+.env

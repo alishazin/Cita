@@ -80,6 +80,10 @@ input:focus {
     border: 2px solid var(--tertiary-clr);
 }
 
+div.right-side p.error-msg {
+    color: red;
+}
+
 form button {
     width: 100%;
     background-color: var(--primary-clr);
