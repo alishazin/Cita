@@ -33,6 +33,21 @@ h1 {
     font-size: 30px;
 }
 
+div.right-side h2 {
+    display: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: var(--primary-clr);
+    font-size: 24px;
+}
+
+div.right-side p.description {
+    display: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    color: var(--tertiary-clr)
+}
+
 form {
     width: 100%;
     
@@ -127,7 +142,7 @@ div.left-side {
     position: relative;
 }
 
-h2 {
+div.left-side h2 {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
     color: white;
@@ -179,4 +194,25 @@ div.left-side div.social-container a.social {
 
 div.left-side div.social-container a.social:hover {
     background-color: rgb(255, 255, 255, 0.05);
+}
+
+@media (max-width:991.5px) {
+    div.left-side {
+        display: none;
+    }
+    div.right-side {
+        width: 100%;
+    }
+    div.right-side h2, div.right-side p.description {
+        display: block;
+    }
+}
+
+@media (max-width:575.5px) {
+    div.right-side {
+        padding: 40px 40px;
+    }
+    body {
+        background-color: white;
+    }
 }
