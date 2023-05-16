@@ -5,11 +5,11 @@ const crypto = require('crypto');
 const mailClient = require('../../utils/email.js');
 
 function initializeViews(app, passport, UserModel) {
-    signUpView(app, passport, UserModel);
-    verificationView(app, passport, UserModel);
+    signUpView(app, UserModel);
+    verificationView(app, UserModel);
 }
 
-function signUpView(app, passport, User) {
+function signUpView(app, User) {
     
     app.route("/auth/signup")
 
@@ -51,17 +51,16 @@ function signUpView(app, passport, User) {
                         const UUID = crypto.randomUUID();
                         mailClient.sendEmailVerificationMail(user.username, UUID);
                         await User.findOneAndUpdate({_id: user._id}, {verification_id: {id: UUID, date_generated: new Date()}});
-                        res.render("auth/email_sent.ejs");
+                        res.render("auth/email_sent.ejs", {email: user.username});
                     }
             })
         }
-
 
     });
 
 }
 
-function verificationView(app, passport, User) {
+function verificationView(app, User) {
 
     const VERIFICATION_TIMEOUT_IN_MIN = 10;
     
@@ -74,15 +73,16 @@ function verificationView(app, passport, User) {
             const differenceInMinutes = Math.floor((new Date() - userObj.verification_id.date_generated) / (1000 * 60)); 
             if (differenceInMinutes >= VERIFICATION_TIMEOUT_IN_MIN) {
                 await User.findOneAndRemove({_id: userObj._id});
-                res.send("Timeout!");
+                res.render("auth/email_ver_timeout.ejs");
             } else {
                 userObj.verification_id = null;
                 userObj.verified = true;
                 await userObj.save();
-                res.send("Ok");
+                res.render("auth/email_ver_success.ejs");
             }
         } else {
-            res.send("Does not exist");
+            res.status(404);
+            res.send();
         }
     })
 
