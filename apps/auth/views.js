@@ -1,6 +1,9 @@
 
 module.exports = {initialize: initializeViews};
 
+const crypto = require('crypto');
+const mailClient = require('../../utils/email.js');
+
 function initializeViews(app, passport, UserModel) {
     signUpView(app, passport, UserModel);
 }
@@ -40,10 +43,13 @@ function signUpView(app, passport, User) {
                     verified: false,
                 }, 
                 password, 
-                function (err, user) {
+                async function (err, user) {
                     if (err) {
                         res.render("auth/signup.ejs", {errorMsg: err.message});
                     } else {
+                        const UUID = crypto.randomUUID();
+                        mailClient.sendEmailVerificationMail(user.username, UUID);
+                        await User.findOneAndUpdate({_id: user._id}, {verification_id: {id: UUID, date_generated: new Date()}});
                         res.send("Success.");
                     }
             })

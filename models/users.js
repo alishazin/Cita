@@ -33,8 +33,11 @@ function initializeCollection() {
         verified: {
             required: true,
             type: Boolean,
+        },
+        verification_id: {
+            id: String,
+            date_generated: Date,
         }
-        
     })
     userSchema.plugin(passportLocalMongoose);
     userSchema.plugin(findOrCreate);

@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 :root {
     --primary-clr: #373fc5;
     --secondary-clr: #111422;
