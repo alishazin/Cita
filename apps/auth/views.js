@@ -50,7 +50,7 @@ function signUpView(app, passport, User) {
                         const UUID = crypto.randomUUID();
                         mailClient.sendEmailVerificationMail(user.username, UUID);
                         await User.findOneAndUpdate({_id: user._id}, {verification_id: {id: UUID, date_generated: new Date()}});
-                        res.send("Success.");
+                        res.render("auth/email_sent.ejs");
                     }
             })
         }
