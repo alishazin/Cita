@@ -6,6 +6,7 @@ const mailClient = require('../../utils/email.js');
 
 function initializeViews(app, passport, UserModel) {
     signUpView(app, passport, UserModel);
+    verificationView(app, passport, UserModel);
 }
 
 function signUpView(app, passport, User) {
@@ -57,5 +58,32 @@ function signUpView(app, passport, User) {
 
 
     });
+
+}
+
+function verificationView(app, passport, User) {
+
+    const VERIFICATION_TIMEOUT_IN_MIN = 10;
+    
+    app.route("/auth/email_verification/:verification_id")
+
+    .get(async (req, res) => {
+        const userObj = await User.findOne({"verification_id.id" : req.params.verification_id});
+        
+        if (userObj) {
+            const differenceInMinutes = Math.floor((new Date() - userObj.verification_id.date_generated) / (1000 * 60)); 
+            if (differenceInMinutes >= VERIFICATION_TIMEOUT_IN_MIN) {
+                await User.findOneAndRemove({_id: userObj._id});
+                res.send("Timeout!");
+            } else {
+                userObj.verification_id = null;
+                userObj.verified = true;
+                await userObj.save();
+                res.send("Ok");
+            }
+        } else {
+            res.send("Does not exist");
+        }
+    })
 
 }
