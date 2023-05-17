@@ -5,11 +5,12 @@ const crypto = require('crypto');
 const mailClient = require('../../utils/email.js');
 
 function initializeViews(app, passport, UserModel) {
-    signUpView(app, UserModel);
+    signUpView(app, passport, UserModel);
     verificationView(app, UserModel);
+    googleSignUp(app, passport, UserModel);
 }
 
-function signUpView(app, User) {
+function signUpView(app, passport, User) {
     
     app.route("/auth/signup")
 
@@ -42,6 +43,7 @@ function signUpView(app, User) {
                     lastName: lname,
                     username: username,
                     verified: false,
+                    provider: "local",
                 }, 
                 password, 
                 async function (err, user) {
@@ -86,4 +88,22 @@ function verificationView(app, User) {
         }
     })
 
+}
+
+function googleSignUp(app, passport, User) {
+    app.get(
+        '/auth/signup/google',
+        passport.authenticate('google', { scope: ['profile', 'email'] })
+    );
+
+    app.get(
+        '/auth/signup/google/callback', 
+        passport.authenticate('google', { failureRedirect: '/signup' }), function(req, res) {
+            res.send('Nice.');
+        }
+    );
+
+    app.get("/test", (req, res) => {
+        res.send("adsa");
+    })
 }

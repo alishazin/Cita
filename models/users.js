@@ -31,13 +31,16 @@ function initializeCollection() {
             lowercase: true,
         },
         verified: {
-            required: true,
+            required: false,
             type: Boolean,
         },
         verification_id: {
             id: String,
             date_generated: Date,
-        }
+        },
+        googleId: String,
+        provider: String,
+        aa: Number,
     })
     userSchema.plugin(passportLocalMongoose);
     userSchema.plugin(findOrCreate);
