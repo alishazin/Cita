@@ -19,6 +19,7 @@ div.right-side {
     background-color: white;
     width: 50%;
     padding: 40px 80px;
+    min-height: fit-content;
 
     display: flex;
     flex-direction: column;
@@ -42,7 +43,6 @@ div.right-side h2 {
 }
 
 div.right-side p.description {
-    display: none;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
     color: var(--tertiary-clr)
@@ -69,7 +69,7 @@ input {
     border-radius: 6px;
     outline: none;
     border: 2px solid #dddddd;
-    padding: 5px 10px;
+    padding: 5px 35px;
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     color: var(--tertiary-clr);
@@ -78,6 +78,32 @@ input {
 
 input:focus {
     border: 2px solid var(--tertiary-clr);
+}
+
+div.right-side div.input-container {
+    position: relative;
+    width: 100%;
+}
+
+div.right-side div.input-container i.left {
+    position: absolute;
+    bottom: 6px;
+    left: 12px;
+    font-size: 18px;
+    color: var(--tertiary-clr);
+    pointer-events: none;
+}
+
+div.right-side div.input-container input:focus ~ i {
+    color: var(--secondary-clr);
+}
+
+div.right-side div.input-container i.right {
+    position: absolute;
+    bottom: 6px;
+    right: 12px;
+    font-size: 18px;
+    color: var(--tertiary-clr);
 }
 
 div.right-side p.error-msg {
@@ -100,6 +126,30 @@ form button:hover {
     opacity: 0.95;   
 }
 
+div.separator-container {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.separator-container div.separator {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, white, var(--quaternary-clr), white);
+}
+
+div.separator-container span {
+    font-size: 16px;
+    position: absolute;
+    left: calc(50% - 18px);
+    bottom: 1px;
+    background-color: white;
+    padding: 2px 8px;
+}
+
 div.right-side a.social-sign-up {
     text-decoration: none;
     background-color: white;
@@ -118,19 +168,19 @@ div.right-side a.social-sign-up:hover {
     background-color: rgb(0, 0, 0, 0.03);
 }
 
-div.right-side p.log-in-help {
+div.right-side p.sign-up-help {
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     color: var(--tertiary-clr);
     align-self: center;
 }
 
-div.right-side p.log-in-help a {
+div.right-side p.sign-up-help a {
     color: var(--primary-clr);
     text-decoration: none;
 }
 
-div.right-side p.log-in-help a:hover {
+div.right-side p.sign-up-help a:hover {
     opacity: 0.95;
 }
 
@@ -138,6 +188,7 @@ div.left-side {
     background-color: var(--primary-clr);
     width: 50%;
     padding: 50px 80px;
+    min-height: fit-content;
 
     display: flex;
     flex-direction: column;
@@ -158,48 +209,6 @@ div.left-side img.banner {
     width: calc(100% - 40px);
 }
 
-div.left-side p.description {
-    font-family: 'Raleway', sans-serif;
-    font-weight: 300;
-    color: rgb(255, 255, 255, 0.7);
-}
-
-div.left-side div.separator {
-    position: absolute;
-    bottom: 160px;
-    width: calc(100% - 160px);
-    height: 2px;
-    background-color: rgb(255, 255, 255, 0.4);
-}
-
-div.left-side div.social-container {
-    position: absolute;
-    bottom: 70px;
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-div.left-side div.social-container a.social {
-    text-decoration: none;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    border: 1px solid white;
-    margin: 0 10px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-}
-
-div.left-side div.social-container a.social:hover {
-    background-color: rgb(255, 255, 255, 0.05);
-}
-
 @media (max-width:991.5px) {
     div.left-side {
         display: none;
@@ -207,7 +216,7 @@ div.left-side div.social-container a.social:hover {
     div.right-side {
         width: 100%;
     }
-    div.right-side h2, div.right-side p.description {
+    div.right-side h2 {
         display: block;
     }
 }

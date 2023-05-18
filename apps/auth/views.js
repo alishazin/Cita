@@ -112,8 +112,10 @@ function googleSignUp(app, passport, User) {
 }
 
 function LogInView(app, passport, User) {
-    // app.get(
-    //     '/auth/login/',
-    //     (req, res) => passport.authenticate('local', { successRedirect: '/test', failureRedirect: '/auth/signup', })(req, res)
-    // );
+
+    app.route("/auth/login")
+
+    .get(async (req, res) => {
+        res.render("auth/login.ejs");
+    });
 }
