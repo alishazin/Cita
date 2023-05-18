@@ -5,12 +5,13 @@ const crypto = require('crypto');
 const mailClient = require('../../utils/email.js');
 
 function initializeViews(app, passport, UserModel) {
-    signUpView(app, passport, UserModel);
-    verificationView(app, UserModel);
+    signUpView(app, UserModel);
+    verificationView(app, passport, UserModel);
     googleSignUp(app, passport, UserModel);
+    LogInView(app, passport, UserModel);
 }
 
-function signUpView(app, passport, User) {
+function signUpView(app, User) {
     
     app.route("/auth/signup")
 
@@ -21,11 +22,11 @@ function signUpView(app, passport, User) {
     .post(async (req, res) => {
         const fname = req.body.fname;
         const lname = req.body.lname;
-        const username = req.body.email;
+        const username = req.body.username;
         const password = req.body.password;
         const confirm_password = req.body.confirm_password;
 
-        const duplicateVerifiedUser = await User.findOne({username: username.trim().toLowerCase(), verified: true});
+        const duplicateVerifiedUser = await User.findOne({username: username.trim().toLowerCase(), $or: [{verified: true}, {provider: "google"}]});
 
         // Deleting Non-Verified User.
         await User.findOneAndRemove({username: username.trim().toLowerCase(), verified: false});
@@ -62,7 +63,7 @@ function signUpView(app, passport, User) {
 
 }
 
-function verificationView(app, User) {
+function verificationView(app, passport, User) {
 
     const VERIFICATION_TIMEOUT_IN_MIN = 10;
     
@@ -98,12 +99,21 @@ function googleSignUp(app, passport, User) {
 
     app.get(
         '/auth/signup/google/callback', 
-        passport.authenticate('google', { failureRedirect: '/signup' }), function(req, res) {
-            res.send('Nice.');
-        }
+        passport.authenticate('google', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/test' })
     );
 
     app.get("/test", (req, res) => {
-        res.send("adsa");
+        res.send(req.user);
     })
+
+    app.get("/auth/signup/google/failed", (req, res) => {
+        res.send("Duplicate User");
+    })
+}
+
+function LogInView(app, passport, User) {
+    // app.get(
+    //     '/auth/login/',
+    //     (req, res) => passport.authenticate('local', { successRedirect: '/test', failureRedirect: '/auth/signup', })(req, res)
+    // );
 }

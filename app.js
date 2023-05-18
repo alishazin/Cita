@@ -58,20 +58,24 @@ passport.use(
         clientSecret: process.env.OAUTH_CLIENT_SECRET,
         callbackURL: "http://localhost:3000/auth/signup/google/callback",
     },  
-    function(accessToken, refreshToken, profile, cb) {
-        const email = profile._json.email;
-        
+    async function(accessToken, refreshToken, profile, cb) {
+        const email = profile._json.email.trim().toLowerCase();
+
         User.findOrCreate({ 
             googleId: profile.id, 
             username: email,
-        },{
             provider: "google",
+        },{
             firstName: profile._json.given_name,
             lastName: profile._json.family_name,
         }, async function (err, user) {
-            return cb(err, user);
-        }
-    );
+            if (err) {
+                cb();
+            } else {
+                return cb(err, user);
+            }
+        });
+        
 }));
 
 // Views
