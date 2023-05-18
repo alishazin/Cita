@@ -107,7 +107,7 @@ function googleSignUp(app, passport, User) {
     })
 
     app.get("/auth/signup/google/failed", (req, res) => {
-        res.send("Duplicate User");
+        res.render("auth/signup_duplicate_user.ejs");
     })
 }
 

@@ -61,6 +61,9 @@ passport.use(
     async function(accessToken, refreshToken, profile, cb) {
         const email = profile._json.email.trim().toLowerCase();
 
+        // deleting if unverified account exist
+        await User.findOneAndRemove({username: email, provider: "local", verified: false});
+
         User.findOrCreate({ 
             googleId: profile.id, 
             username: email,
