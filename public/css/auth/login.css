@@ -185,16 +185,50 @@ div.right-side p.sign-up-help a:hover {
 }
 
 div.left-side {
-    background-color: var(--primary-clr);
+    background-color: white;
+    /* background: linear-gradient(45deg, pink, #72b6fe 50%, rgb(55, 63, 197, 0.6) 70%); */
     width: 50%;
-    padding: 50px 80px;
     min-height: fit-content;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     position: relative;
+    overflow: hidden;
+}
+
+div.left-side > div.clr-cir {
+    position: absolute;
+    border-radius: 50%;
+}
+
+div.left-side > div.clr-1 {
+    width: 500px;
+    height: 500px;
+    background-color: pink;
+    left: -150px;
+    bottom: -150px;
+}
+
+div.left-side > div.clr-2 {
+    width: 500px;
+    height: 500px;
+    background-color: #72b6fe;
+    left: -50px;
+    top: -150px;
+}
+
+div.left-side > div.clr-3 {
+    width: 500px;
+    height: 500px;
+    background-color: #373fc5;
+    right: -250px;
+    top: -10px;
+}
+
+div.left-side div.left-container {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255, 0.3);
+    backdrop-filter: blur(100px);
+    padding: 50px 80px;
+    z-index: 1;
 }
 
 div.left-side h2 {
