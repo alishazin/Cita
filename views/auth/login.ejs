@@ -37,13 +37,16 @@
                         <input type="email" class="mt-1" name="username" id="username" required>
                         <i class="bi bi-envelope left"></i>
                     </div>
-                    <div class="input-container mb-3">
+                    <div class="input-container mb-2">
                         <label>Password</label>
                         <input type="password" class="mt-1" name="password" id="password" minlength="8" required>
                         <i class="bi bi-lock left"></i>
                         <i id="password_eye_butt" onclick="passwordEyeHandler(document.querySelector('input#password'), this)" class="bi bi-eye right"></i>
                     </div>
-                    <p class="error-msg"><%= errorMsg %></p>
+                    <a class="forgot-pass mb-2" href="#">Forgot password?</a>
+                    <% if (errorMsg) { %>
+                        <p class="error-msg"><%= errorMsg %></p>
+                    <% } %>
                     <button>Log in</button>
                     <div class="separator-container mt-3">
                         <div class="separator"></div>
@@ -53,7 +56,7 @@
                         <img style="height: 25px; " src="/images/auth/google-logo.webp">
                         Sign in with Google
                     </a>
-                    <p class="sign-up-help mt-3">Don't have an account? <a href="#">Sign up</a></p>
+                    <p class="sign-up-help mt-3">Don't have an account? <a href="/auth/signup">Sign up</a></p>
                 </form>
             </div>
         </main>

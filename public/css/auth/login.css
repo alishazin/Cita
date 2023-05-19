@@ -106,6 +106,15 @@ div.right-side div.input-container i.right {
     color: var(--tertiary-clr);
 }
 
+div.right-side a.forgot-pass {
+    align-self: flex-end;
+    color: var(--primary-clr);
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+}
+
 div.right-side p.error-msg {
     color: red;
 }
