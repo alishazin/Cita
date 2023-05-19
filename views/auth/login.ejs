@@ -26,14 +26,12 @@
                         <p class="logo"><em>&copy;</em> Cita.</p>
                     </div>
                 </div>
-                <!-- <h2 class="align-self-start pb-2">Cita.</h2>
-                <img class="mt-4 banner" src="/images/auth/signup.avif"> -->
             </div>
             <div class="right-side">
                 <h2 class="align-self-start pb-4">Cita.</h2>
                 <h1 class="align-self-start">Log in</h1>
                 <p class="description align-self-start">please enter your credentials.</p>
-                <form class="mt-4" action="/auth/signup" method="post">
+                <form class="mt-4" action="/auth/login" method="post">
                     <div class="input-container mb-3">
                         <label>Email</label>
                         <input type="email" class="mt-1" name="username" id="username" required>
@@ -45,13 +43,13 @@
                         <i class="bi bi-lock left"></i>
                         <i id="password_eye_butt" onclick="passwordEyeHandler(document.querySelector('input#password'), this)" class="bi bi-eye right"></i>
                     </div>
-                    <p class="error-msg"></p>
+                    <p class="error-msg"><%= errorMsg %></p>
                     <button>Log in</button>
                     <div class="separator-container mt-3">
                         <div class="separator"></div>
                         <span>OR</span>
                     </div>
-                    <a class="social-sign-up mt-3" href="/auth/signup/google/" role="button">
+                    <a class="social-sign-up mt-3" href="/auth/login/google/" role="button">
                         <img style="height: 25px; " src="/images/auth/google-logo.webp">
                         Log in with Google
                     </a>

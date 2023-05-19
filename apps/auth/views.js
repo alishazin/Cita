@@ -4,11 +4,14 @@ module.exports = {initialize: initializeViews};
 const crypto = require('crypto');
 const mailClient = require('../../utils/email.js');
 
+const VERIFICATION_TIMEOUT_IN_MIN = 10;
+
 function initializeViews(app, passport, UserModel) {
     signUpView(app, UserModel);
     verificationView(app, passport, UserModel);
     googleSignUp(app, passport, UserModel);
     LogInView(app, passport, UserModel);
+    googleLogIn(app, passport, UserModel);
 }
 
 function signUpView(app, User) {
@@ -64,8 +67,6 @@ function signUpView(app, User) {
 }
 
 function verificationView(app, passport, User) {
-
-    const VERIFICATION_TIMEOUT_IN_MIN = 10;
     
     app.route("/auth/email_verification/:verification_id")
 
@@ -94,12 +95,12 @@ function verificationView(app, passport, User) {
 function googleSignUp(app, passport, User) {
     app.get(
         '/auth/signup/google',
-        passport.authenticate('google', { scope: ['profile', 'email'] })
+        passport.authenticate('google-signup', { scope: ['profile', 'email'] })
     );
 
     app.get(
         '/auth/signup/google/callback', 
-        passport.authenticate('google', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/test' })
+        passport.authenticate('google-signup', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/test' })
     );
 
     app.get("/test", (req, res) => {
@@ -116,6 +117,50 @@ function LogInView(app, passport, User) {
     app.route("/auth/login")
 
     .get(async (req, res) => {
-        res.render("auth/login.ejs");
+        if (req.query.invalid === '1') {
+            res.render("auth/login.ejs", {errorMsg: "Invalid credentials"});
+        } else {
+            res.render("auth/login.ejs", {errorMsg: null});
+        }
+    })
+
+    .post(async (req, res) => {
+        const username = req.body.username.trim().toLowerCase();
+
+        const userObj = await User.findOne({username: username});
+
+        if (!userObj) {
+            res.render("auth/login.ejs", {errorMsg: "User does not exist!"});
+        } else if (userObj.provider == "google") {
+            res.render("auth/login.ejs", {errorMsg: "Log in using google."});
+        } else if (userObj.verified == false) {
+            const differenceInMinutes = Math.floor((new Date() - userObj.verification_id.date_generated) / (1000 * 60)); 
+            if (differenceInMinutes >= VERIFICATION_TIMEOUT_IN_MIN) {
+                await User.findOneAndRemove({_id: userObj._id});
+                res.render("auth/login.ejs", {errorMsg: "User does not exist!"});
+            } else {
+                res.render("auth/login.ejs", {errorMsg: "User email is not verified. Check your email."});
+            }
+        } else {
+            passport.authenticate("local", { failureRedirect: '/auth/login?invalid=1', failureMessage: true })(req, res, function() {
+                res.redirect("/test");
+            });
+        }
     });
+}
+
+function googleLogIn(app, passport, User) {
+    app.get(
+        '/auth/login/google',
+        passport.authenticate('google-login', { scope: ['profile', 'email'] })
+    );
+
+    app.get(
+        '/auth/login/google/callback', 
+        passport.authenticate('google-login', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/test' })
+    );
+
+    // app.get("/auth/signup/google/failed", (req, res) => {
+    //     res.render("auth/signup_duplicate_user.ejs");
+    // })
 }
