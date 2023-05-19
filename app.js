@@ -52,7 +52,7 @@ passport.deserializeUser(function(user, cb) {
     });
 });
 
-passport.use("google-signup", new GoogleStrategy({
+passport.use("google", new GoogleStrategy({
     clientID: process.env.OAUTH_CLIENT_ID,
     clientSecret: process.env.OAUTH_CLIENT_SECRET,
     callbackURL: "http://localhost:3000/auth/signup/google/callback",
@@ -61,36 +61,6 @@ async function(accessToken, refreshToken, profile, cb) {
     const email = profile._json.email.trim().toLowerCase();
 
     console.log("Signup");
-
-    // deleting if unverified account exist
-    await User.findOneAndRemove({username: email, provider: "local", verified: false});
-
-    User.findOrCreate({ 
-        googleId: profile.id, 
-        username: email,
-        provider: "google",
-    },{
-        firstName: profile._json.given_name,
-        lastName: profile._json.family_name,
-    }, async function (err, user) {
-        if (err) {
-            cb();
-        } else {
-            return cb(err, user);
-        }
-    });
-}
-));
-
-passport.use("google-login", new GoogleStrategy({
-    clientID: process.env.OAUTH_CLIENT_ID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/login/google/callback",
-},  
-async function(accessToken, refreshToken, profile, cb) {
-    const email = profile._json.email.trim().toLowerCase();
-
-    console.log("Login");
 
     // deleting if unverified account exist
     await User.findOneAndRemove({username: email, provider: "local", verified: false});

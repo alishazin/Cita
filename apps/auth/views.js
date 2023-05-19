@@ -9,9 +9,8 @@ const VERIFICATION_TIMEOUT_IN_MIN = 10;
 function initializeViews(app, passport, UserModel) {
     signUpView(app, UserModel);
     verificationView(app, passport, UserModel);
-    googleSignUp(app, passport, UserModel);
+    googleSignIn(app, passport, UserModel);
     LogInView(app, passport, UserModel);
-    googleLogIn(app, passport, UserModel);
 }
 
 function signUpView(app, User) {
@@ -92,15 +91,15 @@ function verificationView(app, passport, User) {
 
 }
 
-function googleSignUp(app, passport, User) {
+function googleSignIn(app, passport, User) {
     app.get(
         '/auth/signup/google',
-        passport.authenticate('google-signup', { scope: ['profile', 'email'] })
+        passport.authenticate('google', { scope: ['profile', 'email'] })
     );
 
     app.get(
         '/auth/signup/google/callback', 
-        passport.authenticate('google-signup', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/test' })
+        passport.authenticate('google', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/test' })
     );
 
     app.get("/test", (req, res) => {
@@ -147,20 +146,4 @@ function LogInView(app, passport, User) {
             });
         }
     });
-}
-
-function googleLogIn(app, passport, User) {
-    app.get(
-        '/auth/login/google',
-        passport.authenticate('google-login', { scope: ['profile', 'email'] })
-    );
-
-    app.get(
-        '/auth/login/google/callback', 
-        passport.authenticate('google-login', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/test' })
-    );
-
-    // app.get("/auth/signup/google/failed", (req, res) => {
-    //     res.render("auth/signup_duplicate_user.ejs");
-    // })
 }
