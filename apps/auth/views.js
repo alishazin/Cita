@@ -171,12 +171,12 @@ function forgotPasswordView(app, passport, User) {
     .get((req, res) => {
         res.render("auth/forgot_pass_1.ejs", {errorMsg: null});
     })
-
+    
     .post(async (req, res) => {
         const username = req.body.username.trim().toLowerCase();
-
+        
         const userObj = await User.findOne({username: username});
-
+        
         if (!userObj) {
             res.render("auth/forgot_pass_1.ejs", {errorMsg: "User does not exist!"});
         } else if (userObj.provider === "google") {
@@ -191,7 +191,7 @@ function forgotPasswordView(app, passport, User) {
             }
             await userObj.save();
             mailClient.sendEmailResetPass(userObj.username, UUID);
-            res.send("asdsad");
+            res.render("auth/forgot_pass_2.ejs", {email: userObj.username});
         }
     })
 
