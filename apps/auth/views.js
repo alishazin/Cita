@@ -47,6 +47,7 @@ function signUpView(app, User) {
                     username: username,
                     verified: false,
                     provider: "local",
+                    reset_password: false,
                 }, 
                 password, 
                 async function (err, user) {
@@ -102,8 +103,21 @@ function googleSignIn(app, passport, User) {
         passport.authenticate('google', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/test' })
     );
 
-    app.get("/test", (req, res) => {
-        res.send(req.user);
+    app.get("/test", async (req, res) => {
+        const userObj = await User.findOne({_id: req.user.id});
+        // userObj.changePassword("12345678", "1234567890", (err) => {
+        //     if (err) {
+        //         res.send(err);
+        //     } else {
+        //         res.send(req.user);
+        //     }
+        // });
+        userObj.setPassword("12345678", async function(){
+            await userObj.save();
+            res.status(200).json({message: 'password reset successful'});
+        });
+        // await userObj.save();
+        // res.send(userObj);
     })
 
     app.get("/auth/signup/google/failed", (req, res) => {

@@ -40,7 +40,10 @@ function initializeCollection() {
         },
         googleId: String,
         provider: String,
-        aa: Number,
+        reset_password: {
+            token: String,
+            date_generated: Date,
+        }
     })
     userSchema.plugin(passportLocalMongoose);
     userSchema.plugin(findOrCreate);
