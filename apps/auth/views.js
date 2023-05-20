@@ -11,6 +11,7 @@ function initializeViews(app, passport, UserModel) {
     verificationView(app, passport, UserModel);
     googleSignIn(app, passport, UserModel);
     LogInView(app, passport, UserModel);
+    forgotPasswordView(app, passport, UserModel);
 }
 
 function signUpView(app, User) {
@@ -104,7 +105,7 @@ function googleSignIn(app, passport, User) {
     );
 
     app.get("/test", async (req, res) => {
-        const userObj = await User.findOne({_id: req.user.id});
+        // const userObj = await User.findOne({_id: req.user.id});
         // userObj.changePassword("12345678", "1234567890", (err) => {
         //     if (err) {
         //         res.send(err);
@@ -112,12 +113,12 @@ function googleSignIn(app, passport, User) {
         //         res.send(req.user);
         //     }
         // });
-        userObj.setPassword("12345678", async function(){
-            await userObj.save();
-            res.status(200).json({message: 'password reset successful'});
-        });
+        // userObj.setPassword("12345678", async function(){
+        //     await userObj.save();
+        //     res.status(200).json({message: 'password reset successful'});
+        // });
         // await userObj.save();
-        // res.send(userObj);
+        res.send(userObj);
     })
 
     app.get("/auth/signup/google/failed", (req, res) => {
@@ -160,4 +161,14 @@ function LogInView(app, passport, User) {
             });
         }
     });
+}
+
+function forgotPasswordView(app, passport, User) {
+
+    app.route("/auth/forgot-password")
+
+    .get((req, res) => {
+        res.render("auth/forgot_pass_1.ejs", {errorMsg: null});
+    })
+
 }

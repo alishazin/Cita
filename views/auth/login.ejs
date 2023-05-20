@@ -43,7 +43,7 @@
                         <i class="bi bi-lock left"></i>
                         <i id="password_eye_butt" onclick="passwordEyeHandler(document.querySelector('input#password'), this)" class="bi bi-eye right"></i>
                     </div>
-                    <a class="forgot-pass mb-2" href="#">Forgot password?</a>
+                    <a class="forgot-pass mb-2" href="/auth/forgot-password">Forgot password?</a>
                     <% if (errorMsg) { %>
                         <p class="error-msg"><%= errorMsg %></p>
                     <% } %>
