@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const mailClient = require('../../utils/email.js');
 
 const VERIFICATION_TIMEOUT_IN_MIN = 10;
+const PASS_RESET_TIMEOUT_IN_MIN = 30;
 
 function initializeViews(app, passport, UserModel) {
     signUpView(app, UserModel);
@@ -118,7 +119,7 @@ function googleSignIn(app, passport, User) {
         //     res.status(200).json({message: 'password reset successful'});
         // });
         // await userObj.save();
-        res.send(userObj);
+        res.send(req.user);
     })
 
     app.get("/auth/signup/google/failed", (req, res) => {
@@ -169,6 +170,29 @@ function forgotPasswordView(app, passport, User) {
 
     .get((req, res) => {
         res.render("auth/forgot_pass_1.ejs", {errorMsg: null});
+    })
+
+    .post(async (req, res) => {
+        const username = req.body.username.trim().toLowerCase();
+
+        const userObj = await User.findOne({username: username});
+
+        if (!userObj) {
+            res.render("auth/forgot_pass_1.ejs", {errorMsg: "User does not exist!"});
+        } else if (userObj.provider === "google") {
+            res.render("auth/forgot_pass_1.ejs", {errorMsg: "User is authenticated using google."});
+        } else if (userObj.verified === false) {
+            res.render("auth/forgot_pass_1.ejs", {errorMsg: "User email is not verified."});
+        } else {
+            const UUID = crypto.randomUUID();
+            userObj.reset_password = {
+                token: UUID,
+                date_generated: new Date(),
+            }
+            await userObj.save();
+            mailClient.sendEmailResetPass(userObj.username, UUID);
+            res.send("asdsad");
+        }
     })
 
 }
