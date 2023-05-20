@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const mailClient = require('../../utils/email.js');
 
 const VERIFICATION_TIMEOUT_IN_MIN = 10;
-const PASS_RESET_TIMEOUT_IN_MIN = 30;
+const PASS_RESET_TIMEOUT_IN_MIN = 0;
 
 function initializeViews(app, passport, UserModel) {
     signUpView(app, UserModel);
@@ -79,12 +79,12 @@ function verificationView(app, passport, User) {
             const differenceInMinutes = Math.floor((new Date() - userObj.verification_id.date_generated) / (1000 * 60)); 
             if (differenceInMinutes >= VERIFICATION_TIMEOUT_IN_MIN) {
                 await User.findOneAndRemove({_id: userObj._id});
-                res.render("auth/email_ver_timeout.ejs");
+                res.render("auth/email_timeout.ejs", {keyword: "Email verification"});
             } else {
                 userObj.verification_id = null;
                 userObj.verified = true;
                 await userObj.save();
-                res.render("auth/email_ver_success.ejs");
+                res.render("auth/email_success.ejs", {keyword: "Email verification"});
             }
         } else {
             res.status(404);
@@ -192,6 +192,29 @@ function forgotPasswordView(app, passport, User) {
             await userObj.save();
             mailClient.sendEmailResetPass(userObj.username, UUID);
             res.render("auth/forgot_pass_2.ejs", {email: userObj.username});
+        }
+    })
+
+
+    app.route("/auth/reset-password/:token")
+
+    .get(async (req, res) => {
+        const token = req.params.token;
+
+        const userObj = await User.findOne({"reset_password.token": token});
+
+        if (userObj) {
+            const differenceInMinutes = Math.floor((new Date() - userObj.reset_password.date_generated) / (1000 * 60)); 
+            if (differenceInMinutes >= PASS_RESET_TIMEOUT_IN_MIN) {
+                userObj.reset_password = null;
+                await userObj.save();
+                res.render("auth/email_timeout.ejs", {keyword: "Password reset"});
+            } else {
+                res.render("auth/email_ver_success.ejs");
+            }
+        } else {
+            res.status(404);
+            res.send();
         }
     })
 
