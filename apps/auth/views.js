@@ -241,7 +241,7 @@ function forgotPasswordView(app, passport, User) {
                     userObj.reset_password = null;
                     userObj.setPassword(password, async function(){
                         await userObj.save();
-                        res.status(200).json({message: 'password reset successful'});
+                        res.render("auth/forgot_pass_4.ejs");
                     });
                 }
             }
