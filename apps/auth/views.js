@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const mailClient = require('../../utils/email.js');
 
 const VERIFICATION_TIMEOUT_IN_MIN = 10;
-const PASS_RESET_TIMEOUT_IN_MIN = 0;
+const PASS_RESET_TIMEOUT_IN_MIN = 30;
 
 function initializeViews(app, passport, UserModel) {
     signUpView(app, UserModel);
@@ -210,12 +210,45 @@ function forgotPasswordView(app, passport, User) {
                 await userObj.save();
                 res.render("auth/email_timeout.ejs", {keyword: "Password reset"});
             } else {
-                res.render("auth/email_ver_success.ejs");
+                res.render("auth/forgot_pass_3.ejs", {errorMsg: null});
             }
         } else {
             res.status(404);
             res.send();
         }
     })
+
+    .post(async (req, res) => {
+        const token = req.params.token;
+
+        const userObj = await User.findOne({"reset_password.token": token});
+
+        if (userObj) {
+            const differenceInMinutes = Math.floor((new Date() - userObj.reset_password.date_generated) / (1000 * 60)); 
+            if (differenceInMinutes >= PASS_RESET_TIMEOUT_IN_MIN) {
+                userObj.reset_password = null;
+                await userObj.save();
+                res.render("auth/email_timeout.ejs", {keyword: "Password reset"});
+            } else {
+                const password = req.body.new_password;
+                const confirm_password = req.body.confirm_password;
+                
+                if (password.length < 8 || confirm_password.length < 8) {
+                    res.render("auth/forgot_pass_3.ejs", {errorMsg: "Password should have atleast 8 characters."});
+                } else if (password !== confirm_password) {
+                    res.render("auth/forgot_pass_3.ejs", {errorMsg: "Confirm password does not match!"});
+                } else {
+                    userObj.reset_password = null;
+                    userObj.setPassword(password, async function(){
+                        await userObj.save();
+                        res.status(200).json({message: 'password reset successful'});
+                    });
+                }
+            }
+        } else {
+            res.status(404);
+            res.send();
+        }
+    });
 
 }
