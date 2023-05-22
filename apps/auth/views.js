@@ -135,7 +135,11 @@ function LogInView(app, passport, User) {
 
     .get(async (req, res) => {
         if (req.query.invalid === '1') {
-            res.render("auth/login.ejs", {errorMsg: "Invalid credentials"});
+            res.render("auth/login.ejs", {errorMsg: "Invalid credentials."});
+        } else if (req.query.invalid === '2') {
+            res.render("auth/login.ejs", {errorMsg: "Unauthorized access."});
+        } else if (req.query.invalid === '3') {
+            res.render("auth/login.ejs", {errorMsg: "Password changed successfully."});
         } else {
             res.render("auth/login.ejs", {errorMsg: null});
         }
@@ -259,9 +263,39 @@ function changePasswordView(app, passport, User) {
     app.route("/auth/change-password")
 
     .get(async (req, res) => {
-        const authenticater = await viewAuthenticator(req, res, User, authenticated=true, unauthenticatedRedirect='/auth/login', providers=["local"], invalidProviderRender='auth/change_pass_err.ejs');
+        const authenticater = await viewAuthenticator(req, res, User, authenticated=true, unauthenticatedRedirect='/auth/login?invalid=2', providers=["local"], invalidProviderRender='auth/change_pass_err.ejs');
         if (authenticater) {
             res.render("auth/change_pass.ejs", {errorMsg: null});
         }
     })
+    
+    .post(async (req, res) => {
+        const authenticater = await viewAuthenticator(req, res, User, authenticated=true, unauthenticatedRedirect='/auth/login?invalid=2', providers=["local"], invalidProviderRender='auth/change_pass_err.ejs');
+        if (authenticater) {
+            
+            const old_password = req.body.old_password;
+            const new_password = req.body.new_password;
+            
+            if (new_password.length < 8) {
+                res.render("auth/change_pass.ejs", {errorMsg: "Password should have atleast 8 characters."});
+            } else {
+                
+                const userObj = await User.findOne({_id: req.user.id});
+                
+                userObj.changePassword(old_password, new_password, (err) => {
+                    if (err) {
+                        res.render("auth/change_pass.ejs", {errorMsg: "Old password is incorrect."});
+                    } else {
+                        req.logout((err) => {
+                            if (err) {
+                                res.send(err);
+                            } else {
+                                res.redirect("/auth/login?invalid=3");
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    });
 }
