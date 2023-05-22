@@ -108,19 +108,6 @@ function googleSignIn(app, passport, User) {
     );
 
     app.get("/test", async (req, res) => {
-        // const userObj = await User.findOne({_id: req.user.id});
-        // userObj.changePassword("12345678", "1234567890", (err) => {
-        //     if (err) {
-        //         res.send(err);
-        //     } else {
-        //         res.send(req.user);
-        //     }
-        // });
-        // userObj.setPassword("12345678", async function(){
-        //     await userObj.save();
-        //     res.status(200).json({message: 'password reset successful'});
-        // });
-        // await userObj.save();
         res.send(req.user);
     })
 
