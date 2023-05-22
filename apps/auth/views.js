@@ -3,6 +3,7 @@ module.exports = {initialize: initializeViews};
 
 const crypto = require('crypto');
 const mailClient = require('../../utils/email.js');
+const viewAuthenticator = require('../../utils/view_authenticator.js');
 
 const VERIFICATION_TIMEOUT_IN_MIN = 10;
 const PASS_RESET_TIMEOUT_IN_MIN = 30;
@@ -13,6 +14,7 @@ function initializeViews(app, passport, UserModel) {
     googleSignIn(app, passport, UserModel);
     LogInView(app, passport, UserModel);
     forgotPasswordView(app, passport, UserModel);
+    changePasswordView(app, passport, UserModel);
 }
 
 function signUpView(app, User) {
@@ -251,4 +253,15 @@ function forgotPasswordView(app, passport, User) {
         }
     });
 
+}
+
+function changePasswordView(app, passport, User) {
+    app.route("/auth/change-password")
+
+    .get(async (req, res) => {
+        const authenticater = await viewAuthenticator(req, res, User, authenticated=true, unauthenticatedRedirect='/auth/login', providers=["local"], invalidProviderRender='auth/change_pass_err.ejs');
+        if (authenticater) {
+            res.render("auth/change_pass.ejs", {errorMsg: null});
+        }
+    })
 }

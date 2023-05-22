@@ -6,6 +6,7 @@ body {
 main {
     width: fit-content;
     max-width: 100%;
+    width: 480px;
     height: fit-content;
     border-radius: 10px;
     overflow: hidden;
