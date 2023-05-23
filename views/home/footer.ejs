@@ -1,0 +1,38 @@
+</div>
+</div>
+
+<script>
+
+    var beforeWidth = null;
+    
+    function navBarOpen() {
+        document.querySelector("nav").classList = "open";
+    }
+    function navBarClose() {
+        document.querySelector("nav").classList = "close";
+    }
+
+    document.body.onload = () => {
+        beforeWidth = document.body.clientWidth;
+        console.log(beforeWidth);
+
+        onLoad();
+    }
+    
+    document.body.onresize = (e) => {
+        const width = e.target.innerWidth;
+        const height = e.target.innerHeight;
+        
+        if (width > 576 && beforeWidth < 576) {
+            document.querySelector("nav").classList = "open";
+        } 
+        
+        if (width < 576 && beforeWidth > 576) {
+            document.querySelector("nav").classList = "close";
+        } 
+
+        beforeWidth = width;
+    }
+</script>
+</body>
+</html>
