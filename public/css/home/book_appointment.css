@@ -1,0 +1,159 @@
+
+body {
+    position: relative;
+}
+
+div.container-fluid {
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+div.content {
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+nav {
+    width: 250px;
+    background-color: var(--primary-clr);
+    padding: 20px;
+    min-height: 100vh;
+    position: static;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+nav.open {
+    display: flex;
+}
+
+nav.close {
+    display: none;
+}
+
+nav div.close-butt {
+    display: none;
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+nav div.close-butt:hover {
+    opacity: 0.5;
+}
+
+h3 {
+    font-family: 'Inter';
+    font-weight: 700;
+    color: white;
+}
+
+nav a.item {
+    padding: 10px 15px;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+nav a.item.active {
+    background-color: rgba(255, 255, 255, 0.10);
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.15);
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.15);
+}
+
+nav a.item i {
+    margin-right: 15px;
+    font-size: 24px;
+}
+nav a.item span {
+    font-family: 'Inter';
+    font-weight: 400;
+    font-size: 16px;
+}
+
+div.top-div {
+    display: none;
+    height: 70px;
+    width: 100%;
+    background-color: var(--primary-clr);
+
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}
+
+h4 {
+    font-family: 'Inter';
+    font-weight: 700;
+    color: white;
+    transform: translateY(5px);
+    margin-right: auto;
+}
+
+div.top-div div.button {
+    color: white;
+    cursor: pointer;
+    font-size: 25px;
+    margin-right: 10px;
+    border: 1px solid white;
+    padding: 0 5px;
+    border-radius: 8px;
+}
+
+div.top-div div.button:hover {
+    opacity: 0.7;
+}
+
+@media (max-width:992px) {
+    nav {
+        width: 100px;
+    }
+    nav a.item span {
+        display: none;
+    }
+    h3 {
+        text-align: center;
+    }
+}
+
+@media (max-width:576px) {
+    nav {
+        display: none;
+        width: 250px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        min-height: 100%;
+        box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
+    }
+    nav div.close-butt {
+        display: block;
+    }
+    div.top-div {
+        display: flex;
+    }
+    h3 {
+        display: none;
+    }
+    nav a.item span {
+        display: block;
+    }
+}
