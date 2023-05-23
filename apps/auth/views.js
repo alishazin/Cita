@@ -4,6 +4,7 @@ module.exports = {initialize: initializeViews};
 const crypto = require('crypto');
 const mailClient = require('../../utils/email.js');
 const viewAuthenticator = require('../../utils/view_authenticator.js');
+const { authenticate } = require('passport');
 
 const VERIFICATION_TIMEOUT_IN_MIN = 10;
 const PASS_RESET_TIMEOUT_IN_MIN = 30;
@@ -15,6 +16,7 @@ function initializeViews(app, passport, UserModel) {
     LogInView(app, passport, UserModel);
     forgotPasswordView(app, passport, UserModel);
     changePasswordView(app, passport, UserModel);
+    logoutView(app, passport);
 }
 
 function signUpView(app, User) {
@@ -250,14 +252,14 @@ function changePasswordView(app, passport, User) {
     app.route("/auth/change-password")
 
     .get(async (req, res) => {
-        const authenticater = await viewAuthenticator(req, res, User, authenticated=true, unauthenticatedRedirect='/auth/login?invalid=2', providers=["local"], invalidProviderRender='auth/change_pass_err.ejs');
+        const authenticater = await viewAuthenticator({req:req, res:res, UserModel:User, unauthenticatedRedirect:'/auth/login?invalid=2', providers:["local"], invalidProviderRender:'auth/change_pass_err.ejs'});
         if (authenticater) {
             res.render("auth/change_pass.ejs", {errorMsg: null});
         }
     })
     
     .post(async (req, res) => {
-        const authenticater = await viewAuthenticator(req, res, User, authenticated=true, unauthenticatedRedirect='/auth/login?invalid=2', providers=["local"], invalidProviderRender='auth/change_pass_err.ejs');
+        const authenticater = await viewAuthenticator({req:req, res:res, UserModel:User, unauthenticatedRedirect:'/auth/login?invalid=2', providers:["local"], invalidProviderRender:'auth/change_pass_err.ejs'});
         if (authenticater) {
             
             const old_password = req.body.old_password;
@@ -285,4 +287,18 @@ function changePasswordView(app, passport, User) {
             }
         }
     });
+}
+
+function logoutView(app, passport) {
+    
+    app.get("/auth/logout", (req, res) => {
+        req.logout((err) => {
+            if (err) {
+                res.send(err);
+            } else {
+                res.redirect("/auth/login");
+            }
+        });
+    })
+
 }
