@@ -87,12 +87,17 @@ main div.header div.left-side div.field-box {
 main div.header div.left-side div.field-box input[type='text'] {
     width: 300px;
     border-radius: 20px 0 0 20px;
-    border: 1px solid var(--tertiary-clr);
+    border: 1px solid var(--quaternary-clr);
     border-right: none;
     padding-left: 43px;
     outline: none;
     color: inherit;
     font-size: 14px;
+}
+
+main div.header div.left-side div.field-box input[type='text']:focus {
+    color: var(--secondary-clr);
+    border-color: var(--secondary-clr);
 }
 
 main div.header div.left-side div.field-box i.left {
