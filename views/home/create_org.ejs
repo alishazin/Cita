@@ -1,0 +1,59 @@
+<%- include('header') %>
+<link rel="stylesheet" href="/css/home/create_org.css">
+<main>
+    <%- include('inner_header', {content: "/ My Organizations / Create Organization", href: "/home/my-organizations/"}) %>
+    <div class="header">
+        <h1>Create an organization</h1>
+        <p>Provide the necessary details to get started with an organizations.</p>
+    </div>
+    <form>
+        <div class="field-box name">
+            <label>Name</label>
+            <input type="text" name="name" id="name" oninput="onTypingCheckName()">
+            <span></span>
+            <i></i>
+        </div>
+    </form>
+</main>
+<script>
+    function onLoad() {
+        document.querySelector("nav a.item:nth-of-type(2)").classList += " active";
+    }
+
+    function onTypingCheckName() {
+        const field = document.querySelector("input#name");
+        const span = document.querySelector("div.field-box.name span");
+        const icon = document.querySelector("div.field-box.name i");
+        console.log(icon);
+
+        const value = field.value.trim().toLowerCase();
+
+        if (value.length > 0) {
+            const requestObj = new XMLHttpRequest()
+            requestObj.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const json = JSON.parse(this.responseText);
+    
+                    if (json.exist === true) {
+                        span.innerText = `'${json.name}' is taken.`;
+                        span.classList = 'red';
+                        icon.classList = 'bi bi-x-circle red'
+                    } else {
+                        span.innerText = `Name is available.`;
+                        span.classList = 'green';
+                        icon.classList = 'bi bi-check-circle-fill green'
+                    }
+                }
+            }
+    
+            requestObj.open("GET", `/home/my-organisations/check-name-exist?name=${value}`)
+            requestObj.send()
+        } else {
+            span.innerText = '';
+            span.classList = '';
+            icon.classList = ''
+        }
+
+    }
+</script>
+<%- include('footer') %>

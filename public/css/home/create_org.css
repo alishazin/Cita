@@ -1,0 +1,74 @@
+div.header {
+    width: 100%;
+    padding: 40px;
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--secondary-clr);
+}
+
+div.header p {
+    font-weight: 300;
+    color: var(--secondary-clr);
+}
+
+form {
+    padding: 0 40px;
+}
+
+form div.field-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    width: fit-content;
+}
+
+form div.field-box label {
+    color: var(--tertiary-clr);
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+input#name {
+    width: 300px;
+    border-radius: 8px;
+    border: 1.5px solid var(--tertiary-clr);
+    outline: none;
+    padding: 5px 10px;
+    padding-right: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--tertiary-clr);
+}
+
+input#name:focus {
+    border: 1.5px solid var(--secondary-clr);
+    color: var(--secondary-clr);
+}
+
+div.field-box.name span {
+    margin-top: 2px;
+    font-weight: 300;
+    color: red;
+    font-size: 14px;
+}
+
+div.field-box.name i {
+    position: absolute;
+    font-size: 16px;
+    right: 8px;
+    top: 33px;
+    opacity: 0.8;
+}
+
+div.field-box.name i.green, div.field-box.name span.green {
+    color: green;
+}
+
+div.field-box.name i.red, div.field-box.name span.red {
+    color: red;
+}

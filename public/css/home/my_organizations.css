@@ -13,7 +13,7 @@ main div.header {
 
 main div.header h1 {
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--secondary-clr);
 }
 main div.header p {
@@ -32,7 +32,7 @@ main div.header div.right-side {
     align-items: flex-start;
 }
 
-main div.header div.right-side button {
+main div.header div.right-side a {
     position: relative;
     border: none;
     outline: none;
@@ -44,9 +44,10 @@ main div.header div.right-side button {
     font-weight: 600;
     overflow: hidden;
     font-size: 14px;
+    text-decoration: none;
 }
 
-main div.header div.right-side button i {
+main div.header div.right-side a i {
     position: absolute;
     margin-right: 10px;
     left: 20px;
@@ -54,23 +55,23 @@ main div.header div.right-side button i {
     transition: top 0.2s;
 }
 
-main div.header div.right-side button i.nothover {
+main div.header div.right-side a i.nothover {
     top: 8px;
 }
 
-main div.header div.right-side button i.hover {
+main div.header div.right-side a i.hover {
     top: -30px;
 }
 
-main div.header div.right-side button:hover {
+main div.header div.right-side a:hover {
     transform: translateY(-1px);
 }
 
-main div.header div.right-side button:hover i.nothover {
+main div.header div.right-side a:hover i.nothover {
     top: calc(100% + 30px);
 }
 
-main div.header div.right-side button:hover i.hover {
+main div.header div.right-side a:hover i.hover {
     top: 8px;
 }
 
