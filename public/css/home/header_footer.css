@@ -19,6 +19,10 @@ div.content {
     align-items: stretch;
 }
 
+main {
+    width: calc(100% - 250px);
+}
+
 nav {
     width: 250px;
     background-color: var(--primary-clr);
@@ -126,6 +130,9 @@ div.top-div div.button:hover {
     nav {
         width: 100px;
     }
+    main {
+        width: calc(100% - 100px);
+    }
     nav a.item span {
         display: none;
     }
@@ -135,6 +142,9 @@ div.top-div div.button:hover {
 }
 
 @media (max-width:576px) {
+    main {
+        width: 100%;
+    }
     nav {
         display: none;
         width: 250px;
