@@ -3,11 +3,13 @@
 }
 
 :root {
-    --primary-clr: #373fc5;
+    --primary-clr: #025464;
     --secondary-clr: #111422;
     --tertiary-clr: #757b80;
     --quaternary-clr: #a7abb0;
-    --bg-clr: #e7e8f1;
+    --bg-clr: #F8F1F1;
+    --sec-clr: #E57C23;
+    --ter-clr: #E8AA42;
 }
 
 .user-flex-center {

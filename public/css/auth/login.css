@@ -209,25 +209,28 @@ div.left-side > div.clr-cir {
 div.left-side > div.clr-1 {
     width: 500px;
     height: 500px;
-    background-color: pink;
+    background-color: var(--primary-clr);
     left: -150px;
     bottom: -150px;
+    opacity: 0.8;
 }
 
 div.left-side > div.clr-2 {
     width: 500px;
     height: 500px;
-    background-color: #72b6fe;
+    background-color: var(--sec-clr);
     left: -50px;
     top: -150px;
+    opacity: 1;
 }
 
 div.left-side > div.clr-3 {
     width: 500px;
     height: 500px;
-    background-color: #373fc5;
+    background-color: var(--ter-clr);
     right: -250px;
     top: -10px;
+    opacity: 1;
 }
 
 div.left-side div.left-container {
