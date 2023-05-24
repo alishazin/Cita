@@ -27,7 +27,7 @@ form div.field-box {
     width: fit-content;
 }
 
-form div.field-box label {
+form div.field-box label.label {
     color: var(--tertiary-clr);
     font-weight: 500;
     margin-bottom: 4px;
@@ -71,4 +71,54 @@ div.field-box.name i.green, div.field-box.name span.green {
 
 div.field-box.name i.red, div.field-box.name span.red {
     color: red;
+}
+
+div.checbox-container {
+    display: flex;
+}
+
+div.checbox-container div.checkbox {
+    width: 55px;
+    height: 35px;
+    border: 1.5px solid var(--primary-clr);
+    border-radius: 8px;
+    color: var(--primary-clr);
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: 400;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.checbox-container div.checkbox.checked {
+    background-color: var(--primary-clr);
+    color: white;
+}
+
+div.field-box.details {
+    width: 100%;
+}
+
+div.field-box.details div.details-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: var(--bg-clr);
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+div.field-box.details div.details-list span {
+    font-weight: 300;
+    font-size: 14px;
+}
+
+div.field-box.details div.details-list input {
+    border-radius: 8px;
+    border: 1px solid var(--secondary-clr);
+    padding: 5px 8px;
+    font-size: 14px;
 }

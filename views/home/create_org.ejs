@@ -8,11 +8,65 @@
     </div>
     <form>
         <div class="field-box name">
-            <label>Name</label>
+            <label class="label">Name</label>
             <input type="text" name="name" id="name" oninput="onTypingCheckName()">
             <span></span>
             <i></i>
         </div>
+
+        <div class="field-box working-days mt-4">
+            <label class="label">Working Days</label>
+            <div class="checbox-container mt-2">
+                <div class="checkbox sun" onclick="onClickCheckBox('sun')">
+                    Sun
+                    <input type="checkbox" name="sun" id="sun" hidden>
+                </div>
+                <div class="checkbox mon" onclick="onClickCheckBox('mon')">
+                    Mon
+                    <input type="checkbox" name="mon" id="mon" hidden>
+                </div>
+                <div class="checkbox tue" onclick="onClickCheckBox('tue')">
+                    Tue
+                    <input type="checkbox" name="tue" id="tue" hidden>
+                </div>
+                <div class="checkbox wed" onclick="onClickCheckBox('wed')">
+                    Wed
+                    <input type="checkbox" name="wed" id="wed" hidden>
+                </div>
+                <div class="checkbox thu" onclick="onClickCheckBox('thu')">
+                    Thu
+                    <input type="checkbox" name="thu" id="thu" hidden>
+                </div>
+                <div class="checkbox fri" onclick="onClickCheckBox('fri')">
+                    Fri
+                    <input type="checkbox" name="fri" id="fri" hidden>
+                </div>
+                <div class="checkbox sat" onclick="onClickCheckBox('sat')">
+                    Sat
+                    <input type="checkbox" name="sat" id="sat" hidden>
+                </div>
+            </div>
+        </div>
+
+        <div class="field-box details mon mt-4">
+            <label class="label">Sunday</label>
+            <div class="details-list mt-2">
+                <div>
+                    <span class="me-2">From</span> <input type="time" name="mon_1_from" class="me-4"> 
+                </div>
+                <div>
+                    <span class="me-2">To</span><input type="time" name="mon_1_to" class="me-4">
+                </div>
+                <div>
+                    <span class="me-2">Price</span><input type="number" name="mon_1_price" style="width:80px;" class="me-4">
+                </div>
+                <div>
+                    <span class="me-2">Total slots</span><input type="number" name="mon_1_slots" style="width:80px;" class="me-2">
+                </div>
+            </div>
+        </div>
+
+        <button class="mt-5">asd</button>
     </form>
 </main>
 <script>
@@ -54,6 +108,21 @@
             icon.classList = ''
         }
 
+    }
+
+    function onClickCheckBox(id) {
+        const checkbox = document.querySelector(`div.checkbox.${id}`);
+        const input = document.querySelector(`input#${id}`);
+
+        // console.log(input.checked);
+
+        if (input.checked === true) {
+            input.click();
+            checkbox.classList = `checkbox ${id}`;
+        } else {
+            input.click();
+            checkbox.classList = `checkbox ${id} checked`;
+        }
     }
 </script>
 <%- include('footer') %>
