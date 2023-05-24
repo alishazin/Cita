@@ -75,12 +75,12 @@ nav a.item {
 
 nav a.item.active {
     background-color: rgba(255, 255, 255, 0.10);
-    box-shadow: 0 0 10px rgb(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.05);
 }
 
 nav a:hover {
     background-color: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 0 10px rgb(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.05);
 }
 
 nav a.item i {

@@ -1,15 +1,25 @@
 <%- include('header') %>
 <link rel="stylesheet" href="/css/home/my_organizations.css">
 <main>
-    <div class="search-area">
-        <h1>My Organizations</h1>
-        <div class="field-box">
-            <i class="bi bi-search"></i>
-            <input type="text" placeholder="Search in your organizations..">
+    <div class="header">
+        <div class="left-side">
+            <h1>My Organizations</h1>
+            <p>List of all the organizations owned and controlled by you.</p>
+            <div class="field-box">
+                <i class="bi bi-search left"></i>
+                <input type="text" placeholder="Search..">
+                <button class="user-flex-center">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="results">
-
+        <div class="right-side">
+            <button>
+                <i class="bi bi-building-add hover"></i>
+                <i class="bi bi-plus-lg nothover"></i>
+                Create New Organization
+            </button>
+        </div>
     </div>
 </main>
 <script>
