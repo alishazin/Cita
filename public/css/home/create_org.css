@@ -16,6 +16,7 @@ div.header p {
 
 form {
     padding: 0 40px;
+    margin-bottom: 40px;
 }
 
 form div.field-box {
@@ -99,9 +100,17 @@ div.checbox-container div.checkbox.checked {
 
 div.field-box.details {
     width: 100%;
+    display: none;
 }
 
 div.field-box.details div.details-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+div.field-box.details div.details-list div.list-item {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -109,16 +118,103 @@ div.field-box.details div.details-list {
     width: 100%;
     padding: 10px 15px;
     border-radius: 8px;
+    margin-bottom: 10px;
 }
 
-div.field-box.details div.details-list span {
+div.field-box.details div.details-list div.list-item span {
     font-weight: 300;
     font-size: 14px;
+    color: var(--secondary-clr);
 }
 
-div.field-box.details div.details-list input {
+div.field-box.details div.details-list div.list-item input {
     border-radius: 8px;
     border: 1px solid var(--secondary-clr);
     padding: 5px 8px;
     font-size: 14px;
+}
+
+div.field-box.details div.add-remove {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 20px;
+}
+
+div.field-box.details div.add-remove i {
+    font-size: 22px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+div.field-box.details div.add-remove i:hover {
+    opacity: 0.6;
+}
+
+div.sliderbar-box {
+    position: relative;
+    width: 130px;
+    height: 35px;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 14px;
+    cursor: pointer;
+    
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    transition: border 0.2s;
+}
+
+div.sliderbar-box.paused {
+    border: 1.5px solid var(--sec-clr);
+}
+
+div.sliderbar-box.active {
+    border: 1.5px solid green;
+}
+
+div.sliderbar-box span {
+    display: block;
+    user-select: none;
+    width: 50%;
+    text-align: center;
+    background-color: transparent;
+    z-index: 1;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+div.sliderbar-box.paused span:first-of-type {
+    color: white;
+}
+
+div.sliderbar-box.paused span:last-of-type {
+    color: var(--sec-clr);
+}
+
+div.sliderbar-box.active span:first-of-type {
+    color: green;
+}
+
+div.sliderbar-box.active span:last-of-type {
+    color: white;
+}
+
+div.sliderbar-box div.slider {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0;
+    transition: left 0.2s;
+}
+
+div.sliderbar-box.paused div.slider {
+    left: 0;
+    background-color: var(--sec-clr);
+}
+
+div.sliderbar-box.active div.slider {
+    left: 50%;
+    background-color: green;
 }

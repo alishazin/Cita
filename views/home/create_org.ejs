@@ -9,7 +9,7 @@
     <form>
         <div class="field-box name">
             <label class="label">Name</label>
-            <input type="text" name="name" id="name" oninput="onTypingCheckName()">
+            <input type="text" name="name" id="name" oninput="onTypingCheckName()" required>
             <span></span>
             <i></i>
         </div>
@@ -48,21 +48,184 @@
             </div>
         </div>
 
-        <div class="field-box details mon mt-4">
-            <label class="label">Sunday</label>
+        <div class="field-box details sun mt-4">
+            <label class="label me-2">Sunday</label>
             <div class="details-list mt-2">
-                <div>
-                    <span class="me-2">From</span> <input type="time" name="mon_1_from" class="me-4"> 
+                <div class="list-item">
+                    <div>
+                        <span class="me-2">From</span> <input type="time" name="sun_1_from" class="me-4"> 
+                    </div>
+                    <div>
+                        <span class="me-2">To</span><input type="time" name="sun_1_to" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Price</span><input type="number" name="sun_1_price" style="width:80px;" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Total slots</span><input type="number" name="sun_1_slots" style="width:80px;" class="me-2">
+                    </div>
                 </div>
-                <div>
-                    <span class="me-2">To</span><input type="time" name="mon_1_to" class="me-4">
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('sun')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('sun')"></i>
+            </div>
+        </div>
+
+        <div class="field-box details mon mt-4">
+            <label class="label me-2">Monday</label>
+            <div class="details-list mt-2">
+                <div class="list-item">
+                    <div>
+                        <span class="me-2">From</span> <input type="time" name="mon_1_from" class="me-4"> 
+                    </div>
+                    <div>
+                        <span class="me-2">To</span><input type="time" name="mon_1_to" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Price</span><input type="number" name="mon_1_price" style="width:80px;" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Total slots</span><input type="number" name="mon_1_slots" style="width:80px;" class="me-2">
+                    </div>
                 </div>
-                <div>
-                    <span class="me-2">Price</span><input type="number" name="mon_1_price" style="width:80px;" class="me-4">
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('mon')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('mon')"></i>
+            </div>
+        </div>
+
+        <div class="field-box details tue mt-4">
+            <label class="label me-2">Tuesday</label>
+            <div class="details-list mt-2">
+                <div class="list-item">
+                    <div>
+                        <span class="me-2">From</span> <input type="time" name="tue_1_from" class="me-4"> 
+                    </div>
+                    <div>
+                        <span class="me-2">To</span><input type="time" name="tue_1_to" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Price</span><input type="number" name="tue_1_price" style="width:80px;" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Total slots</span><input type="number" name="tue_1_slots" style="width:80px;" class="me-2">
+                    </div>
                 </div>
-                <div>
-                    <span class="me-2">Total slots</span><input type="number" name="mon_1_slots" style="width:80px;" class="me-2">
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('tue')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('tue')"></i>
+            </div>
+        </div>
+
+        <div class="field-box details wed mt-4">
+            <label class="label me-2">Wednesday</label>
+            <div class="details-list mt-2">
+                <div class="list-item">
+                    <div>
+                        <span class="me-2">From</span> <input type="time" name="wed_1_from" class="me-4"> 
+                    </div>
+                    <div>
+                        <span class="me-2">To</span><input type="time" name="wed_1_to" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Price</span><input type="number" name="wed_1_price" style="width:80px;" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Total slots</span><input type="number" name="wed_1_slots" style="width:80px;" class="me-2">
+                    </div>
                 </div>
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('wed')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('wed')"></i>
+            </div>
+        </div>
+
+        <div class="field-box details thu mt-4">
+            <label class="label me-2">Thursday</label>
+            <div class="details-list mt-2">
+                <div class="list-item">
+                    <div>
+                        <span class="me-2">From</span> <input type="time" name="thu_1_from" class="me-4"> 
+                    </div>
+                    <div>
+                        <span class="me-2">To</span><input type="time" name="thu_1_to" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Price</span><input type="number" name="thu_1_price" style="width:80px;" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Total slots</span><input type="number" name="thu_1_slots" style="width:80px;" class="me-2">
+                    </div>
+                </div>
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('thu')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('thu')"></i>
+            </div>
+        </div>
+
+        <div class="field-box details fri mt-4">
+            <label class="label me-2">Friday</label>
+            <div class="details-list mt-2">
+                <div class="list-item">
+                    <div>
+                        <span class="me-2">From</span> <input type="time" name="fri_1_from" class="me-4"> 
+                    </div>
+                    <div>
+                        <span class="me-2">To</span><input type="time" name="fri_1_to" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Price</span><input type="number" name="fri_1_price" style="width:80px;" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Total slots</span><input type="number" name="fri_1_slots" style="width:80px;" class="me-2">
+                    </div>
+                </div>
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('fri')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('fri')"></i>
+            </div>
+        </div>
+
+        <div class="field-box details sat mt-4">
+            <label class="label me-2">Saturday</label>
+            <div class="details-list mt-2">
+                <div class="list-item">
+                    <div>
+                        <span class="me-2">From</span> <input type="time" name="sat_1_from" class="me-4"> 
+                    </div>
+                    <div>
+                        <span class="me-2">To</span><input type="time" name="sat_1_to" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Price</span><input type="number" name="sat_1_price" style="width:80px;" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Total slots</span><input type="number" name="sat_1_slots" style="width:80px;" class="me-2">
+                    </div>
+                </div>
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('sat')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('sat')"></i>
+            </div>
+        </div>
+
+        <div class="field-box status mt-4">
+            <label class="label">Status</label>
+            <div class="sliderbar-box paused" onclick="slideBarController()">
+                <select name="status" id="status" hidden>
+                    <option id="paused" value="paused" selected>Paused</option>
+                    <option id="active" value="active">Active</option>
+                </select>
+                <div class="slider"></div>
+                <span>Paused</span>
+                <span>Active</span>
             </div>
         </div>
 
@@ -70,15 +233,87 @@
     </form>
 </main>
 <script>
+
+    var formData;
+
     function onLoad() {
         document.querySelector("nav a.item:nth-of-type(2)").classList += " active";
+
+        initializeFormData();
+    }
+
+    function initializeFormData() {
+        formData = {
+            sun: {
+                parent: document.querySelector("div.field-box.details.sun"),
+                itemsCount: 1,
+            },
+            mon: {
+                parent: document.querySelector("div.field-box.details.mon"),
+                itemsCount: 1,
+            },
+            tue: {
+                parent: document.querySelector("div.field-box.details.tue"),
+                itemsCount: 1,
+            },
+            wed: {
+                parent: document.querySelector("div.field-box.details.wed"),
+                itemsCount: 1,
+            },
+            thu: {
+                parent: document.querySelector("div.field-box.details.thu"),
+                itemsCount: 1,
+            },
+            fri: {
+                parent: document.querySelector("div.field-box.details.fri"),
+                itemsCount: 1,
+            },
+            sat: {
+                parent: document.querySelector("div.field-box.details.sat"),
+                itemsCount: 1,
+            },
+            addItem: function(day) {
+                const list = this[day].parent.querySelector("div.details-list");
+                const nextCount = this[day].itemsCount + 1;
+
+                const newItem = document.createElement('div');
+                newItem.classList = 'list-item';
+                newItem.innerHTML = `
+                    <div>
+                        <span class="me-2">From</span> <input type="time" name="${day}_${nextCount}_from" class="me-4"> 
+                    </div>
+                    <div>
+                        <span class="me-2">To</span><input type="time" name="${day}_${nextCount}_to" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Price</span><input type="number" name="${day}_${nextCount}_price" style="width:80px;" class="me-4">
+                    </div>
+                    <div>
+                        <span class="me-2">Total slots</span><input type="number" name="${day}_${nextCount}_slots" style="width:80px;" class="me-2">
+                    </div>
+                `;
+                list.appendChild(newItem);
+                // Directly adding as innerHTML causing others to reset.
+
+                this[day].itemsCount = nextCount;
+            },
+            removeItem: function(day) {
+
+                if (this[day].itemsCount > 1) {
+                    this[day].parent.querySelector("div.details-list div.list-item:last-of-type").remove();
+                    this[day].itemsCount = this[day].itemsCount - 1;
+                }
+
+            }
+        };
+
+
     }
 
     function onTypingCheckName() {
         const field = document.querySelector("input#name");
         const span = document.querySelector("div.field-box.name span");
         const icon = document.querySelector("div.field-box.name i");
-        console.log(icon);
 
         const value = field.value.trim().toLowerCase();
 
@@ -114,15 +349,35 @@
         const checkbox = document.querySelector(`div.checkbox.${id}`);
         const input = document.querySelector(`input#${id}`);
 
-        // console.log(input.checked);
-
         if (input.checked === true) {
             input.click();
             checkbox.classList = `checkbox ${id}`;
+            formData[id].parent.style.display = 'none';
         } else {
             input.click();
             checkbox.classList = `checkbox ${id} checked`;
+            formData[id].parent.style.display = 'block';
         }
     }
+
+    function slideBarController() {
+        const pausedDiv = document.querySelector("div.sliderbar-box.paused");
+        const activeDiv = document.querySelector("div.sliderbar-box.active");
+
+        const pausedOption = document.querySelector("select#status #paused");
+        const activeOption = document.querySelector("select#status #active");
+
+        if (pausedDiv) {
+            pausedDiv.classList = "sliderbar-box active";
+            pausedOption.selected = "0";
+            activeOption.selected = "1";
+            
+        } else {
+            activeDiv.classList = "sliderbar-box paused";
+            activeOption.selected = "0";
+            pausedOption.selected = "1";
+        }
+    }
+
 </script>
 <%- include('footer') %>
