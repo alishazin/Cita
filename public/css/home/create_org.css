@@ -218,3 +218,29 @@ div.sliderbar-box.active div.slider {
     left: 50%;
     background-color: green;
 }
+
+form ul.instruction {
+    list-style-type: circle;
+    color: var(--tertiary-clr);
+}
+
+form ul.instruction b {
+    font-weight: 500;
+    color: var(--secondary-clr);
+}
+
+form button {
+    background-color: var(--primary-clr);
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    opacity: 0.9;   
+}
+
+form button:hover {
+    opacity: 0.85;   
+}

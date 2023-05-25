@@ -14,6 +14,19 @@
             <i></i>
         </div>
 
+        <div class="field-box status mt-4">
+            <label class="label">Status</label>
+            <div class="sliderbar-box paused" onclick="slideBarController()">
+                <select name="status" id="status" hidden>
+                    <option id="paused" value="paused" selected>Paused</option>
+                    <option id="active" value="active">Active</option>
+                </select>
+                <div class="slider"></div>
+                <span>Paused</span>
+                <span>Active</span>
+            </div>
+        </div>
+
         <div class="field-box working-days mt-4">
             <label class="label">Working Days</label>
             <div class="checbox-container mt-2">
@@ -216,20 +229,13 @@
             </div>
         </div>
 
-        <div class="field-box status mt-4">
-            <label class="label">Status</label>
-            <div class="sliderbar-box paused" onclick="slideBarController()">
-                <select name="status" id="status" hidden>
-                    <option id="paused" value="paused" selected>Paused</option>
-                    <option id="active" value="active">Active</option>
-                </select>
-                <div class="slider"></div>
-                <span>Paused</span>
-                <span>Active</span>
-            </div>
-        </div>
+        <ul class="instruction mt-5">
+            <li><b>Name</b> should be unique, find one which is not used.</li>
+            <li>If <b>status</b> is paused, it wont be visible to clients.</li>
+            <li><b>From Time</b> and <b>To Time</b> should be arranged in order.</li>
+        </ul>
 
-        <button class="mt-5">asd</button>
+        <button class="mt-5">Create Organization</button>
     </form>
 </main>
 <script>
