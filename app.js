@@ -10,6 +10,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 // User-defined 
 const DB = require(`${__dirname}/config/db.js`); 
 const usersModel = require(`${__dirname}/models/users.js`); 
+const organizationsModel = require(`${__dirname}/models/organizations.js`); 
 const authViews = require(`${__dirname}/apps/auth/views.js`); 
 const homeViews = require(`${__dirname}/apps/home/views.js`); 
 
@@ -34,6 +35,7 @@ const mongoose = DB.connect();
 
 // Models
 const User = usersModel();
+const Organization = organizationsModel();
 
 passport.use(User.createStrategy());
 
@@ -83,7 +85,7 @@ async function(accessToken, refreshToken, profile, cb) {
 
 // Views
 authViews.initialize(app, passport, User);
-homeViews.initialize(app, passport, User);
+homeViews.initialize(app, passport, User, Organization);
 
 // Starting Server
 app.listen(3000, () => {
