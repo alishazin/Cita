@@ -1,14 +1,14 @@
 
 module.exports = {create: createOrgValidator};
 
-var dayValue = {
-    sun: 0,
-    mon: 1,
-    tue: 2,
-    wed: 3,
-    thu: 4,
-    fri: 5,
-    sat: 6,
+var numToDay = {
+    0: "sun",
+    1: "mon",
+    2: "tue",
+    3: "wed",
+    4: "thu",
+    5: "fri",
+    6: "sat",
 }
 
 function compareTime(time1, time2, mode) {
@@ -17,6 +17,11 @@ function compareTime(time1, time2, mode) {
         mode = 2 (less than or equal to)
         mode = 3 (greater than)
         mode = 4 (greater than or equal to)
+    */
+
+    /*
+        [10, 10] < [10, 20] = true
+        morning < evening = true
     */
 
     if (mode === 1) {
@@ -36,7 +41,28 @@ function compareTime(time1, time2, mode) {
         if (time1[0] === time2[0]) {
             if (time1[1] < time2[1]) return true;
             if (time1[1] > time2[1]) return false;
-            if (time1[1] == time2[1]) return true;
+            if (time1[1] === time2[1]) return true;
+        }
+    }
+
+    else if (mode === 3) {
+        if (time1[0] > time2[0]) return true;
+        if (time1[0] < time2[0]) return false;
+
+        if (time1[0] === time2[0]) {
+            if (time1[1] > time2[1]) return true;
+            if (time1[1] <= time2[1]) return false;
+        }
+    }
+
+    else if (mode === 4) {
+        if (time1[0] > time2[0]) return true;
+        if (time1[0] < time2[0]) return false;
+
+        if (time1[0] === time2[0]) {
+            if (time1[1] > time2[1]) return true;
+            if (time1[1] < time2[1]) return false;
+            if (time1[1] === time2[1]) return true;
         }
     }
 
@@ -164,7 +190,7 @@ async function createOrgValidator(req, res, User, Organization) {
 
     const def_error_msg = {is_valid: false, err_msg: "Something is wrong, try refreshing the page."};
 
-    let working_hours = {sun: null, mon: null, tue: null, wed: null, thu: null, fri: null, sat: null};
+    let working_hours = {0: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null};
 
     // Name check
     if (name.length < 3) {
@@ -184,8 +210,8 @@ async function createOrgValidator(req, res, User, Organization) {
     
     // All Days check
     for (let x of Object.keys(working_hours)) {
-        if (req.body[x] === "on") {
-            const day = validateWorkingDay(req.body, x);
+        if (req.body[numToDay[x]] === "on") {
+            const day = validateWorkingDay(req.body, numToDay[x]);
             
             if (!day.is_valid) {
                 return {is_valid: false, err_msg: day.err_msg}
