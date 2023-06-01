@@ -2,6 +2,7 @@
 module.exports = {initialize: initializeViews};
 
 const viewAuthenticator = require('../../utils/view_authenticator.js');
+const orgValidator = require('../../utils/org_validator.js');
 
 function initializeViews(app, passport, UserModel, OrganizationModel) {
     bookAppointmentView(app, UserModel);
@@ -37,20 +38,34 @@ function myOrganizationsView(app, User, Organization) {
     .get(async (req, res) => {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
         if (authenticater) {
-            const org = new Organization({
-                admin: req.user.id,
-                name: "Almas".toLowerCase(),
-                working_days: [1],
-                working_hours: {
-                    1 : [
-                        [[9, 0], [12, 30], 300, 30],
-                        [[1, 30], [4, 0], 400, 20]
-                    ],
-                },
-                status: 2,
-            });
+            // const org = new Organization({
+            //     admin: req.user.id,
+            //     name: "Almas".toLowerCase(),
+            //     working_days: [1],
+            //     working_hours: {
+            //         1 : [
+            //             [[9, 0], [12, 30], 300, 30],
+            //             [[1, 30], [4, 0], 400, 20]
+            //         ],
+            //     },
+            //     status: 2,
+            // });
             // org.save();
-            res.render("home/create_org.ejs");
+
+            res.render("home/create_org.ejs", {error_msg: null});
+        }
+    })
+
+    .post(async (req, res) => {
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        if (authenticater) {
+            const validator = await orgValidator.create(req, res, User, Organization);
+
+            if (validator.is_valid) {
+                res.send(validator.data);
+            } else {
+                res.render("home/create_org.ejs", {error_msg: validator.err_msg});
+            }
         }
     })
 }

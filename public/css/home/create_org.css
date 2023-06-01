@@ -226,6 +226,10 @@ div.sliderbar-box.active div.slider {
     background-color: green;
 }
 
+p.error_msg {
+    color: red;
+}
+
 form ul.instruction {
     list-style-type: circle;
     color: var(--tertiary-clr);
