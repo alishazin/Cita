@@ -38,20 +38,6 @@ function myOrganizationsView(app, User, Organization) {
     .get(async (req, res) => {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
         if (authenticater) {
-            // const org = new Organization({
-            //     admin: req.user.id,
-            //     name: "Almas".toLowerCase(),
-            //     working_days: [1],
-            //     working_hours: {
-            //         1 : [
-            //             [[9, 0], [12, 30], 300, 30],
-            //             [[1, 30], [4, 0], 400, 20]
-            //         ],
-            //     },
-            //     status: 2,
-            // });
-            // org.save();
-
             res.render("home/create_org.ejs", {error_msg: null});
         }
     })
@@ -62,7 +48,18 @@ function myOrganizationsView(app, User, Organization) {
             const validator = await orgValidator.create(req, res, User, Organization);
 
             if (validator.is_valid) {
-                res.send(validator.data);
+
+                const org = new Organization({
+                    admin: req.user.id,
+                    name: validator.data.name,
+                    working_hours: validator.data.working_hours,
+                    status: validator.data.status,
+                });
+                await org.save();
+
+                res.redirect('/home/my-organizations');
+
+
             } else {
                 res.render("home/create_org.ejs", {error_msg: validator.err_msg});
             }

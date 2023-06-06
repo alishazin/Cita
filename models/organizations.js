@@ -14,10 +14,6 @@ function initializeCollection() {
             required: true,
             type: String,
         }, 
-        working_days: {
-            required: true,
-            type: Array,
-        },
         working_hours: Object,
         status: {
             required: true,

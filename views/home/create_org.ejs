@@ -9,7 +9,7 @@
     <form method="post">
         <div class="field-box name">
             <label class="label">Name</label>
-            <input type="text" name="name" id="name" oninput="onTypingCheckName()" minlength="3" required>
+            <input type="text" name="name" id="name" oninput="onTypingCheckName()" minlength="3" maxlength="15" required>
             <span></span>
             <i></i>
         </div>
@@ -354,7 +354,7 @@
                         span.classList = 'red';
                         icon.classList = 'bi bi-x-circle red'
                     } else {
-                        span.innerText = `Name is available.`;
+                        span.innerText = `${json.name}' is available.`;
                         span.classList = 'green';
                         icon.classList = 'bi bi-check-circle-fill green'
                     }
