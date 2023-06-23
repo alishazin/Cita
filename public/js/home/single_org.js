@@ -17,12 +17,17 @@ function getTimeTextForSchedule(array) {
 
 function initializeWeeklySchedule() {
 
-    console.log(weeklyScheduleData);
     WeeklyScheduleObj = {
         tableDiv: document.querySelector('section#weekly_schedule div.table'),
-        leftButton: document.querySelector('section#weekly_schedule div.top-row i.left'),
-        rightButton: document.querySelector('section#weekly_schedule div.top-row i.right'),
-        dayText: document.querySelector('section#weekly_schedule div.top-row div.box'),
+        get leftButton() {
+            return document.querySelector('section#weekly_schedule div.table-container div.table div.top-row i.left')
+        },
+        get rightButton() {
+            return document.querySelector('section#weekly_schedule div.table-container div.table div.top-row i.right')
+        },
+        get dayText() {
+            return document.querySelector('section#weekly_schedule div.table-container div.table div.top-row div.box')
+        },
         _currentDay: null,
         get currentDay() {
             return this._currentDay;
@@ -69,6 +74,7 @@ function initializeWeeklySchedule() {
                 </div>
                 `;
             }
+            this.addCallbacks();
         },
 
         addCallbacks() {

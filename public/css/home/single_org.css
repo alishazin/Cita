@@ -113,3 +113,15 @@ section#weekly_schedule div.table div.empty-div span {
     font-weight: 400;
     color: var(--tertiary-clr);
 }
+
+@media (max-width:576px) {
+    section {
+        padding: 20px;
+    }
+    section#weekly_schedule div.table-container {
+        overflow: auto;
+    }
+    section#weekly_schedule div.table {
+        width: 576px;
+    }
+}
