@@ -18,7 +18,11 @@ function initializeCollection() {
         status: {
             required: true,
             type: Number
-        } // 1: paused, 2: active
+        }, // 1: paused, 2: active
+        created_on: {
+            required: true,
+            type: Date
+        }
     })
     
     const Organization = mongoose.model("Organization", organizationSchema);

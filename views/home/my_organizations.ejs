@@ -7,7 +7,7 @@
             <p>List of all the organizations owned and controlled by you.</p>
             <div class="field-box">
                 <i class="bi bi-search left"></i>
-                <input type="text" placeholder="Search..">
+                <input type="text" placeholder="Search.." oninput="updateList(this)">
                 <button class="user-flex-center">
                     <i class="bi bi-search"></i>
                 </button>
@@ -21,10 +21,59 @@
             </a>
         </div>
     </div>
+    <% if (myOrgs.length === 0) { %>
+        <div class="no-orgs">
+            <img src="/images/home/no-orgs.png">
+            <p>You have not yet created an organization.</p>
+        </div>
+    <% } else { %>
+        <div class="list-container"></div>
+    <% } %>
 </main>
 <script>
+
+    var orgDetails = <%- JSON.stringify(myOrgs) %>;
+
     function onLoad() {
         document.querySelector("nav a.item:nth-of-type(2)").classList += " active";
+        addListItems(orgDetails);
     }
+
+    function addListItems(list) {
+        document.querySelector('div.list-container').innerHTML = '';
+        let html = ``;
+        for (let item of list) {
+            html += `
+                <a class="list-item" href="/home/my-organizations/${item.name}">
+                <div class="first-row">
+                <p class="name mb-2">${item.name}</p>
+            `;
+            if (item.status === 1) {
+                html += `<p class="state p mb-2">Paused</p>`;
+            } else if (item.status === 2) {
+                html += `<p class="state a mb-2">Active</p>`;
+            }
+            html += `
+                </div>
+                <p class="since"><span>created on</span> ${new Date(item.created_on).getDate()}/${new Date(item.created_on).getMonth() + 1 }/${ new Date(item.created_on).getFullYear()}</p>
+                </a>
+            `;
+        }
+        document.querySelector('div.list-container').innerHTML = html;
+    }
+
+    function updateList(input) {
+        const text = input.value.trim().toLowerCase();
+        
+        let newList = [];
+        for (let x of orgDetails) {
+            if (x.name.startsWith(text)) {
+                newList.push(x);
+            }
+        }
+
+        addListItems(newList);
+    }
+
 </script>
 <%- include('footer') %>

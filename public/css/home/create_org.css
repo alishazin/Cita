@@ -61,7 +61,7 @@ div.field-box.name span {
 div.field-box.name i {
     position: absolute;
     font-size: 16px;
-    right: 8px;
+    left: 275px;
     top: 33px;
     opacity: 0.8;
 }

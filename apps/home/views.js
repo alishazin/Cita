@@ -29,7 +29,14 @@ function myOrganizationsView(app, User, Organization) {
     .get(async (req, res) => {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
         if (authenticater) {
-            res.render("home/my_organizations.ejs");
+            const resultDB = await Organization.find({admin: req.user.id});
+            let result = [];
+            
+            for (let x of resultDB) {
+                result.push({name: x.name, created_on: x.created_on, status: x.status})
+            }
+
+            res.render("home/my_organizations.ejs", {myOrgs: result});
         }
     })
     
@@ -54,6 +61,7 @@ function myOrganizationsView(app, User, Organization) {
                     name: validator.data.name,
                     working_hours: validator.data.working_hours,
                     status: validator.data.status,
+                    created_on: new Date()
                 });
                 await org.save();
 
@@ -79,9 +87,8 @@ function settingsView(app, User) {
 }
 
 function getOnlyViews(app, User, Organization) {
-    app.route("/home/my-organisations/check-name-exist")
 
-    .get(async (req, res) => {
+    app.get("/home/my-organisations/check-name-exist", async (req, res) => {
         if (req.query.name === undefined) {
             res.status(400).json("'name' should be a query param.");
         } else {

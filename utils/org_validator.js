@@ -196,8 +196,8 @@ async function createOrgValidator(req, res, User, Organization) {
     if (name.length < 3) {
         return {is_valid: false, err_msg: "Name should be atleast 3 characters long"}
     }
-    if (name.length > 15) {
-        return {is_valid: false, err_msg: "Name should be les than 15 characters"}
+    if (name.length > 40) {
+        return {is_valid: false, err_msg: "Name should be les than 40 characters"}
     }
 
     const orgObj = await Organization.findOne({name: name});

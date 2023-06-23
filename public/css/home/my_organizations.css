@@ -1,5 +1,4 @@
 main {
-    /* background-color: red; */
     font-family: 'Inter';
 }
 
@@ -115,10 +114,92 @@ main div.header div.left-side div.field-box button {
     color: white;
     opacity: 0.85;
     width: 45px;
+    cursor: default;
 }
 
-main div.header div.left-side div.field-box button:hover {
+main div.no-orgs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 0;
+}
+
+main div.no-orgs img {
+    max-width: 400px;
+    width: 60%;
+}
+
+main div.no-orgs p {
+    color: var(--sec-clr);
     opacity: 0.8;
+}
+
+main div.list-container {
+    width: 100%;
+    padding: 0 40px;
+}
+
+main div.list-container a.list-item {
+    display: block;
+    text-decoration: none;
+    width: 100%;
+    border: 1px solid var(--primary-clr);
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding: 20px 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+main div.list-container a.list-item:hover {
+    background-color: rgb(2, 84, 100, 0.05);
+}
+
+main div.list-container a.list-item div.first-row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+main div.list-container a.list-item div.first-row p.name {
+    margin: 0;
+    color: var(--primary-clr);
+    text-transform: capitalize;
+    font-weight: 600;
+    word-break: break-all;
+}
+
+main div.list-container a.list-item div.first-row p.state {
+    margin: 0;
+    color: var(--primary-clr);
+    text-transform: capitalize;
+    font-weight: 300;
+}
+
+main div.list-container a.list-item div.first-row p.state.p {
+    color: var(--sec-clr);
+}
+
+main div.list-container a.list-item div.first-row p.state.a {
+    color: green;
+}
+
+main div.list-container a.list-item p.since {
+    margin: 0;
+    color: var(--primary-clr);
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+main div.list-container a.list-item p.since span {
+    color: var(--tertiary-clr);
+    font-weight: 400;
 }
 
 @media (max-width:992px) {
@@ -136,6 +217,9 @@ main div.header div.left-side div.field-box button:hover {
 }
 
 @media (max-width:576px) {
+    main div.list-container {
+        padding: 0 20px;
+    }
     main div.header {
         padding: 20px;
     } 
