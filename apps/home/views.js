@@ -3,6 +3,7 @@ module.exports = {initialize: initializeViews};
 
 const viewAuthenticator = require('../../utils/view_authenticator.js');
 const orgValidator = require('../../utils/org_validator.js');
+const _ = require('lodash');
 
 function initializeViews(app, passport, UserModel, OrganizationModel) {
     bookAppointmentView(app, UserModel);
@@ -70,6 +71,21 @@ function myOrganizationsView(app, User, Organization) {
 
             } else {
                 res.render("home/create_org.ejs", {error_msg: validator.err_msg});
+            }
+        }
+    })
+
+    app.route("/home/my-organizations/:name")
+    
+    .get(async (req, res) => {
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        if (authenticater) {
+            const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
+            if (!orgObj) {
+                res.status(404).send();
+            } else {
+                // res.send(req.params.name);
+                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name)});
             }
         }
     })

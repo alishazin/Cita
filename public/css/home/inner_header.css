@@ -1,6 +1,6 @@
 div.inner-header {
     width: 100%;
-    height: 50px;
+    min-height: 50px;
     background-color: var(--bg-clr);
 
     justify-content: flex-start;
@@ -24,4 +24,11 @@ div.inner-header i:hover {
 
 div.inner-header a {
     margin-right: auto;
+    padding-right: 10px;
+}
+
+div.inner-header span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
