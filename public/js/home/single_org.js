@@ -6,6 +6,15 @@ function onLoad() {
     initializeWeeklySchedule();
 }
 
+function getTimeTextForSchedule(array) {
+    if (array[0] > 12) {
+        array[0] = array[0] % 12;
+        return `${array[0]}:${array[1] == 0 ? "00" : array[1]} pm`
+    } else {
+        return `${array[0]}:${array[1] == 0 ? "00" : array[1]} am`
+    }
+}
+
 function initializeWeeklySchedule() {
 
     console.log(weeklyScheduleData);
@@ -14,7 +23,7 @@ function initializeWeeklySchedule() {
         leftButton: document.querySelector('section#weekly_schedule div.top-row i.left'),
         rightButton: document.querySelector('section#weekly_schedule div.top-row i.right'),
         dayText: document.querySelector('section#weekly_schedule div.top-row div.box'),
-        _currentDay: 0,
+        _currentDay: null,
         get currentDay() {
             return this._currentDay;
         },
@@ -45,8 +54,8 @@ function initializeWeeklySchedule() {
                 for (let x of weeklyScheduleData[arg]) {
                     this.tableDiv.innerHTML += `
                     <div class="row">
-                        <span>${x[0][0]}:${x[0][1] == 0 ? "00" : x[0][1]}</span>
-                        <span>${x[1][0]}:${x[1][1] == 0 ? "00" : x[1][1]}</span>
+                        <span>${getTimeTextForSchedule(x[0])}</span>
+                        <span>${getTimeTextForSchedule(x[1])}</span>
                         <span>${x[2]}</span>
                         <span>${x[3]}</span>
                     </div>
@@ -72,6 +81,6 @@ function initializeWeeklySchedule() {
         }
     };
     WeeklyScheduleObj.addCallbacks();
-    WeeklyScheduleObj.setContent(0);
+    WeeklyScheduleObj.currentDay = 1;
 
 }
