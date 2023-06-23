@@ -84,8 +84,7 @@ function myOrganizationsView(app, User, Organization) {
             if (!orgObj) {
                 res.status(404).send();
             } else {
-                // res.send(req.params.name);
-                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name)});
+                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours});
             }
         }
     })

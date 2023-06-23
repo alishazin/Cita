@@ -29,7 +29,8 @@ section#weekly_schedule div.table-container div.table {
     align-items: stretch;
 }
 
-section#weekly_schedule div.table div.top-row {
+section#weekly_schedule div.top-row {
+    width: 100%;
     height: 60px;
     background-color: white;
     border: 1px solid var(--primary-clr);
@@ -40,13 +41,13 @@ section#weekly_schedule div.table div.top-row {
     align-items: center;
 }
 
-section#weekly_schedule div.table div.top-row i {
+section#weekly_schedule div.top-row i {
     font-size: 18px;
     opacity: 0.6;
     cursor: pointer;
 }
 
-section#weekly_schedule div.table div.top-row div.box {
+section#weekly_schedule div.top-row div.box {
     border: 1px solid var(--primary-clr);
     width: 50px;
     height: 30px;
@@ -57,7 +58,7 @@ section#weekly_schedule div.table div.top-row div.box {
     color: var(--primary-clr);
 }
 
-section#weekly_schedule div.table div.top-row a {
+section#weekly_schedule div.top-row a {
     margin-left: auto;
     color: var(--sec-clr);
     font-weight: 400;
@@ -69,7 +70,7 @@ section#weekly_schedule div.table div.top-row a {
     transition: background-color 0.1s, color 0.1s;
 }
 
-section#weekly_schedule div.table div.top-row a:hover {
+section#weekly_schedule div.top-row a:hover {
     background-color: rgb(229, 124, 35, 0.6);
     color: white;
 }
@@ -90,4 +91,25 @@ section#weekly_schedule div.table div.row.top {
     font-weight: 600;
     background-color: rgb(2, 84, 100, 0.1);
     border-bottom: 2px solid var(--primary-clr);
+}
+
+section#weekly_schedule div.table div.empty-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--primary-clr);
+    border-top: none;
+    padding: 30px;
+}
+
+section#weekly_schedule div.table div.empty-div img {
+    max-width: 300px;
+    opacity: 0.8;
+}
+
+section#weekly_schedule div.table div.empty-div span {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--tertiary-clr);
 }

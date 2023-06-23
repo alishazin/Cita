@@ -1,41 +1,24 @@
 <%- include('header') %>
 <link rel="stylesheet" href="/css/home/single_org.css">
+<script src="/js/home/single_org.js"></script>
 <main>
     <%- include('inner_header', {content: "/ My Organizations / " + org_name, href: "/home/my-organizations/"}) %>
     
     <section id="weekly_schedule">
         <h1>Weekly Schedule</h1>
         <div class="table-container mt-4">
+            <div class="top-row">
+                <i class="bi bi-caret-left left"></i>
+                <div class="box user-flex-center">Sun</div>
+                <i class="bi bi-caret-right right"></i>
+                <a href="#">Edit</a>
+            </div>
             <div class="table">
-                <div class="top-row">
-                    <i class="bi bi-caret-left"></i>
-                    <div class="box user-flex-center">Sun</div>
-                    <i class="bi bi-caret-right"></i>
-                    <a href="#">Edit</a>
-                </div>
                 <div class="row top">
                     <span>From Time</span>
                     <span>To Time</span>
                     <span>Price</span>
                     <span>Slots</span>
-                </div>
-                <div class="row">
-                    <span>9:30</span>
-                    <span>12:30</span>
-                    <span>120</span>
-                    <span>20</span>
-                </div>
-                <div class="row">
-                    <span>14:00</span>
-                    <span>16:00</span>
-                    <span>180</span>
-                    <span>20</span>
-                </div>
-                <div class="row">
-                    <span>19:00</span>
-                    <span>22:00</span>
-                    <span>220</span>
-                    <span>10</span>
                 </div>
             </div>
         </div>
@@ -43,8 +26,10 @@
 </main>
 <script>
 
-    function onLoad() {
-        document.querySelector("nav a.item:nth-of-type(2)").classList += " active";
+    var weeklyScheduleData = <%- JSON.stringify(weeklySchedule) %>;
+
+    document.onload = () => {
+        onLoad();
     }
     
 </script>
