@@ -1,9 +1,11 @@
 
 var WeeklyScheduleObj = {};
+var SpecialHolidaysObj = {};
 
 function onLoad() {
     document.querySelector("nav a.item:nth-of-type(2)").classList += " active";
     initializeWeeklySchedule();
+    initializeSpecialHolidays();
 }
 
 function getTimeTextForSchedule(array) {
@@ -88,5 +90,37 @@ function initializeWeeklySchedule() {
     };
     WeeklyScheduleObj.addCallbacks();
     WeeklyScheduleObj.currentDay = 1;
+
+}
+
+function initializeSpecialHolidays() {
+
+    SpecialHolidaysObj = {
+        slideButt: document.querySelector("section#special_holidays div.left-content div.list div.top div.slide-butt"),
+        slideBar: document.querySelector("section#special_holidays div.left-content div.list div.top div.slide-butt div.slider"),
+        _currentState: null,
+        get currentState() {
+            return this._currentState;
+        },
+        set currentState(arg) {
+            if (arg === 1) {
+                this.slideBar.style.left = '0';
+                this.slideButt.classList = 'slide-butt one';
+            } else if (arg === 2) {
+                this.slideBar.style.left = '50%';
+                this.slideButt.classList = 'slide-butt two';
+            } else return;
+            this._currentState = arg;
+        },
+
+        addCallbacks() {
+            this.slideButt.onclick = () => {
+                this.currentState = this.currentState === 1 ? 2 : 1;
+            }
+        }
+    };
+
+    SpecialHolidaysObj.addCallbacks();
+    SpecialHolidaysObj.currentState = 1;
 
 }
