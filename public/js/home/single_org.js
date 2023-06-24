@@ -58,15 +58,18 @@ function initializeWeeklySchedule() {
             document.querySelectorAll("section#weekly_schedule div.table div.row:not(.top), section#weekly_schedule div.table div.empty-div").forEach(x => x.remove())
 
             if (weeklyScheduleData[arg] !== null) {
+                let count = 1;
                 for (let x of weeklyScheduleData[arg]) {
                     this.tableDiv.innerHTML += `
                     <div class="row">
+                        <span>${count}</span>
                         <span>${getTimeTextForSchedule(x[0])}</span>
                         <span>${getTimeTextForSchedule(x[1])}</span>
                         <span>${x[2]}</span>
                         <span>${x[3]}</span>
                     </div>
                     `;
+                    count++;
                 }
             } else {
                 this.tableDiv.innerHTML += `
@@ -96,6 +99,7 @@ function initializeWeeklySchedule() {
 function initializeSpecialHolidays() {
 
     SpecialHolidaysObj = {
+        listContent: document.querySelector("section#special_holidays div.left-content div.list div.items"),
         slideButt: document.querySelector("section#special_holidays div.left-content div.list div.top div.slide-butt"),
         slideBar: document.querySelector("section#special_holidays div.left-content div.list div.top div.slide-butt div.slider"),
         _currentState: null,
@@ -110,7 +114,27 @@ function initializeSpecialHolidays() {
                 this.slideBar.style.left = '50%';
                 this.slideButt.classList = 'slide-butt two';
             } else return;
+            this.setContent(arg);
             this._currentState = arg;
+        },
+        setContent(arg) {
+            document.querySelectorAll("section#special_holidays div.left-content div.list div.items div.item:not(.head)").forEach(x => x.remove())
+            let result;
+            if (arg === 1) {
+                result = SpecialHolidaysUpcomingData; 
+            } else if (arg === 2) {
+                result = RecentHolidaysData; 
+            } else return;
+
+            for (let x of result) {
+                this.listContent.innerHTML += `
+                <div class="item">
+                    <span>${x.date}</span>
+                    <span>${x.slots}</span>
+                </div>
+                `;
+            }
+
         },
 
         addCallbacks() {

@@ -15,6 +15,7 @@
                     <a href="#">Edit</a>
                 </div>
                 <div class="row top">
+                    <span>S.No</span>
                     <span>From Time</span>
                     <span>To Time</span>
                     <span>Price</span>
@@ -35,6 +36,13 @@
                             <div class="opt-2 user-flex-center"><span>recent</span></div>
                         </div>
                     </div>
+                    <div class="items">
+                        <div class="item head">
+                            <span>Date</span>
+                            <span>Slots Removed</span>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
             <div class="right-content"></div>
@@ -44,6 +52,8 @@
 <script>
 
     var weeklyScheduleData = <%- JSON.stringify(weeklySchedule) %>;
+    var SpecialHolidaysUpcomingData = <%- JSON.stringify(upcomingHolidays) %>;
+    var RecentHolidaysData = <%- JSON.stringify(recentHolidays) %>;
 
     document.onload = () => {
         onLoad();

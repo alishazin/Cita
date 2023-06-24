@@ -81,7 +81,7 @@ section#weekly_schedule div.top-row a:hover {
 section#weekly_schedule div.table div.row {
     margin: 0;
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 10% 22.5% 22.5% 22.5% 22.5%;
     height: 40px;
     font-weight: 400;
     border: 1px solid var(--primary-clr);
@@ -125,12 +125,11 @@ section#special_holidays div.content {
 
 section#special_holidays div.left-content {
     width: 50%;
-    /* background-color: red; */
 }
 
 section#special_holidays div.left-content div.list {
     width: 100%;
-    height: 200px;
+    height: 210px;
     border: 1px solid var(--primary-clr);
 }
 
@@ -202,6 +201,50 @@ section#special_holidays div.left-content div.list div.top div.slide-butt div.sl
     transition: left 0.2s;
 }
 
+section
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c8c8c8; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3; 
+}
+
+section#special_holidays div.left-content div.list div.items {
+    overflow: auto;
+    height: calc(100% - 50px);
+}
+
+section#special_holidays div.left-content div.list div.items div.item {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    height: 40px;
+    font-weight: 400;
+    border-top: none;
+    align-items: center;
+    font-size: 14px;
+    border-bottom: 1px solid var(--primary-clr);
+}
+
+section#special_holidays div.left-content div.list div.items div.item.head {
+    font-weight: 600;
+    background-color: rgb(2, 84, 100, 0.1);
+    border-bottom: 2px solid var(--primary-clr);
+}
+
+section#special_holidays div.left-content div.list div.items div.item span {
+    padding: 0 12px;
+}
 
 section#special_holidays div.right-content {
     width: 50%;
@@ -212,10 +255,13 @@ section#special_holidays div.right-content {
         padding: 20px;
         padding-bottom: 0;
     }
+}
+
+@media (max-width:700px) {
     section#weekly_schedule div.table-container {
         overflow: auto;
     }
     section#weekly_schedule div.table {
-        width: 576px;
+        width: 650px;
     }
 }
