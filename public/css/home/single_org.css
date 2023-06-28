@@ -129,7 +129,8 @@ section#special_holidays div.left-content {
 
 section#special_holidays div.left-content div.list {
     width: 100%;
-    height: 290px;
+    min-height: 290px;
+    height: 100%;
     border: 1px solid var(--primary-clr);
 }
 
@@ -256,8 +257,66 @@ section#special_holidays div.left-content div.list div.items div.empty-div {
 
 section#special_holidays div.right-content {
     width: 50%;
-    /* display: none; */
-    background-color: red;
+    /* background-color: red; */
+    border: 1.5px dashed var(--primary-clr);
+    margin: 0 10px;
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+section#special_holidays div.right-content h4 {
+    color: var(--primary-clr);
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 16px;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+section#special_holidays div.right-content form label {
+    display: block;
+    font-weight: 400;
+    color: var(--tertiary-clr);
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+section#special_holidays div.right-content form input {
+    display: block;
+    padding: 4px 8px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid var(--tertiary-clr);
+    color: var(--secondary-clr);
+}
+
+section#special_holidays div.right-content form p.help-text, section#special_holidays div.right-content form p.err-text {
+    color: var(--secondary-clr);
+    font-size: 12px;
+    margin: 0;
+}
+
+section#special_holidays div.right-content form p.err-text {
+    color: red;
+    font-size: 13px;
+}
+
+section#special_holidays div.right-content button {
+    padding: 6px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+    font-weight: 600;
+    background-color: var(--ter-clr);
+    color: white;
+    border: none;
+}
+
+section#special_holidays div.right-content button:hover {
+    opacity: 0.9;
 }
 
 @media (max-width:576px) {
@@ -280,15 +339,20 @@ section#special_holidays div.right-content {
     section#special_holidays div.content {
         flex-direction: column;
     }
-    section#special_holidays div.right-content {
-        height: 300px;
-        /* Temp */
-    }
     section#special_holidays div.left-content {
         width: 100%;
         overflow: auto;
     }
     section#special_holidays div.left-content div.list {
         min-width: 350px;
+    }
+    section#special_holidays div.right-content {
+        width: 100%;
+        margin: 0;
+        margin-top: 20px;
+        height: fit-content;
+    }
+    section#special_holidays div.right-content h4 {
+        margin-left: 0;
     }
 }

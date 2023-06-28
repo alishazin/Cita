@@ -161,6 +161,7 @@ div.top-div div.button:hover {
     div.top-div {
         display: flex;
         position: fixed;
+        z-index: 1;
     }
     h3 {
         display: none;

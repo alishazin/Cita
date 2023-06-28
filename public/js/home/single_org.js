@@ -6,6 +6,10 @@ function onLoad() {
     document.querySelector("nav a.item:nth-of-type(2)").classList += " active";
     initializeWeeklySchedule();
     initializeSpecialHolidays();
+
+    let tomorrow = new Date();
+    tomorrow.setDate(new Date().getDate() + 1);
+    document.querySelector("section#special_holidays div.right-content form input[type='date']").min = tomorrow.toLocaleDateString('fr-ca');
 }
 
 function getTimeTextForSchedule(array) {
