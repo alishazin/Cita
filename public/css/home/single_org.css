@@ -129,7 +129,7 @@ section#special_holidays div.left-content {
 
 section#special_holidays div.left-content div.list {
     width: 100%;
-    height: 210px;
+    height: 290px;
     border: 1px solid var(--primary-clr);
 }
 
@@ -246,8 +246,18 @@ section#special_holidays div.left-content div.list div.items div.item span {
     padding: 0 12px;
 }
 
+section#special_holidays div.left-content div.list div.items div.empty-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: none;
+    max-height: 240px;
+}
+
 section#special_holidays div.right-content {
     width: 50%;
+    /* display: none; */
+    background-color: red;
 }
 
 @media (max-width:576px) {
@@ -263,5 +273,22 @@ section#special_holidays div.right-content {
     }
     section#weekly_schedule div.table {
         width: 650px;
+    }
+}
+
+@media (max-width:900px) {
+    section#special_holidays div.content {
+        flex-direction: column;
+    }
+    section#special_holidays div.right-content {
+        height: 300px;
+        /* Temp */
+    }
+    section#special_holidays div.left-content {
+        width: 100%;
+        overflow: auto;
+    }
+    section#special_holidays div.left-content div.list {
+        min-width: 350px;
     }
 }

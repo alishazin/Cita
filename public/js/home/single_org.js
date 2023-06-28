@@ -118,7 +118,7 @@ function initializeSpecialHolidays() {
             this._currentState = arg;
         },
         setContent(arg) {
-            document.querySelectorAll("section#special_holidays div.left-content div.list div.items div.item:not(.head)").forEach(x => x.remove())
+            document.querySelectorAll("section#special_holidays div.left-content div.list div.items div.item:not(.head), section#special_holidays div.left-content div.list div.items div.empty-div").forEach(x => x.remove())
             let result;
             if (arg === 1) {
                 result = SpecialHolidaysUpcomingData; 
@@ -126,14 +126,23 @@ function initializeSpecialHolidays() {
                 result = RecentHolidaysData; 
             } else return;
 
-            for (let x of result) {
+            if (result.length === 0) {
                 this.listContent.innerHTML += `
-                <div class="item">
-                    <span>${x.date}</span>
-                    <span>${x.slots}</span>
-                </div>
-                `;
+                    <div class="empty-div">
+                        <img src="/images/home/empty-date-list.png">
+                    </div>
+                    `;
+            } else {
+                for (let x of result) {
+                    this.listContent.innerHTML += `
+                    <div class="item">
+                        <span>${x.date}</span>
+                        <span>${x.slots}</span>
+                    </div>
+                    `;
+                }
             }
+
 
         },
 

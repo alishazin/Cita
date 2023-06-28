@@ -145,6 +145,7 @@ div.top-div div.button:hover {
 @media (max-width:576px) {
     main {
         width: 100%;
+        padding-top: 70px;
     }
     nav {
         display: none;
@@ -152,7 +153,6 @@ div.top-div div.button:hover {
         position: absolute;
         right: 0;
         top: 0;
-        min-height: 100%;
         box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
     }
     nav div.close-butt {
@@ -160,6 +160,7 @@ div.top-div div.button:hover {
     }
     div.top-div {
         display: flex;
+        position: fixed;
     }
     h3 {
         display: none;
