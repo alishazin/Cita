@@ -3,6 +3,7 @@ module.exports = {initialize: initializeViews};
 
 const viewAuthenticator = require('../../utils/view_authenticator.js');
 const orgValidator = require('../../utils/org_validator.js');
+const utilPatches = require('../../utils/patches.js');
 const _ = require('lodash');
 
 function initializeViews(app, passport, UserModel, OrganizationModel) {
@@ -85,23 +86,24 @@ function myOrganizationsView(app, User, Organization) {
                 res.status(404).send();
             } else {
 
-                var daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                let upcomingHolidays = [];
-                let recentHolidays = [];
-                let date = new Date();
+                const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
 
-                let todaysDate = new Date(`${date.getFullYear()}-${date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth()}-${date.getDate()}T00:00:00.000+00:00`);
-                
-                for (let x of orgObj.special_holidays) {
-                    let dateObj = new Date(x.date);
-                    if (dateObj <= todaysDate) {
-                        recentHolidays.push({date: `${daysShort[dateObj.getDay()]} ${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`, slots: x.slots === null ? 'All' : x.slots});
-                    } else {
-                        upcomingHolidays.push({date: `${daysShort[dateObj.getDay()]} ${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`, slots: x.slots === null ? 'All' : x.slots});
-                    } 
-                }
+                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays});
+            }
+        }
+    })
+    
+    .post(async (req, res) => {
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        if (authenticater) {
+            const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
+            if (!orgObj) {
+                res.status(404).send();
+            } else {
 
-                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : upcomingHolidays, recentHolidays : recentHolidays});
+                const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
+
+                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays});
             }
         }
     })
