@@ -51,9 +51,9 @@
                     <label for="date">Date</label>
                     <input type="date" name="date" required>
                     <label for="slots" class="mt-3">Slots</label>
-                    <input type="number" min="1" name="slots">
-                    <p class="help-text">Keep the field empty for all slots.</p>
-                    <p class="mt-2 err-text"></p>
+                    <input type="text" name="slots">
+                    <p class="help-text">Keep the field empty for all slots. <br>Avoid comma at the end.</p>
+                    <p class="mt-2 err-text"><%= addHolidayErrorMsg %></p>
                     <button class="mt-3 mb-2">ADD</button>
                     <p class="help-text"><span style="color:red;">NOTE: </span>This will permenantly remove all the appointments scheduled on that day.</p>
                 </form>

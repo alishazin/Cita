@@ -3,6 +3,7 @@ module.exports = {initialize: initializeViews};
 
 const viewAuthenticator = require('../../utils/view_authenticator.js');
 const orgValidator = require('../../utils/org_validator.js');
+const holidayValidator = require('../../utils/holiday_validator.js');
 const utilPatches = require('../../utils/patches.js');
 const _ = require('lodash');
 
@@ -88,7 +89,7 @@ function myOrganizationsView(app, User, Organization) {
 
                 const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
 
-                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays});
+                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: ''});
             }
         }
     })
@@ -101,9 +102,17 @@ function myOrganizationsView(app, User, Organization) {
                 res.status(404).send();
             } else {
 
-                const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-
-                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays});
+                const validator = holidayValidator.validate(req.body, orgObj);
+                
+                if (validator.is_valid) {
+                    await validator.save(); 
+                    const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
+                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: ''});
+                } else {
+                    const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
+                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: validator.err_msg});
+                }
+                
             }
         }
     })
