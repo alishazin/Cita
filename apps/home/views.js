@@ -12,6 +12,7 @@ function initializeViews(app, passport, UserModel, OrganizationModel) {
     myOrganizationsView(app, UserModel, OrganizationModel);
     settingsView(app, UserModel);
     getOnlyViews(app, UserModel, OrganizationModel);
+    postOnlyViews(app, UserModel, OrganizationModel);
 }
 
 function bookAppointmentView(app, User) {
@@ -89,7 +90,7 @@ function myOrganizationsView(app, User, Organization) {
 
                 const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
 
-                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: ''});
+                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: '', sessionID: req.sessionID});
             }
         }
     })
@@ -107,10 +108,10 @@ function myOrganizationsView(app, User, Organization) {
                 if (validator.is_valid) {
                     await validator.save(); 
                     const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: ''});
+                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: '', sessionID: req.sessionID});
                 } else {
                     const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: validator.err_msg});
+                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: validator.err_msg, sessionID: req.sessionID});
                 }
                 
             }
@@ -131,7 +132,7 @@ function settingsView(app, User) {
 
 function getOnlyViews(app, User, Organization) {
 
-    app.get("/home/my-organisations/check-name-exist", async (req, res) => {
+    app.get("/home/my-organizations/create-org/check-name-exist", async (req, res) => {
         if (req.query.name === undefined) {
             res.status(400).json("'name' should be a query param.");
         } else {
@@ -143,5 +144,13 @@ function getOnlyViews(app, User, Organization) {
                 res.status(200).json({exist: false, name: req.query.name.toLowerCase()});
             }
         }
+    })
+}
+
+function postOnlyViews(app, User, Organization) {
+
+    app.post("/home/my-organizations/:name/delete-holiday", async (req, res) => {
+        
+        res.status(200).json({msg: "AAAsadas"});
     })
 }

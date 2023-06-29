@@ -80,6 +80,8 @@ function holidayValidator(body, orgObj) {
                 orgObj.special_holidays.push({date: date, slots: filteredSlotValues});
             }
             await orgObj.save();
+
+            // Delete all bookings on that slot
         }
     }
 }
