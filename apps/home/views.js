@@ -151,6 +151,7 @@ function postOnlyViews(app, User, Organization) {
 
     app.post("/home/my-organizations/:name/delete-holiday", async (req, res) => {
         
-        res.status(200).json({msg: "AAAsadas"});
+        // res.status(400).json({msg: "Invalid date."});
+        res.status(200).json({msg: "Successfully deleted."});
     })
 }

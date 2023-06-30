@@ -142,6 +142,7 @@ function initializeSpecialHolidays() {
                     <div class="item">
                         <span>${x.date}</span>
                         <span>${x.slots}</span>
+                        <span><i class="bi bi-trash" onclick="deleteHoliday(this, '${x.date}')"></i></span>
                     </div>
                     `;
                 }
@@ -160,4 +161,55 @@ function initializeSpecialHolidays() {
     SpecialHolidaysObj.addCallbacks();
     SpecialHolidaysObj.currentState = 1;
 
+}
+
+async function deleteHoliday(self, date) {
+    try {
+        if (SpecialHolidaysObj.currentState === 1) {
+            console.log(self, date);
+            await sendReqForDeletingHoliday();
+            self.parentElement.parentElement.remove();
+            
+            // Remove from data
+            if (SpecialHolidaysUpcomingData.length !== 0) {
+                for (let x in SpecialHolidaysUpcomingData) {
+                    if (SpecialHolidaysUpcomingData[x].date === date) {
+                        SpecialHolidaysUpcomingData.splice(x, 1);
+                    }
+                }
+            }
+            checkIfHolidayListIsEmpty();
+        }
+    } catch(err) {
+        console.log(err);
+        alert("Something went wrong! try refreshing the page.")
+    }
+}
+
+async function sendReqForDeletingHoliday(date) {
+    return new Promise(function (resolve, reject) {
+
+        const requestObj = new XMLHttpRequest()
+        requestObj.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) resolve();
+            if (this.readyState == 4 && this.status == 400) reject();
+        }
+    
+        requestObj.open("POST", `/home/my-organizations/${org_name.toLowerCase()}/delete-holiday`)
+        const formdata = new FormData()
+        formdata.append('date', date)
+        requestObj.send(formdata)
+    })
+}
+
+function checkIfHolidayListIsEmpty() {
+    const items = Array.from(document.querySelectorAll("section#special_holidays div.left-content div.list div.items div.item"));
+    console.log(items);
+    if (items.length === 1) {
+        document.querySelector("section#special_holidays div.left-content div.list div.items").innerHTML += `
+        <div class="empty-div">
+            <img src="/images/home/empty-date-list.png">
+        </div>
+        `;
+    }
 }

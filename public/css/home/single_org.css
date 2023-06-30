@@ -228,7 +228,7 @@ section#special_holidays div.left-content div.list div.items {
 section#special_holidays div.left-content div.list div.items div.item {
     margin: 0;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 45% 45% 10%;
     height: 40px;
     font-weight: 400;
     border-top: none;
@@ -245,6 +245,17 @@ section#special_holidays div.left-content div.list div.items div.item.head {
 
 section#special_holidays div.left-content div.list div.items div.item span {
     padding: 0 12px;
+}
+
+section#special_holidays div.left-content div.list div.items div.item span i {
+    text-align: center;
+    color: red;
+    opacity: 0.4;
+    cursor: pointer;
+}
+
+section#special_holidays div.left-content div.list div.items div.item span i:hover {
+    opacity: 0.6;
 }
 
 section#special_holidays div.left-content div.list div.items div.empty-div {
