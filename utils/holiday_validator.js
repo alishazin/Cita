@@ -1,6 +1,8 @@
 
 module.exports = {validate: holidayValidator};
 
+const utilPatches = require('../utils/patches.js');
+
 function inOperator(array, value) {
     for (let x of array) {
         if (x === value) {
@@ -19,14 +21,11 @@ function holidayValidator(body, orgObj) {
         return {is_valid: false, err_msg: "Date format is invalid!"}
     }
     
-    let newDateObj = new Date();
-    let todaysDate = new Date(`${newDateObj.getFullYear()}-${newDateObj.getMonth() + 1 < 10 ? `0${newDateObj.getMonth() + 1}` : newDateObj.getMonth()}-${newDateObj.getDate()}T00:00:00.000+00:00`);
-    
-    if (date <= todaysDate) {
+    if (!utilPatches.checkIfDateFromFuture(date)) {
         return {is_valid: false, err_msg: "Date should be from the future."}
     }
 
-    if (orgObj.special_holidays !== null) {
+    if (orgObj.special_holidays.length !== 0) {
         for (let x of orgObj.special_holidays) {
             if (x.date.toLocaleDateString() == date.toLocaleDateString()) {
                 return {is_valid: false, err_msg: "Date is already declared as holiday."}

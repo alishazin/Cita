@@ -89,8 +89,7 @@ function myOrganizationsView(app, User, Organization) {
             } else {
 
                 const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-
-                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: '', sessionID: req.sessionID});
+                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: ''});
             }
         }
     })
@@ -98,7 +97,7 @@ function myOrganizationsView(app, User, Organization) {
     .post(async (req, res) => {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
         if (authenticater) {
-            const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
+            let orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
             if (!orgObj) {
                 res.status(404).send();
             } else {
@@ -107,11 +106,10 @@ function myOrganizationsView(app, User, Organization) {
                 
                 if (validator.is_valid) {
                     await validator.save(); 
-                    const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: '', sessionID: req.sessionID});
+                    res.redirect(`/home/my-organizations/${orgObj.name.toLowerCase()}`);
                 } else {
                     const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: validator.err_msg, sessionID: req.sessionID});
+                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: validator.err_msg});
                 }
                 
             }
@@ -150,8 +148,51 @@ function getOnlyViews(app, User, Organization) {
 function postOnlyViews(app, User, Organization) {
 
     app.post("/home/my-organizations/:name/delete-holiday", async (req, res) => {
-        
-        // res.status(400).json({msg: "Invalid date."});
-        res.status(200).json({msg: "Successfully deleted."});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        if (authenticater) {
+            const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
+            if (!orgObj) {
+                res.status(404).send();
+            } else {
+
+                const date = req.body.date;
+                let dateArrayInitial = date.split(" ");
+
+                if (dateArrayInitial.length !== 2) res.status(400).json({msg: "Invalid date."});
+                else {
+                    let dateArrayFinal = dateArrayInitial[1].split("/");
+                    if (dateArrayFinal.length !== 3) res.status(400).json({msg: "Invalid date."});
+                    else {
+                        
+                        let error = false;
+                        for (let x in dateArrayFinal) {
+                            if (isNaN(dateArrayFinal[x])) {
+                                error = true;
+                            } else dateArrayFinal[x] = Number(dateArrayFinal[x]);
+                        }
+
+                        if (error) res.status(400).json({msg: "Invalid date."});
+                        else {
+                            let dateObj = new Date(`${dateArrayFinal[2]}-${dateArrayFinal[1] < 10 ? `0${dateArrayFinal[1]}` : dateArrayFinal[1]}-${dateArrayFinal[0] < 10 ? `0${dateArrayFinal[0]}` : dateArrayFinal[0]}T00:00:00.000+00:00`);
+                            if (dateObj == "Invalid Date") res.status(400).json({msg: "Invalid date."});
+                            else {
+                                if (!utilPatches.checkIfDateFromFuture(dateObj)) res.status(400).json({msg: "Date should be from the future."});
+                                else {
+                                    const result = await Organization.updateOne({ _id: orgObj._id }, {
+                                        $pull: {
+                                            special_holidays: {date: dateObj},
+                                        },
+                                    });
+
+                                    if (result.modifiedCount === 1) res.status(200).json({msg: "Successfully deleted."});
+                                    else res.status(400).json({msg: "The date is not a holiday."});
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
     })
 }

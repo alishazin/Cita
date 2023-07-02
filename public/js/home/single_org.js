@@ -138,13 +138,23 @@ function initializeSpecialHolidays() {
                     `;
             } else {
                 for (let x of result) {
-                    this.listContent.innerHTML += `
-                    <div class="item">
-                        <span>${x.date}</span>
-                        <span>${x.slots}</span>
-                        <span><i class="bi bi-trash" onclick="deleteHoliday(this, '${x.date}')"></i></span>
-                    </div>
-                    `;
+                    if (result === SpecialHolidaysUpcomingData) {
+                        this.listContent.innerHTML += `
+                        <div class="item three">
+                            <span>${x.date}</span>
+                            <span>${x.slots}</span>
+                            <span><i class="bi bi-trash" onclick="deleteHoliday(this, '${x.date}')"></i></span>
+                        </div>
+                        `;
+                    } else {
+                        this.listContent.innerHTML += `
+                        <div class="item">
+                            <span>${x.date}</span>
+                            <span>${x.slots}</span>
+                        </div>
+                        `;
+
+                    }
                 }
             }
 
@@ -166,8 +176,7 @@ function initializeSpecialHolidays() {
 async function deleteHoliday(self, date) {
     try {
         if (SpecialHolidaysObj.currentState === 1) {
-            console.log(self, date);
-            await sendReqForDeletingHoliday();
+            await sendReqForDeletingHoliday(date);
             self.parentElement.parentElement.remove();
             
             // Remove from data
@@ -181,30 +190,30 @@ async function deleteHoliday(self, date) {
             checkIfHolidayListIsEmpty();
         }
     } catch(err) {
-        console.log(err);
-        alert("Something went wrong! try refreshing the page.")
+        alert("Something went wrong! try refreshing the page.");
     }
 }
 
 async function sendReqForDeletingHoliday(date) {
+
     return new Promise(function (resolve, reject) {
 
         const requestObj = new XMLHttpRequest()
         requestObj.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) resolve();
-            if (this.readyState == 4 && this.status == 400) reject();
+            if (this.readyState == 4 && this.status == 200) resolve()
+            else if (this.readyState == 4 && this.status == 400) reject()
         }
     
         requestObj.open("POST", `/home/my-organizations/${org_name.toLowerCase()}/delete-holiday`)
-        const formdata = new FormData()
+        requestObj.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        const formdata = new FormData();
         formdata.append('date', date)
-        requestObj.send(formdata)
+        requestObj.send(urlencodeFormData(formdata))
     })
 }
 
 function checkIfHolidayListIsEmpty() {
     const items = Array.from(document.querySelectorAll("section#special_holidays div.left-content div.list div.items div.item"));
-    console.log(items);
     if (items.length === 1) {
         document.querySelector("section#special_holidays div.left-content div.list div.items").innerHTML += `
         <div class="empty-div">
@@ -212,4 +221,9 @@ function checkIfHolidayListIsEmpty() {
         </div>
         `;
     }
+}
+
+function urlencodeFormData(formdata) {
+    var params = new URLSearchParams(formdata);
+    return params.toString();
 }

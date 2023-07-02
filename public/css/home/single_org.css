@@ -228,13 +228,17 @@ section#special_holidays div.left-content div.list div.items {
 section#special_holidays div.left-content div.list div.items div.item {
     margin: 0;
     display: grid;
-    grid-template-columns: 45% 45% 10%;
+    grid-template-columns: 50% 50%;
     height: 40px;
     font-weight: 400;
     border-top: none;
     align-items: center;
     font-size: 14px;
     border-bottom: 1px solid var(--primary-clr);
+}
+
+section#special_holidays div.left-content div.list div.items div.item.three {
+    grid-template-columns: 45% 45% 10%;
 }
 
 section#special_holidays div.left-content div.list div.items div.item.head {
