@@ -1,0 +1,85 @@
+section#banner {
+    width: 100%;
+    min-height: 50vh;
+    background-color: var(--bg-clr);
+    box-shadow: inset 0 0 10px rgb(0, 0, 0, 0.05);
+
+    padding: 0 calc((100% - 600px)/2);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+section#banner h1 {
+    font-family: "Sofia Sans";
+    font-size: 16px;
+}
+
+section#banner div.search-bar {
+    width: 600px;
+    height: 80px;
+    border-radius: 15px;
+    background-color: white;
+    outline: none;
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.05);
+    /* border: 1px solid var(--primary-clr); */
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+section#banner div.search-bar input#name {
+    border-radius: 15px 0 0 15px;
+    font-size: 18px;
+    color: var(--secondary-clr);
+    caret-color: var(--quaternary-clr);
+    border: none;
+    border-right: 1px solid var(--quaternary-clr);
+    outline: none;
+    width: calc(100% - 300px);
+    padding: 0 20px;
+}
+
+section#banner div.search-bar input#date {
+    border: none;
+    outline: none;
+    width: 180px;
+    padding: 0 20px;
+    color: var(--tertiary-clr);
+    font-size: 15px;
+}
+
+section#banner div.search-bar input#date::-webkit-calendar-picker-indicator {
+    background-image: url("/images/home/calendar3.svg");
+    opacity: 0.6;
+}
+section#banner div.search-bar input#date::-webkit-calendar-picker-indicator:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+section#banner div.search-bar input#date::-webkit-datetime-edit-text {
+    padding: 0 3px;
+}
+section#banner div.search-bar input#date::-webkit-datetime-edit-month-field { text-transform: uppercase; }
+section#banner div.search-bar input#date::-webkit-datetime-edit-day-field { text-transform: uppercase; }
+section#banner div.search-bar input#date::-webkit-datetime-edit-year-field { text-transform: uppercase; }
+
+section#banner div.search-bar button {
+    border-radius: 0 15px 15px 0;
+    border: none;
+    outline: none;
+    width: 120px;
+    background-color: var(--sec-clr);
+    opacity: 0.8;
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+section#banner div.search-bar button:hover {
+    opacity: 0.75;
+}
