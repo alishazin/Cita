@@ -179,7 +179,6 @@ function validateWorkingDay(body, day) {
     }
     
 
-    // return {is_valid: false, err_msg: "Errorrr"}
     return {is_valid: true, data: data}
 
 }

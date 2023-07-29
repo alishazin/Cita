@@ -137,6 +137,8 @@ function LogInView(app, passport, User) {
     .post(async (req, res) => {
         const username = req.body.username.trim().toLowerCase();
 
+        let redirect = req.query.redirect;
+
         const userObj = await User.findOne({username: username});
 
         if (!userObj) {
@@ -153,7 +155,8 @@ function LogInView(app, passport, User) {
             }
         } else {
             passport.authenticate("local", { failureRedirect: '/auth/login?invalid=1', failureMessage: true })(req, res, function() {
-                res.redirect("/test");
+                if (redirect) res.redirect(redirect);
+                else res.redirect("/test");
             });
         }
     });
@@ -252,14 +255,14 @@ function changePasswordView(app, passport, User) {
     app.route("/auth/change-password")
 
     .get(async (req, res) => {
-        const authenticater = await viewAuthenticator({req:req, res:res, UserModel:User, unauthenticatedRedirect:'/auth/login?invalid=2', providers:["local"], invalidProviderRender:'auth/change_pass_err.ejs'});
+        const authenticater = await viewAuthenticator({req:req, res:res, UserModel:User, unauthenticatedRedirect:`/auth/login?invalid=2&redirect=${req.url}`, providers:["local"], invalidProviderRender:'auth/change_pass_err.ejs'});
         if (authenticater) {
             res.render("auth/change_pass.ejs", {errorMsg: null});
         }
     })
     
     .post(async (req, res) => {
-        const authenticater = await viewAuthenticator({req:req, res:res, UserModel:User, unauthenticatedRedirect:'/auth/login?invalid=2', providers:["local"], invalidProviderRender:'auth/change_pass_err.ejs'});
+        const authenticater = await viewAuthenticator({req:req, res:res, UserModel:User, unauthenticatedRedirect:`/auth/login?invalid=2&redirect=${req.url}`, providers:["local"], invalidProviderRender:'auth/change_pass_err.ejs'});
         if (authenticater) {
             
             const old_password = req.body.old_password;

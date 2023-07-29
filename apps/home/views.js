@@ -20,7 +20,7 @@ function bookAppointmentView(app, User, Organization) {
 
     .get(async (req, res) => {
 
-        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
             res.render("home/book_appointment.ejs");
         }
@@ -31,7 +31,7 @@ function bookAppointmentView(app, User, Organization) {
 
     .get(async (req, res) => {
 
-        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
 
             const name_search = req.query.name;
@@ -46,8 +46,6 @@ function bookAppointmentView(app, User, Organization) {
             } else {
                 res.status(200).send([]);
             }
-
-            // res.render("home/book_appointment.ejs");
         }
     })
 }
@@ -56,7 +54,7 @@ function myOrganizationsView(app, User, Organization) {
     app.route("/home/my-organizations")
 
     .get(async (req, res) => {
-        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
             const resultDB = await Organization.find({admin: req.user.id});
             let result = [];
@@ -72,14 +70,14 @@ function myOrganizationsView(app, User, Organization) {
     app.route("/home/my-organizations/create-org")
     
     .get(async (req, res) => {
-        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
             res.render("home/create_org.ejs", {error_msg: null});
         }
     })
 
     .post(async (req, res) => {
-        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
             const validator = await orgValidator.create(req, res, User, Organization);
 
@@ -106,7 +104,7 @@ function myOrganizationsView(app, User, Organization) {
     app.route("/home/my-organizations/:name")
     
     .get(async (req, res) => {
-        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
             const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
             if (!orgObj) {
@@ -120,7 +118,7 @@ function myOrganizationsView(app, User, Organization) {
     })
     
     .post(async (req, res) => {
-        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
             let orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
             if (!orgObj) {
@@ -146,7 +144,7 @@ function settingsView(app, User) {
     app.route("/home/settings")
 
     .get(async (req, res) => {
-        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
             res.render("home/settings.ejs");
         }
@@ -173,7 +171,7 @@ function getOnlyViews(app, User, Organization) {
 function postOnlyViews(app, User, Organization) {
 
     app.post("/home/my-organizations/:name/delete-holiday", async (req, res) => {
-        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, is_rest: true, rest_err_msg: "Access denied!"});
         if (authenticater) {
             const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
             if (!orgObj) {
