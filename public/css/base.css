@@ -17,3 +17,25 @@
     justify-content: center;
     align-items: center;
 }
+
+.custom-slidebar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.custom-slidebar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+.custom-slidebar::-webkit-scrollbar-thumb {
+    background: #c8c8c8; 
+}
+
+.custom-slidebar::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3; 
+}
+
+.custom-slidebar-thin::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}

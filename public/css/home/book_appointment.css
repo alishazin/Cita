@@ -4,15 +4,14 @@ section#banner {
     background-color: var(--bg-clr);
     box-shadow: inset 0 0 10px rgb(0, 0, 0, 0.05);
 
-    padding: 0 calc((100% - 600px)/2);
-
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
 }
 
 section#banner h1 {
+    width: 600px;
     font-family: "Sofia Sans";
     font-size: 16px;
 }
@@ -25,13 +24,19 @@ section#banner div.search-bar {
     outline: none;
     box-shadow: 0 0 10px rgb(0, 0, 0, 0.05);
     /* border: 1px solid var(--primary-clr); */
-
+    
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
 }
 
-section#banner div.search-bar input#name {
+section#banner div.search-bar div.name-area {
+    width: calc(100% - 300px);
+    height: 100%;
+    position: relative;
+}
+
+section#banner div.search-bar div.name-area input#name {
     border-radius: 15px 0 0 15px;
     font-size: 18px;
     color: var(--secondary-clr);
@@ -39,7 +44,8 @@ section#banner div.search-bar input#name {
     border: none;
     border-right: 1px solid var(--quaternary-clr);
     outline: none;
-    width: calc(100% - 300px);
+    width: 100%;
+    height: 100%;
     padding: 0 20px;
 }
 
@@ -82,4 +88,34 @@ section#banner div.search-bar button {
 
 section#banner div.search-bar button:hover {
     opacity: 0.75;
+}
+
+section#banner div.dropdown {
+    position: absolute;
+    width: 100%;
+    top: 82px;
+    left: 0;
+    padding: 0 calc((100% - 600px)/2);
+    border-radius: 15px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 300px;
+    z-index: 1;
+    background-color: white;
+    box-shadow: 0 0 10px rgb(0, 0, 0, 0.1);
+}
+
+section#banner div.dropdown div.row {
+    color: var(--secondary-clr);
+    padding: 10px 25px;
+    line-break: anywhere;
+}
+
+section#banner div.dropdown div.row:not(:last-of-type) {
+    border-bottom: 1.5px solid #ddd;
+}
+
+section#banner div.dropdown div.row:hover {
+    background-color: #f4f4f4;
+    cursor: pointer;
 }

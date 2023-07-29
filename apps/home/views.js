@@ -8,14 +8,14 @@ const utilPatches = require('../../utils/patches.js');
 const _ = require('lodash');
 
 function initializeViews(app, passport, UserModel, OrganizationModel) {
-    bookAppointmentView(app, UserModel);
+    bookAppointmentView(app, UserModel, OrganizationModel);
     myOrganizationsView(app, UserModel, OrganizationModel);
     settingsView(app, UserModel);
     getOnlyViews(app, UserModel, OrganizationModel);
     postOnlyViews(app, UserModel, OrganizationModel);
 }
 
-function bookAppointmentView(app, User) {
+function bookAppointmentView(app, User, Organization) {
     app.route("/home/book-appointment")
 
     .get(async (req, res) => {
@@ -23,6 +23,31 @@ function bookAppointmentView(app, User) {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
         if (authenticater) {
             res.render("home/book_appointment.ejs");
+        }
+    })
+
+    app.route("/home/book-appointment/search-organization")
+    // Return organization with active status.
+
+    .get(async (req, res) => {
+
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: '/auth/login?invalid=2'});
+        if (authenticater) {
+
+            const name_search = req.query.name;
+
+            if (name_search) {
+                const result = await Organization.find({name: { '$regex': `^${name_search}`, '$options': 'i' }});
+                
+                let returnNames = [];
+                for (let x of result) returnNames.push(_.startCase(x.name));
+
+                res.send(returnNames);
+            } else {
+                res.status(200).send([]);
+            }
+
+            // res.render("home/book_appointment.ejs");
         }
     })
 }

@@ -1,18 +1,26 @@
 <%- include('header') %>
 <link rel="stylesheet" href="/css/home/book_appointment.css">
+<script src="/js/home/book_appointment.js"></script>
 <main>
     <section id="banner">
-        <h1>Book an appointment on a convenient day.</h1>
-        <div class="search-bar">
-            <input type="text" id="name" autocomplete="off">
-            <input type="date" id="date">
-            <button>Search</button>
-        </div>
+        <h1>Choose an organization and a date.</h1>
+        <form method="post">
+            <div class="search-bar">
+                <div class="name-area">
+                    <input type="text" id="name" autocomplete="off" required>
+                    <div class="dropdown custom-slidebar custom-slidebar-thin">
+                        <!-- <div class="row" onclick="addContentToNameField(this.innerText)">AA</div>
+                        <div class="row">BB</div>
+                        <div class="row">BB</div> -->
+                    </div>
+                </div>
+                <input type="date" id="date" required>
+                <button>Search</button>
+            </div>
+        </form>
     </section>
 </main>
 <script>
-    function onLoad() {
-        document.querySelector("nav a.item:nth-of-type(1)").classList += " active";
-    }
+    
 </script>
 <%- include('footer') %>
