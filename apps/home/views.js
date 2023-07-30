@@ -26,6 +26,14 @@ function bookAppointmentView(app, User, Organization) {
         }
     })
 
+    .post(async (req, res) => {
+
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
+        if (authenticater) {
+            res.render("home/book_appointment.ejs");
+        }
+    })
+
     app.route("/home/book-appointment/search-organization")
     // Return organization with active status.
 

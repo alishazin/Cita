@@ -1,3 +1,4 @@
+
 section#banner {
     width: 100%;
     min-height: 50vh;
@@ -91,6 +92,7 @@ section#banner div.search-bar button:hover {
 }
 
 section#banner div.dropdown {
+    z-index: 1;
     position: absolute;
     width: 100%;
     top: 82px;
@@ -100,7 +102,6 @@ section#banner div.dropdown {
     overflow-x: hidden;
     overflow-y: auto;
     max-height: 300px;
-    z-index: 1;
     background-color: white;
     box-shadow: 0 0 10px rgb(0, 0, 0, 0.1);
 }
@@ -118,4 +119,71 @@ section#banner div.dropdown div.row:not(:last-of-type) {
 section#banner div.dropdown div.row:hover {
     background-color: #f4f4f4;
     cursor: pointer;
+}
+
+section#banner div.error-msg {
+    color: red;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+@media (max-width:760px) {
+    section#banner {
+        padding: 20px 20px;
+    }
+    section#banner h1 {
+        width: 100%;
+    }
+    section#banner form {
+        width: 100%;
+    }
+    section#banner div.search-bar {
+        width: 100%;
+    }
+}
+
+@media (max-width:650px) {
+    main {
+        height: 100vh;
+    }
+    section#banner div.search-bar {
+        height: fit-content;
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+    }
+
+    section#banner div.search-bar div.name-area, section#banner div.search-bar input#date, section#banner div.search-bar button {
+        height: 80px;
+        width: 100%;
+    }
+    
+    section#banner div.search-bar div.name-area input#name, section#banner div.search-bar input#date, section#banner div.search-bar button {
+        border-right: none;
+        border-radius: 0;
+    }
+    
+    section#banner div.search-bar div.name-area input#name {
+        border-bottom: 1px solid var(--quaternary-clr);
+    }
+
+    section#banner div.dropdown {
+        border-radius: 0;
+    }
+
+    section#banner div.dropdown div.row {
+        color: black;
+        background-color: #dedede;
+    }
+    
+    section#banner div.dropdown div.row:hover {
+        background-color: #ededed;
+    }
+    
+    section#banner div.dropdown div.row:not(:last-of-type) {
+        border-bottom: 1px solid #727272;
+    }
 }

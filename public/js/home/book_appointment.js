@@ -45,6 +45,7 @@ async function sendReqForOrgSearch(name) {
 }
 
 function addContentToNameField(name) {
+    document.querySelector("section#banner div.search-bar input#name").focus();
     document.querySelector("section#banner div.search-bar input#name").value = name;
     document.querySelector("section#banner div.dropdown").innerHTML = '';
     document.querySelector("section#banner div.search-bar input#name").style.backgroundColor = '#e8f0fe';
