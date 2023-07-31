@@ -1,5 +1,5 @@
 
-module.exports = {SingleOrgGetDetails: SingleOrgGetDetails, checkIfDateFromFuture: checkIfDateFromFuture};
+module.exports = {SingleOrgGetDetails: SingleOrgGetDetails, checkIfDateFromFuture: checkIfDateFromFuture, addZeroToStart: addZeroToStart};
 
 function SingleOrgGetDetails(orgObj) {
     var daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -24,10 +24,19 @@ function SingleOrgGetDetails(orgObj) {
     }
 }
 
-function checkIfDateFromFuture(date) {
+function checkIfDateFromFuture(date, today) {
     let newDateObj = new Date();
     let todaysDate = new Date(`${newDateObj.getFullYear()}-${newDateObj.getMonth() + 1 < 10 ? `0${newDateObj.getMonth() + 1}` : newDateObj.getMonth() + 1}-${newDateObj.getDate() < 10 ? `0${newDateObj.getDate()}` : newDateObj.getDate()}T00:00:00.000+00:00`);
     
-    if (date <= todaysDate) return false;
+    if (today === true && date < todaysDate) return false;
+    if (today === false && date <= todaysDate) return false;
     return true;
+}
+
+function addZeroToStart(number) {
+    if (number < 10) {
+        return `0${number}`
+    } else {
+        return String(number);
+    }
 }

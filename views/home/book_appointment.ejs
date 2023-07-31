@@ -7,17 +7,53 @@
         <form method="post">
             <div class="search-bar">
                 <div class="name-area">
-                    <input type="text" id="name" autocomplete="off" required>
+                    <input type="text" value="<%= org_name_before %>" placeholder="Search" id="name" name="org_name" autocomplete="off" required>
                     <div class="dropdown custom-slidebar custom-slidebar-thin"></div>
                 </div>
-                <input type="date" id="date" required>
+                <input type="date" id="date" name="booking_date" value="<%= booking_date_before %>" required>
                 <button>Search</button>
             </div>
-            <div class="error-msg">asd asdasdasd</div>
+            <% if (error_msg) { %>
+                <div class="error-msg"><%= error_msg %></div>
+            <% } %>
         </form>
     </section>
+    <% if (result_header) { %>
+        <section id="result-area">
+            <h2><%= result_header %></h2>
+            <% if (search_result) { %>
+                <% for (let slotObj of search_result) { %>
+                    <div class="result-single">
+                        <form method="post" action="/home/book-appointment/book">
+                            <input type="hidden" name="slot_no" value="<%= slotObj.slot_no %>">
+                            <input type="hidden" name="booking_date" value="<%= booking_date_before %>">
+                            <input type="hidden" name="org_name" value="<%= org_name_before %>">
+                            <div class="col one">
+                                <div class="time">time &nbsp;<span><%= addZero(slotObj.from_time[0])%>:<%= addZero(slotObj.from_time[1])%> - <%= addZero(slotObj.to_time[0])%>:<%= addZero(slotObj.to_time[1]) %></span></div>
+                                <% if (slotObj.remaining <= 10) { %>
+                                    <div class="remaining" style="color: red;"><%= slotObj.remaining %> slots remaining</div>
+                                <% } else if (slotObj.remaining <= 20) { %>
+                                    <div class="remaining" style="color: orange;"><%= slotObj.remaining %> slots remaining</div>
+                                <% } else { %>
+                                    <div class="remaining" style="color: green;"><%= slotObj.remaining %> slots remaining</div>
+                                <% } %>
+                            </div>
+                            <div class="col two">
+                                <div class="price">price &nbsp;<span>₹<%= slotObj.price %></span></div>
+                                <div class="button"><button>book an appointment</button></div>
+                            </div>
+                        </form>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <div class="empty-result user-flex-center">
+                    <img src="/images/home/no-orgs.png">
+                </div>
+            <% } %>
+        </section>
+    <% } %>
 </main>
 <script>
-    
+
 </script>
 <%- include('footer') %>

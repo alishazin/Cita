@@ -127,6 +127,79 @@ section#banner div.error-msg {
     padding-top: 5px;
 }
 
+section#result-area {
+    max-width: 600px;
+    background-color: white;
+    padding: 50px 0;
+    margin: auto;
+}
+
+section#result-area h2 {
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--secondary-clr);
+}
+
+section#result-area div.empty-result {
+    margin-top: 20px;
+    width: 100%;
+    border: 1px solid var(--primary-clr);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+section#result-area div.result-single {
+    border: 1px solid var(--primary-clr);
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-top: 20px;
+}
+
+section#result-area div.result-single div.col {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+section#result-area div.result-single div.col div.time {
+    font-weight: 300;
+    font-style: italic;
+}
+
+section#result-area div.result-single div.col div.time span {
+    font-size: 30px;
+    font-weight: 700;
+    font-style: normal;
+}
+
+section#result-area div.result-single div.col div.price {
+    font-weight: 300;
+    font-style: italic;
+}
+
+section#result-area div.result-single div.col div.price span {
+    font-weight: 400;
+    font-size: 22px;
+    font-style: normal;
+}
+
+section#result-area div.result-single button {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--ter-clr);
+    color: white;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+section#result-area div.result-single button:hover {
+    opacity: 0.9;
+}
+
 @media (max-width:760px) {
     section#banner {
         padding: 20px 20px;

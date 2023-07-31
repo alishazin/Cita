@@ -21,7 +21,7 @@ function holidayValidator(body, orgObj) {
         return {is_valid: false, err_msg: "Date format is invalid!"}
     }
     
-    if (!utilPatches.checkIfDateFromFuture(date)) {
+    if (!utilPatches.checkIfDateFromFuture(date, false)) {
         return {is_valid: false, err_msg: "Date should be from the future."}
     }
 
