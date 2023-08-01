@@ -4,6 +4,7 @@ module.exports = {initialize: initializeViews};
 const viewAuthenticator = require('../../utils/view_authenticator.js');
 const orgValidator = require('../../utils/org_validator.js');
 const holidayValidator = require('../../utils/holiday_validator.js');
+const bookingValidator = require('../../utils/booking_validator.js');
 const utilPatches = require('../../utils/patches.js');
 const _ = require('lodash');
 
@@ -22,82 +23,22 @@ function bookAppointmentView(app, User, Organization) {
 
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
-            res.render("home/book_appointment.ejs", {error_msg: null, org_name_before: null, booking_date_before: null, result_header: null, search_result: null});
+            if (req.query.msg === 'bookingfailed') {
+                res.render("home/book_appointment.ejs", {error_msg: "Booking failed", org_name_before: null, booking_date_before: null, result_header: null, search_result: null});
+            } else {
+                res.render("home/book_appointment.ejs", {error_msg: null, org_name_before: null, booking_date_before: null, result_header: null, search_result: null});
+            }
         }
     })
 
     .post(async (req, res) => {
 
-        const getDateForInputValue = (booking_date) => {
-            return `${booking_date.getFullYear()}-${utilPatches.addZeroToStart(booking_date.getMonth() + 1)}-${utilPatches.addZeroToStart(booking_date.getDate())}`
-        }
-
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
-
-            let org_name = req.body.org_name;
-            let booking_date = req.body.booking_date;
-
-            if (!org_name || !booking_date) {
-                res.render("home/book_appointment.ejs", {error_msg: "Something went wrong, refresh the page and try again.", org_name_before: null, booking_date_before: null, result_header: null, search_result: null});
-            } else {
-
-                // booking_date validation
-                booking_date = new Date(booking_date);
-                if (booking_date == "Invalid Date") {
-                    res.render("home/book_appointment.ejs", {error_msg: "Invalid date.", org_name_before: null, booking_date_before: null, result_header: null, search_result: null});
-                } else if (!utilPatches.checkIfDateFromFuture(booking_date, true)) {
-                    res.render("home/book_appointment.ejs", {error_msg: "Date shouldn't be from the past.", org_name_before: null, booking_date_before: null, result_header: null, search_result: null});
-                } else {
-
-                    // org_name validation
-                    org_name = String(org_name).trim().toLowerCase();
-                    const orgObj = await Organization.findOne({name: org_name, status: 2});
-                    
-                    if (orgObj === null) {
-                        res.render("home/book_appointment.ejs", {error_msg: "Organization with the given name does not exist.", org_name_before: org_name, booking_date_before: getDateForInputValue(booking_date), result_header: null, search_result: null});
-                    } else {
-                        
-                        // Checking availability
-                        
-                        // checking all slots
-                        const allSlots = orgObj.working_hours[booking_date.getDay()];
-                        if (allSlots === null) {
-                            res.render("home/book_appointment.ejs", {error_msg: null, org_name_before: org_name, booking_date_before: getDateForInputValue(booking_date), result_header: "Not open for appointments.", search_result: null});
-                        } else {
-                            
-                            // Checking if holiday
-                            const special_holidays = orgObj.special_holidays;
-                            let unavailable_slots = [];
-                            for (let holiday_obj of special_holidays) {
-                                if (holiday_obj.date.toLocaleDateString() === booking_date.toLocaleDateString()) {
-                                    unavailable_slots = holiday_obj.slots;
-                                    break;
-                                }
-                            }
-
-                            if (unavailable_slots === null || unavailable_slots.length === allSlots.length) {
-                                res.render("home/book_appointment.ejs", {error_msg: null, org_name_before: org_name, booking_date_before: getDateForInputValue(booking_date), result_header: "Not open for appointments.", search_result: null});
-                            } else {
-
-                                let availableSlots = [];
-                                for (let x=0; x<allSlots.length; x++) {
-                                    if (unavailable_slots.includes(x+1)) continue;
-                                    else {
-                                        availableSlots.push({slot_no: x+1, from_time: allSlots[x][0], to_time: allSlots[x][1], price: allSlots[x][2], remaining: allSlots[x][3]});
-                                    }
-                                }
-
-                                console.log(availableSlots);
-
-                                res.render("home/book_appointment.ejs", {error_msg: null, org_name_before: org_name, booking_date_before: getDateForInputValue(booking_date), result_header: "Search result", search_result: availableSlots, addZero: utilPatches.addZeroToStart});
-                            }
-
-                        }
-
-                    }
-                }
-            }
+            
+            const validator = await bookingValidator.validate(req, Organization);
+            res.render("home/book_appointment.ejs", validator.template_vars);
+            
         }
     })
 
@@ -131,11 +72,47 @@ function bookAppointmentView(app, User, Organization) {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
 
-            // Checking everything again and add to db (make a plan)
+            const validator = await bookingValidator.validate(req, Organization);
+            // res.render("home/book_appointment.ejs", validator.template_vars);
+            if (!validator.is_valid) {
+                res.redirect('/home/book-appointment?msg=bookingfailed');
+            } else {
 
-            console.log(req.body);
+                const slot_no = req.body.slot_no;
 
-            res.send("AAA");
+                let found = false;
+                for (let slotObj of validator.template_vars.search_result) {
+                    if (slotObj.slot_no == slot_no) found = true;
+                }
+
+                if (!found) {
+                    res.redirect('/home/book-appointment?msg=bookingfailed');
+                } else {
+
+                    const existingBookingNumber = bookingValidator.getExistingBookingNumber(validator.orgObj, validator.date, slot_no);
+                    if (existingBookingNumber === validator.template_vars.search_result[slot_no - 1].remaining) {
+                        res.redirect('/home/book-appointment?msg=bookingfailed');
+                    } else {
+                        
+                        const bookingObj = {
+                            user: req.user.id,
+                            date: validator.date,
+                            slot_no: Number(slot_no),
+                        };
+    
+                        if (validator.orgObj.bookings === undefined) {
+                            validator.orgObj.bookings = [bookingObj];
+                        } else {
+                            validator.orgObj.bookings.push(bookingObj);
+                        }
+                        validator.orgObj.save();
+                        res.send("AAA");
+                    }
+
+                }
+
+            }
+
         }
     })
 }

@@ -23,7 +23,8 @@ function initializeCollection() {
             required: true,
             type: Date
         },
-        special_holidays: Array
+        special_holidays: Array,
+        bookings: Array
     })
     
     const Organization = mongoose.model("Organization", organizationSchema);
