@@ -1,6 +1,7 @@
 
 module.exports = {validate: bookingValidator, getExistingBookingNumber: getExistingBookingNumber}
 
+const _ = require('lodash');
 const utilPatches = require('../utils/patches.js');
 
 function getExistingBookingNumber(orgObj, date, slot_no) {
@@ -73,7 +74,7 @@ async function bookingValidator(req, Organization) {
                             }
                         }
 
-                        return {is_valid: true, orgObj: orgObj, date: booking_date, template_vars: {error_msg: null, org_name_before: org_name, booking_date_before: getDateForInputValue(booking_date), result_header: "Search result", search_result: availableSlots, addZero: utilPatches.addZeroToStart}}
+                        return {is_valid: true, orgObj: orgObj, date: booking_date, template_vars: {error_msg: null, org_name_before: _.startCase(org_name), booking_date_before: getDateForInputValue(booking_date), result_header: "Search result", search_result: availableSlots, addZero: utilPatches.addZeroToStart}}
                     }
 
                 }

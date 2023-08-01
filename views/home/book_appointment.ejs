@@ -33,7 +33,9 @@
                                 <% if (slotObj.remaining === 0) { %>
                                     <div class="remaining" style="color: gray;">Fully booked</div>
                                 <% } else { %>
-                                    <% if (slotObj.remaining <= 10) { %>
+                                    <% if (slotObj.remaining === 1) { %>
+                                        <div class="remaining" style="color: red;">1 slot remaining</div>
+                                    <% } else if (slotObj.remaining <= 10) { %>
                                         <div class="remaining" style="color: red;"><%= slotObj.remaining %> slots remaining</div>
                                     <% } else if (slotObj.remaining <= 20) { %>
                                         <div class="remaining" style="color: orange;"><%= slotObj.remaining %> slots remaining</div>

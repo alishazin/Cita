@@ -1,4 +1,10 @@
 
+main {
+    font-family: 'Inter';
+    height: 100vh;
+    overflow: auto;
+}
+
 section#banner {
     width: 100%;
     min-height: 50vh;
@@ -130,7 +136,7 @@ section#banner div.error-msg {
 section#result-area {
     max-width: 600px;
     background-color: white;
-    padding: 50px 0;
+    padding: 50px 20px;
     margin: auto;
 }
 
@@ -258,5 +264,37 @@ section#result-area div.result-single button:hover {
     
     section#banner div.dropdown div.row:not(:last-of-type) {
         border-bottom: 1px solid #727272;
+    }
+}
+
+@media (max-width:600px) {
+
+    section#result-area div.result-single div.col.one {
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 10px 0;
+        height: fit-content;
+    }
+
+    section#result-area div.result-single div.col.one div.remaining {
+        margin-bottom: 10px;
+    }
+
+    section#result-area div.result-single div.col.two {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding-bottom: 10px;
+        height: fit-content;
+    }
+
+    section#result-area div.result-single div.col.two div.button {
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    section#result-area div.result-single div.col.two div.button button {
+        width: 100%;
     }
 }
