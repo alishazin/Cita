@@ -1,0 +1,87 @@
+
+main {
+    font-family: 'Inter';
+    min-height: 100vh;
+    overflow: auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.container {
+    max-width: 500px;
+    border: 1px solid var(--primary-clr);
+    padding: 20px 25px;
+    border-radius: 12px;
+}
+
+div.container h1 {
+    color: var(--quaternary-clr);
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+div.container > div:not(.confirmation) {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--secondary-clr);
+    margin-bottom: 10px;
+}
+
+div.container > div:not(.confirmation) > span {
+    font-size: 14px;
+    color: var(--tetriary-clr);
+    font-weight: 300;
+}
+
+div.container div.confirmation {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+div.container div.confirmation i {
+    color: var(--sec-clr);
+    margin-left: 10px;
+}
+
+div.container a {
+    display: block;
+    width: fit-content;
+    border: 1px solid var(--sec-clr);
+    color: var(--sec-clr);
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-weight: 300;
+    font-size: 15px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+div.container a:hover {
+    color: white;
+    background-color: var(--sec-clr);
+}
+
+@media (max-width:610px) {
+    div.container {
+        border: none;
+    }
+
+    div.container > div:not(.confirmation) {
+        flex-direction: column-reverse;
+    }
+}

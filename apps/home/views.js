@@ -43,7 +43,6 @@ function bookAppointmentView(app, User, Organization) {
     })
 
     app.route("/home/book-appointment/search-organization")
-    // Return organization with active status.
 
     .get(async (req, res) => {
 
@@ -73,7 +72,6 @@ function bookAppointmentView(app, User, Organization) {
         if (authenticater) {
 
             const validator = await bookingValidator.validate(req, Organization);
-            // res.render("home/book_appointment.ejs", validator.template_vars);
             if (!validator.is_valid) {
                 res.redirect('/home/book-appointment?msg=bookingfailed');
             } else {
@@ -90,10 +88,11 @@ function bookAppointmentView(app, User, Organization) {
                 } else {
 
                     const existingBookingNumber = bookingValidator.getExistingBookingNumber(validator.orgObj, validator.date, slot_no);
-                    if (existingBookingNumber === validator.template_vars.search_result[slot_no - 1].remaining) {
+                    const slot_details = validator.orgObj.working_hours[validator.date.getDay()][slot_no - 1];
+                    if (existingBookingNumber === Number(slot_details[3])) {
                         res.redirect('/home/book-appointment?msg=bookingfailed');
                     } else {
-                        
+
                         const bookingObj = {
                             user: req.user.id,
                             date: validator.date,
@@ -105,8 +104,8 @@ function bookAppointmentView(app, User, Organization) {
                         } else {
                             validator.orgObj.bookings.push(bookingObj);
                         }
-                        validator.orgObj.save();
-                        res.send("AAA");
+                        await validator.orgObj.save();
+                        res.render("home/booked.ejs", {org_name: _.startCase(validator.orgObj.name), date_string: validator.date.toDateString(), time: `${utilPatches.addZeroToStart(slot_details[0][0])}:${utilPatches.addZeroToStart(slot_details[0][1])} - ${utilPatches.addZeroToStart(slot_details[1][0])}:${utilPatches.addZeroToStart(slot_details[1][1])}`});
                     }
 
                 }

@@ -1,0 +1,18 @@
+<%- include('header') %>
+<link rel="stylesheet" href="/css/home/booked.css">
+<main>
+    <div class="container">
+        <div class="confirmation"><span>Booking Confirmed</span><i class="bi bi-check-circle-fill"></i></div>
+        <h1>Booking Details</h1>
+        <div class="org_name"><%= org_name %> <span>Organization</span></div>
+        <div class="date"><%= date_string %> <span>Date</span></div>
+        <div class="time"><%= time %> <span>Time</span></div>
+        <a href="/home/book-appointment">Go Back</a>
+    </div>
+</main>
+<script>
+    function onLoad() {
+        document.querySelector("nav a.item:nth-of-type(1)").classList += " active";
+    }
+</script>
+<%- include('footer') %>

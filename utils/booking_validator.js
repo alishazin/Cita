@@ -7,7 +7,7 @@ const utilPatches = require('../utils/patches.js');
 function getExistingBookingNumber(orgObj, date, slot_no) {
     let count = 0;
     for (let bookingObj of orgObj.bookings) {
-        if (bookingObj.date.toLocaleDateString() === date.toLocaleDateString() && Number(bookingObj.slot_no) === slot_no) {
+        if (bookingObj.date.toLocaleDateString() === date.toLocaleDateString() && Number(bookingObj.slot_no) === Number(slot_no)) {
             count++;
         }
     }
