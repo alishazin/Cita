@@ -1,7 +1,8 @@
 
 module.exports = {validate: holidayValidator};
 
-const utilPatches = require('../utils/patches.js');
+const utilPatches = require('./patches.js');
+const email = require('./email.js');
 
 function inOperator(array, value) {
     for (let x of array) {
@@ -72,7 +73,7 @@ function holidayValidator(body, orgObj) {
 
     return {
         is_valid: true,
-        async save() {
+        async save(UserModel) {
             if (orgObj.special_holidays.length === 0) {
                 orgObj.special_holidays = [{date: date, slots: filteredSlotValues}];
             } else {
@@ -81,14 +82,24 @@ function holidayValidator(body, orgObj) {
             await orgObj.save();
 
             // Delete all bookings on that slot and sending email to client
-            let count = 0;
-            for (let bookingObj of orgObj.bookings) {
-                if (bookingObj.date.toLocaleDateString() === date.toLocaleDateString() && (filteredSlotValues === null || filteredSlotValues.includes(Number(bookingObj.slot_no)))) {
-                    orgObj.bookings.splice(count, 1);
+            let deletedNum = 0;
+            let initialLength = orgObj.bookings.length;
+            
+            for (let i=0; i<initialLength; i++) {
+
+                if (orgObj.bookings[i - deletedNum] === undefined) break;
+
+                if (orgObj.bookings[i - deletedNum].date.toLocaleDateString() === date.toLocaleDateString() && (filteredSlotValues === null || filteredSlotValues.includes(Number(orgObj.bookings[i - deletedNum].slot_no)))) {
+                    const userObj = await UserModel.findOne({_id: orgObj.bookings[i - deletedNum].user});
+                    email.sendEmailBookingCancelled(userObj.username, orgObj, orgObj.bookings[i - deletedNum]);
+
+                    orgObj.bookings.splice(i - deletedNum, 1);
+
+                    deletedNum++;
                 }
-                count++;
             }
             await orgObj.save();
+
         }
     }
 }

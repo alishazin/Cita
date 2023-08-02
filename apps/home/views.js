@@ -194,7 +194,7 @@ function myOrganizationsView(app, User, Organization) {
                 const validator = holidayValidator.validate(req.body, orgObj);
                 
                 if (validator.is_valid) {
-                    await validator.save(); 
+                    await validator.save(User); 
                     res.redirect(`/home/my-organizations/${orgObj.name.toLowerCase()}`);
                 } else {
                     const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
