@@ -105,7 +105,7 @@ function bookAppointmentView(app, User, Organization) {
                             validator.orgObj.bookings.push(bookingObj);
                         }
                         await validator.orgObj.save();
-                        res.render("home/booked.ejs", {org_name: _.startCase(validator.orgObj.name), date_string: validator.date.toDateString(), time: `${utilPatches.addZeroToStart(slot_details[0][0])}:${utilPatches.addZeroToStart(slot_details[0][1])} - ${utilPatches.addZeroToStart(slot_details[1][0])}:${utilPatches.addZeroToStart(slot_details[1][1])}`});
+                        res.render("home/booked.ejs", {org_name: _.startCase(validator.orgObj.name), date_string: validator.date.toDateString(), time: `${utilPatches.addZeroToStart(slot_details[0][0])}:${utilPatches.addZeroToStart(slot_details[0][1])} - ${utilPatches.addZeroToStart(slot_details[1][0])}:${utilPatches.addZeroToStart(slot_details[1][1])}`, price: slot_details[2]});
                     }
 
                 }

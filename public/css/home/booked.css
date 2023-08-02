@@ -51,7 +51,7 @@ div.container div.confirmation {
 }
 
 div.container div.confirmation i {
-    color: var(--sec-clr);
+    color: var(--primary-clr);
     margin-left: 10px;
 }
 
