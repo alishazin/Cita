@@ -80,7 +80,15 @@ function holidayValidator(body, orgObj) {
             }
             await orgObj.save();
 
-            // Delete all bookings on that slot
+            // Delete all bookings on that slot and sending email to client
+            let count = 0;
+            for (let bookingObj of orgObj.bookings) {
+                if (bookingObj.date.toLocaleDateString() === date.toLocaleDateString() && (filteredSlotValues === null || filteredSlotValues.includes(Number(bookingObj.slot_no)))) {
+                    orgObj.bookings.splice(count, 1);
+                }
+                count++;
+            }
+            await orgObj.save();
         }
     }
 }
