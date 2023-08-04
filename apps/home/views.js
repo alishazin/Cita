@@ -145,7 +145,7 @@ function myOrganizationsView(app, User, Organization) {
     .post(async (req, res) => {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
-            const validator = await orgValidator.create(req, res, User, Organization);
+            const validator = await orgValidator.create(req, res, User, Organization, false, null);
 
             if (validator.is_valid) {
 
@@ -178,7 +178,7 @@ function myOrganizationsView(app, User, Organization) {
             } else {
 
                 const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-                res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: ''});
+                res.render("home/single_org.ejs", {org_name: _.startCase(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: ''});
             }
         }
     })
@@ -198,12 +198,68 @@ function myOrganizationsView(app, User, Organization) {
                     res.redirect(`/home/my-organizations/${orgObj.name.toLowerCase()}`);
                 } else {
                     const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-                    res.render("home/single_org.ejs", {org_name: _.capitalize(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: validator.err_msg});
+                    res.render("home/single_org.ejs", {org_name: _.startCase(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: validator.err_msg});
                 }
                 
             }
         }
     })
+
+    app.route("/home/my-organizations/:name/edit")
+
+    .get(async (req, res) => {
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
+        if (authenticater) {
+            const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
+            if (!orgObj) {
+                res.status(404).send();
+            } else {
+
+                // const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
+                res.render("home/single_org_edit.ejs", {org_name: _.startCase(req.params.name), error_msg: null, orgObj: orgObj, addZero: utilPatches.addZeroToStart});
+            }
+        }
+    })
+
+    .post(async (req, res) => {
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
+        if (authenticater) {
+            const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
+            if (!orgObj) {
+                res.status(404).send();
+            } else {
+
+                const validator = await orgValidator.create(req, res, User, Organization, true, orgObj.name);
+
+                if (validator.is_valid) {
+
+                    const whOld = JSON.stringify(orgObj.working_hours);
+                    const whNew = JSON.stringify(validator.data.working_hours);
+                    
+                    if (whOld !== whNew) {
+                        // Delete all exisiting bookings and send email to client
+                        orgObj.bookings = [];
+
+                        // Update working_hours of orgObj
+                        orgObj.working_hours = validator.data.working_hours;
+                    }
+
+                    // Update the status if or if not changed
+                    orgObj.status = validator.data.status;
+
+                    await orgObj.save();
+
+                    res.redirect('/home/my-organizations');
+
+                } else {
+                    res.render("home/single_org_edit.ejs", {org_name: _.startCase(req.params.name), error_msg: validator.err_msg, orgObj: orgObj, addZero: utilPatches.addZeroToStart});
+                }
+
+            }
+            
+        }
+    })
+
 }
 
 function settingsView(app, User) {

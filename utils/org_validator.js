@@ -152,6 +152,10 @@ function validateWorkingDay(body, day) {
             return def_error_msg;
         }
 
+        if (total_slots % 1 !== 0) {
+            return {is_valid: false, err_msg: "Total slots should be a positive integer."};
+        }
+
         if (total_slots <= 0) {
             return {is_valid: false, err_msg: "Total slots should be greater than zero!"};
         }
@@ -183,26 +187,32 @@ function validateWorkingDay(body, day) {
 
 }
 
-async function createOrgValidator(req, res, User, Organization) {
-    const name = req.body.name.trim().toLowerCase();
+async function createOrgValidator(req, res, User, Organization, edit, org_name) {
+    
     const status = req.body.status;
 
     const def_error_msg = {is_valid: false, err_msg: "Something is wrong, try refreshing the page."};
-
     let working_hours = {0: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null};
+    
+    let name;
+    if (edit === false) {
+        name = req.body.name.trim().toLowerCase();
+        // Name check
+        if (name.length < 3) {
+            return {is_valid: false, err_msg: "Name should be atleast 3 characters long"}
+        }
+        if (name.length > 40) {
+            return {is_valid: false, err_msg: "Name should be les than 40 characters"}
+        }
+    
+        const orgObj = await Organization.findOne({name: name});
+    
+        if (orgObj && edit === false) {
+            return {is_valid: false, err_msg: "Name is already taken."}
+        }
 
-    // Name check
-    if (name.length < 3) {
-        return {is_valid: false, err_msg: "Name should be atleast 3 characters long"}
-    }
-    if (name.length > 40) {
-        return {is_valid: false, err_msg: "Name should be les than 40 characters"}
-    }
-
-    const orgObj = await Organization.findOne({name: name});
-
-    if (orgObj) {
-        return {is_valid: false, err_msg: "Name is already taken."}
+    } else {
+        name = org_name;
     }
 
     // Status check

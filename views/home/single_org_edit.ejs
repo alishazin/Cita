@@ -1,0 +1,483 @@
+<%- include('header') %>
+<link rel="stylesheet" href="/css/home/single_org_edit.css">
+<script src="/js/home/create_org.js"></script>
+<main>
+    <%- include('inner_header', {content: "/ My Organizations / " + org_name + " / Edit", href: "/home/my-organizations/" + org_name}) %>
+    <div class="header">
+        <h1>Edit the organization</h1>
+        <p>Provide the necessary details to edit the organization '<%= org_name %>'.</p>
+    </div>
+    <form method="post">
+
+        <div class="field-box status">
+            <label class="label">Status</label>
+            <% if (orgObj.status === 1) { %>
+                <div class="sliderbar-box paused" onclick="slideBarController()">
+                    <select name="status" id="status" hidden>
+                        <option id="paused" value="1" selected>Paused</option>
+                        <option id="active" value="2">Active</option>
+                    </select>
+            <% } else { %>
+                <div class="sliderbar-box active" onclick="slideBarController()">
+                    <select name="status" id="status" hidden>
+                        <option id="paused" value="1">Paused</option>
+                        <option id="active" value="2" selected>Active</option>
+                    </select>
+            <% } %>
+                <div class="slider"></div>
+                <span>Paused</span>
+                <span>Active</span>
+            </div>
+        </div>
+
+        <div class="field-box working-days mt-4">
+            <label class="label">Working Days</label>
+            <div class="checbox-container mt-2">
+                <% if (orgObj.working_hours[0] === null) { %>
+                    <div class="checkbox sun" onclick="onClickCheckBox('sun')">
+                        Sun
+                        <input type="checkbox" name="sun" id="sun" hidden>
+                    </div>
+                <% } else { %>
+                    <div class="checkbox sun checked" onclick="onClickCheckBox('sun')">
+                        Sun
+                        <input type="checkbox" name="sun" id="sun" hidden checked>
+                    </div>
+                <% } %>
+                
+                <% if (orgObj.working_hours[1] === null) { %>
+                    <div class="checkbox mon" onclick="onClickCheckBox('mon')">
+                        Mon
+                        <input type="checkbox" name="mon" id="mon" hidden>
+                    </div>
+                <% } else { %>
+                    <div class="checkbox mon checked" onclick="onClickCheckBox('mon')">
+                        Mon
+                        <input type="checkbox" name="mon" id="mon" hidden checked>
+                    </div>
+                <% } %>
+
+                <% if (orgObj.working_hours[2] === null) { %>
+                    <div class="checkbox tue" onclick="onClickCheckBox('tue')">
+                        Tue
+                        <input type="checkbox" name="tue" id="tue" hidden>
+                    </div>
+                <% } else { %>
+                    <div class="checkbox tue checked" onclick="onClickCheckBox('tue')">
+                        Tue
+                        <input type="checkbox" name="tue" id="tue" hidden checked>
+                    </div>
+                <% } %>
+                
+                <% if (orgObj.working_hours[3] === null) { %>
+                    <div class="checkbox wed" onclick="onClickCheckBox('wed')">
+                        Wed
+                        <input type="checkbox" name="wed" id="wed" hidden>
+                    </div>
+                <% } else { %>
+                    <div class="checkbox wed checked" onclick="onClickCheckBox('wed')">
+                        Wed
+                        <input type="checkbox" name="wed" id="wed" hidden checked>
+                    </div>
+                <% } %>
+                
+                <% if (orgObj.working_hours[4] === null) { %>
+                    <div class="checkbox thu" onclick="onClickCheckBox('thu')">
+                        Thu
+                        <input type="checkbox" name="thu" id="thu" hidden>
+                    </div>
+                <% } else { %>
+                    <div class="checkbox thu checked" onclick="onClickCheckBox('thu')">
+                        Thu
+                        <input type="checkbox" name="thu" id="thu" hidden checked>
+                    </div>
+                <% } %>
+                
+                <% if (orgObj.working_hours[5] === null) { %>
+                    <div class="checkbox fri" onclick="onClickCheckBox('fri')">
+                        Fri
+                        <input type="checkbox" name="fri" id="fri" hidden>
+                    </div>
+                <% } else { %>
+                    <div class="checkbox fri checked" onclick="onClickCheckBox('fri')">
+                        Fri
+                        <input type="checkbox" name="fri" id="fri" hidden checked>
+                    </div>
+                <% } %>
+                
+                <% if (orgObj.working_hours[6] === null) { %>
+                    <div class="checkbox sat" onclick="onClickCheckBox('sat')">
+                        Sat
+                        <input type="checkbox" name="sat" id="sat" hidden>
+                    </div>
+                <% } else { %>
+                    <div class="checkbox sat checked" onclick="onClickCheckBox('sat')">
+                        Sat
+                        <input type="checkbox" name="sat" id="sat" hidden checked>
+                    </div>
+                <% } %>
+                
+            </div>
+        </div>
+
+        <% if (orgObj.working_hours[0] === null) { %>
+            <div class="field-box details sun mt-4" style="display: none;">
+        <% } else { %>
+            <div class="field-box details sun mt-4">
+        <% } %>
+            <label class="label me-2">Sunday</label>
+            <div class="details-list mt-2">
+                <input type="hidden" name="sun_count" id="sun_count" value="<%= orgObj.working_hours[0] === null ? 1 : orgObj.working_hours[0].length %>"> 
+                <% if (orgObj.working_hours[0] === null) { %>
+                    <div class="list-item">
+                        <div>
+                            <span class="me-2">From</span> <input type="time" name="sun_1_from" class="me-4"> 
+                        </div>
+                        <div>
+                            <span class="me-2">To</span><input type="time" name="sun_1_to" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Price</span><input type="number" name="sun_1_price" style="width:80px;" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Total slots</span><input type="number" name="sun_1_slots" style="width:80px;" class="me-2">
+                        </div>
+                    </div>
+                <% } else { %>
+                    <% for (let x in orgObj.working_hours[0]) { %>
+                        <div class="list-item">
+                            <div>
+                                <span class="me-2">From</span> <input type="time" name="sun_<%= Number(x)+1 %>_from" class="me-4" value="<%= addZero(orgObj.working_hours[0][x][0][0]) %>:<%= addZero(orgObj.working_hours[0][x][0][1]) %>"> 
+                            </div>
+                            <div>
+                                <span class="me-2">To</span><input type="time" name="sun_<%= Number(x)+1 %>_to" class="me-4" value="<%= addZero(orgObj.working_hours[0][x][1][0]) %>:<%= addZero(orgObj.working_hours[0][x][1][1]) %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Price</span><input type="number" name="sun_<%= Number(x)+1 %>_price" style="width:80px;" class="me-4" value="<%= orgObj.working_hours[0][x][2] %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Total slots</span><input type="number" name="sun_<%= Number(x)+1 %>_slots" style="width:80px;" class="me-2" value="<%= orgObj.working_hours[0][x][3] %>">
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+                
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('sun')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('sun')"></i>
+            </div>
+        </div>
+        
+        <% if (orgObj.working_hours[1] === null) { %>
+            <div class="field-box details mon mt-4" style="display: none;">
+        <% } else { %>
+            <div class="field-box details mon mt-4">
+        <% } %>
+            <label class="label me-2">Monday</label>
+            <div class="details-list mt-2">
+                <input type="hidden" name="mon_count" id="mon_count" value="<%= orgObj.working_hours[1] === null ? 1 : orgObj.working_hours[1].length %>"> 
+                <% if (orgObj.working_hours[1] === null) { %>
+                    <div class="list-item">
+                        <div>
+                            <span class="me-2">From</span> <input type="time" name="mon_1_from" class="me-4"> 
+                        </div>
+                        <div>
+                            <span class="me-2">To</span><input type="time" name="mon_1_to" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Price</span><input type="number" name="mon_1_price" style="width:80px;" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Total slots</span><input type="number" name="mon_1_slots" style="width:80px;" class="me-2">
+                        </div>
+                    </div>
+                <% } else { %>
+                    <% for (let x in orgObj.working_hours[1]) { %>
+                        <div class="list-item">
+                            <div>
+                                <span class="me-2">From</span> <input type="time" name="mon_<%= Number(x)+1 %>_from" class="me-4" value="<%= addZero(orgObj.working_hours[1][x][0][0]) %>:<%= addZero(orgObj.working_hours[1][x][0][1]) %>"> 
+                            </div>
+                            <div>
+                                <span class="me-2">To</span><input type="time" name="mon_<%= Number(x)+1 %>_to" class="me-4" value="<%= addZero(orgObj.working_hours[1][x][1][0]) %>:<%= addZero(orgObj.working_hours[1][x][1][1]) %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Price</span><input type="number" name="mon_<%= Number(x)+1 %>_price" style="width:80px;" class="me-4" value="<%= orgObj.working_hours[1][x][2] %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Total slots</span><input type="number" name="mon_<%= Number(x)+1 %>_slots" style="width:80px;" class="me-2" value="<%= orgObj.working_hours[1][x][3] %>">
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('mon')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('mon')"></i>
+            </div>
+        </div>
+
+        <% if (orgObj.working_hours[2] === null) { %>
+            <div class="field-box details tue mt-4" style="display: none;">
+        <% } else { %>
+            <div class="field-box details tue mt-4">
+        <% } %>
+            <label class="label me-2">Tuesday</label>
+            <div class="details-list mt-2">
+                <input type="hidden" name="tue_count" id="tue_count" value="<%= orgObj.working_hours[2] === null ? 1 : orgObj.working_hours[2].length %>"> 
+                <% if (orgObj.working_hours[2] === null) { %>
+                    <div class="list-item">
+                        <div>
+                            <span class="me-2">From</span> <input type="time" name="tue_1_from" class="me-4"> 
+                        </div>
+                        <div>
+                            <span class="me-2">To</span><input type="time" name="tue_1_to" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Price</span><input type="number" name="tue_1_price" style="width:80px;" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Total slots</span><input type="number" name="tue_1_slots" style="width:80px;" class="me-2">
+                        </div>
+                    </div>
+                <% } else { %>
+                    <% for (let x in orgObj.working_hours[2]) { %>
+                        <div class="list-item">
+                            <div>
+                                <span class="me-2">From</span> <input type="time" name="tue_<%= Number(x)+1 %>_from" class="me-4" value="<%= addZero(orgObj.working_hours[2][x][0][0]) %>:<%= addZero(orgObj.working_hours[2][x][0][1]) %>"> 
+                            </div>
+                            <div>
+                                <span class="me-2">To</span><input type="time" name="tue_<%= Number(x)+1 %>_to" class="me-4" value="<%= addZero(orgObj.working_hours[2][x][1][0]) %>:<%= addZero(orgObj.working_hours[2][x][1][1]) %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Price</span><input type="number" name="tue_<%= Number(x)+1 %>_price" style="width:80px;" class="me-4" value="<%= orgObj.working_hours[2][x][2] %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Total slots</span><input type="number" name="tue_<%= Number(x)+1 %>_slots" style="width:80px;" class="me-2" value="<%= orgObj.working_hours[2][x][3] %>">
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %> 
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('tue')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('tue')"></i>
+            </div>
+        </div>
+
+        <% if (orgObj.working_hours[3] === null) { %>
+            <div class="field-box details wed mt-4" style="display: none;">
+        <% } else { %>
+            <div class="field-box details wed mt-4">
+        <% } %>
+            <label class="label me-2">Wednesday</label>
+            <div class="details-list mt-2">
+                <input type="hidden" name="wed_count" id="wed_count" value="<%= orgObj.working_hours[3] === null ? 1 : orgObj.working_hours[3].length %>"> 
+                <% if (orgObj.working_hours[3] === null) { %>
+                    <div class="list-item">
+                        <div>
+                            <span class="me-2">From</span> <input type="time" name="wed_1_from" class="me-4"> 
+                        </div>
+                        <div>
+                            <span class="me-2">To</span><input type="time" name="wed_1_to" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Price</span><input type="number" name="wed_1_price" style="width:80px;" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Total slots</span><input type="number" name="wed_1_slots" style="width:80px;" class="me-2">
+                        </div>
+                    </div>
+                <% } else { %>
+                    <% for (let x in orgObj.working_hours[3]) { %>
+                        <div class="list-item">
+                            <div>
+                                <span class="me-2">From</span> <input type="time" name="wed_<%= Number(x)+1 %>_from" class="me-4" value="<%= addZero(orgObj.working_hours[3][x][0][0]) %>:<%= addZero(orgObj.working_hours[3][x][0][1]) %>"> 
+                            </div>
+                            <div>
+                                <span class="me-2">To</span><input type="time" name="wed_<%= Number(x)+1 %>_to" class="me-4" value="<%= addZero(orgObj.working_hours[3][x][1][0]) %>:<%= addZero(orgObj.working_hours[3][x][1][1]) %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Price</span><input type="number" name="wed_<%= Number(x)+1 %>_price" style="width:80px;" class="me-4" value="<%= orgObj.working_hours[3][x][2] %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Total slots</span><input type="number" name="wed_<%= Number(x)+1 %>_slots" style="width:80px;" class="me-2" value="<%= orgObj.working_hours[3][x][3] %>">
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %> 
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('wed')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('wed')"></i>
+            </div>
+        </div>
+
+        <% if (orgObj.working_hours[4] === null) { %>
+            <div class="field-box details thu mt-4" style="display: none;">
+        <% } else { %>
+            <div class="field-box details thu mt-4">
+        <% } %>
+            <label class="label me-2">Thursday</label>
+            <div class="details-list mt-2">
+                <input type="hidden" name="thu_count" id="thu_count" value="<%= orgObj.working_hours[4] === null ? 1 : orgObj.working_hours[4].length %>"> 
+                <% if (orgObj.working_hours[4] === null) { %>
+                    <div class="list-item">
+                        <div>
+                            <span class="me-2">From</span> <input type="time" name="thu_1_from" class="me-4"> 
+                        </div>
+                        <div>
+                            <span class="me-2">To</span><input type="time" name="thu_1_to" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Price</span><input type="number" name="thu_1_price" style="width:80px;" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Total slots</span><input type="number" name="thu_1_slots" style="width:80px;" class="me-2">
+                        </div>
+                    </div>
+                <% } else { %>
+                    <% for (let x in orgObj.working_hours[4]) { %>
+                        <div class="list-item">
+                            <div>
+                                <span class="me-2">From</span> <input type="time" name="thu_<%= Number(x)+1 %>_from" class="me-4" value="<%= addZero(orgObj.working_hours[4][x][0][0]) %>:<%= addZero(orgObj.working_hours[4][x][0][1]) %>"> 
+                            </div>
+                            <div>
+                                <span class="me-2">To</span><input type="time" name="thu_<%= Number(x)+1 %>_to" class="me-4" value="<%= addZero(orgObj.working_hours[4][x][1][0]) %>:<%= addZero(orgObj.working_hours[4][x][1][1]) %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Price</span><input type="number" name="thu_<%= Number(x)+1 %>_price" style="width:80px;" class="me-4" value="<%= orgObj.working_hours[4][x][2] %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Total slots</span><input type="number" name="thu_<%= Number(x)+1 %>_slots" style="width:80px;" class="me-2" value="<%= orgObj.working_hours[4][x][3] %>">
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %> 
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('thu')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('thu')"></i>
+            </div>
+        </div>
+
+
+        <% if (orgObj.working_hours[5] === null) { %>
+            <div class="field-box details fri mt-4" style="display: none;">
+        <% } else { %>
+            <div class="field-box details fri mt-4">
+        <% } %>
+            <label class="label me-2">Friday</label>
+            <div class="details-list mt-2">
+                <input type="hidden" name="fri_count" id="fri_count" value="<%= orgObj.working_hours[5] === null ? 1 : orgObj.working_hours[5].length %>">
+                <% if (orgObj.working_hours[5] === null) { %>
+                    <div class="list-item">
+                        <div>
+                            <span class="me-2">From</span> <input type="time" name="fri_1_from" class="me-4"> 
+                        </div>
+                        <div>
+                            <span class="me-2">To</span><input type="time" name="fri_1_to" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Price</span><input type="number" name="fri_1_price" style="width:80px;" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Total slots</span><input type="number" name="fri_1_slots" style="width:80px;" class="me-2">
+                        </div>
+                    </div>
+                <% } else { %>
+                    <% for (let x in orgObj.working_hours[5]) { %>
+                        <div class="list-item">
+                            <div>
+                                <span class="me-2">From</span> <input type="time" name="fri_<%= Number(x)+1 %>_from" class="me-4" value="<%= addZero(orgObj.working_hours[5][x][0][0]) %>:<%= addZero(orgObj.working_hours[5][x][0][1]) %>"> 
+                            </div>
+                            <div>
+                                <span class="me-2">To</span><input type="time" name="fri_<%= Number(x)+1 %>_to" class="me-4" value="<%= addZero(orgObj.working_hours[5][x][1][0]) %>:<%= addZero(orgObj.working_hours[5][x][1][1]) %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Price</span><input type="number" name="fri_<%= Number(x)+1 %>_price" style="width:80px;" class="me-4" value="<%= orgObj.working_hours[5][x][2] %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Total slots</span><input type="number" name="fri_<%= Number(x)+1 %>_slots" style="width:80px;" class="me-2" value="<%= orgObj.working_hours[5][x][3] %>">
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %> 
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('fri')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('fri')"></i>
+            </div>
+        </div>
+
+        <% if (orgObj.working_hours[6] === null) { %>
+            <div class="field-box details sat mt-4" style="display: none;">
+        <% } else { %>
+            <div class="field-box details sat mt-4">
+        <% } %>
+            <label class="label me-2">Saturday</label>
+            <div class="details-list mt-2">
+                <input type="hidden" name="sat_count" id="sat_count" value="<%= orgObj.working_hours[6] === null ? 1 : orgObj.working_hours[6].length %>"> 
+                <% if (orgObj.working_hours[6] === null) { %>
+                    <div class="list-item">
+                        <div>
+                            <span class="me-2">From</span> <input type="time" name="sat_1_from" class="me-4"> 
+                        </div>
+                        <div>
+                            <span class="me-2">To</span><input type="time" name="sat_1_to" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Price</span><input type="number" name="sat_1_price" style="width:80px;" class="me-4">
+                        </div>
+                        <div>
+                            <span class="me-2">Total slots</span><input type="number" name="sat_1_slots" style="width:80px;" class="me-2">
+                        </div>
+                    </div>
+                <% } else { %>
+                    <% for (let x in orgObj.working_hours[6]) { %>
+                        <div class="list-item">
+                            <div>
+                                <span class="me-2">From</span> <input type="time" name="sat_<%= Number(x)+1 %>_from" class="me-4" value="<%= addZero(orgObj.working_hours[6][x][0][0]) %>:<%= addZero(orgObj.working_hours[6][x][0][1]) %>"> 
+                            </div>
+                            <div>
+                                <span class="me-2">To</span><input type="time" name="sat_<%= Number(x)+1 %>_to" class="me-4" value="<%= addZero(orgObj.working_hours[6][x][1][0]) %>:<%= addZero(orgObj.working_hours[6][x][1][1]) %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Price</span><input type="number" name="sat_<%= Number(x)+1 %>_price" style="width:80px;" class="me-4" value="<%= orgObj.working_hours[6][x][2] %>">
+                            </div>
+                            <div>
+                                <span class="me-2">Total slots</span><input type="number" name="sat_<%= Number(x)+1 %>_slots" style="width:80px;" class="me-2" value="<%= orgObj.working_hours[6][x][3] %>">
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+            </div>
+            <div class="add-remove mt-2">
+                <i class="bi bi-plus-circle add" style="color:green;" onclick="formData.addItem('sat')"></i>
+                <i class="bi bi-dash-circle remove" style="color:red;" onclick="formData.removeItem('sat')"></i>
+            </div>
+        </div>
+        
+        <% if (error_msg) { %>
+            <p class="error_msg mt-2"><%= error_msg %></p>
+        <% } %>
+
+        <ul class="instruction mt-5">
+            <li>If <b>status</b> is paused, it wont be visible to clients.</li>
+            <li><b>From Time</b> and <b>To Time</b> should be arranged in order.</li>
+            <li>The changes will take place immediately.</li>
+            <li>If the timings are edited, all the bookings from today onwards will be cancelled.</li>
+            <li>New timings will be visible to the clients from today onwards.</li>
+        </ul>
+
+        <button class="mt-4">Edit Organization</button>
+    </form>
+</main>
+<script>
+
+    document.onload = () => {
+        onLoad();
+    }
+    
+</script>
+<%- include('footer') %>
