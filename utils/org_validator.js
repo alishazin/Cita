@@ -1,5 +1,5 @@
 
-module.exports = {create: createOrgValidator};
+module.exports = {create: createOrgValidator, compareTime: compareTime};
 
 var numToDay = {
     0: "sun",

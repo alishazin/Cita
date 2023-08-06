@@ -3,6 +3,7 @@ module.exports = {validate: bookingValidator, getExistingBookingNumber: getExist
 
 const _ = require('lodash');
 const utilPatches = require('../utils/patches.js');
+const orgValidator = require('./org_validator.js');
 
 function getExistingBookingNumber(orgObj, date, slot_no) {
     let count = 0;
@@ -46,10 +47,29 @@ async function bookingValidator(req, Organization) {
                 // Checking availability
                 
                 // checking all slots
-                const allSlots = orgObj.working_hours[booking_date.getDay()];
+                const allSlots = [...orgObj.working_hours[booking_date.getDay()]];
+                
                 if (allSlots === null) {
                     return {is_valid: false, template_vars: {error_msg: null, org_name_before: org_name, booking_date_before: getDateForInputValue(booking_date), result_header: "Not open for appointments.", search_result: null}}
                 } else {
+
+                    let deletedNum = 0;
+
+                    // If booking_date is today
+                    if (booking_date.toDateString() === new Date().toDateString()) {
+                        
+                        // Remove slots that are past the current time
+                        let timeNow = [new Date().getHours(), new Date().getMinutes()];
+                        let initialLength = allSlots.length;
+    
+                        for (let i=0; i<initialLength; i++) {
+                            if (orgValidator.compareTime(timeNow, allSlots[i - deletedNum][1], 4)) {
+                                allSlots.splice(i - deletedNum, 1);
+                                deletedNum++;
+                            }
+                        }
+                    }
+    
                     
                     // Checking if holiday
                     const special_holidays = orgObj.special_holidays;
@@ -70,7 +90,7 @@ async function bookingValidator(req, Organization) {
                             if (unavailable_slots.includes(x+1)) continue;
                             else {
                                 const existingBookingsNum = getExistingBookingNumber(orgObj, booking_date, x+1);
-                                availableSlots.push({slot_no: x+1, from_time: allSlots[x][0], to_time: allSlots[x][1], price: allSlots[x][2], remaining: allSlots[x][3] - existingBookingsNum});
+                                availableSlots.push({slot_no: x+deletedNum+1, from_time: allSlots[x][0], to_time: allSlots[x][1], price: allSlots[x][2], remaining: allSlots[x][3] - existingBookingsNum});
                             }
                         }
 
