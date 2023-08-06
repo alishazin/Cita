@@ -2,7 +2,7 @@
 module.exports = {validate: holidayValidator};
 
 const utilPatches = require('./patches.js');
-const email = require('./email.js');
+const mailClient = require('./email.js');
 
 function inOperator(array, value) {
     for (let x of array) {
@@ -91,7 +91,7 @@ function holidayValidator(body, orgObj) {
 
                 if (orgObj.bookings[i - deletedNum].date.toLocaleDateString() === date.toLocaleDateString() && (filteredSlotValues === null || filteredSlotValues.includes(Number(orgObj.bookings[i - deletedNum].slot_no)))) {
                     const userObj = await UserModel.findOne({_id: orgObj.bookings[i - deletedNum].user});
-                    email.sendEmailBookingCancelled(userObj.username, orgObj, orgObj.bookings[i - deletedNum]);
+                    mailClient.sendEmailBookingCancelled(userObj.username, orgObj, orgObj.bookings[i - deletedNum]);
 
                     orgObj.bookings.splice(i - deletedNum, 1);
 

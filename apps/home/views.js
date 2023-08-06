@@ -7,6 +7,7 @@ const holidayValidator = require('../../utils/holiday_validator.js');
 const bookingValidator = require('../../utils/booking_validator.js');
 const utilPatches = require('../../utils/patches.js');
 const _ = require('lodash');
+const mailClient = require('../../utils/email.js');
 
 function initializeViews(app, passport, UserModel, OrganizationModel) {
     bookAppointmentView(app, UserModel, OrganizationModel);
@@ -233,21 +234,48 @@ function myOrganizationsView(app, User, Organization) {
 
                 if (validator.is_valid) {
 
-                    const whOld = JSON.stringify(orgObj.working_hours);
-                    const whNew = JSON.stringify(validator.data.working_hours);
-                    
-                    if (whOld !== whNew) {
-                        // Delete all exisiting bookings and send email to client
-                        orgObj.bookings = [];
+                    const whOld = orgObj.working_hours;
+                    const whNew = validator.data.working_hours;
 
-                        // Update working_hours of orgObj
-                        orgObj.working_hours = validator.data.working_hours;
+                    let updatedDays = [];
+                    for (let i=0; i<7; i++) {
+                        if (JSON.stringify(whOld[i]) !== JSON.stringify(whNew[i])) {
+                            updatedDays.push(i);
+                        }
                     }
 
-                    // Update the status if or if not changed
-                    orgObj.status = validator.data.status;
+                    if (updatedDays.length > 0) {
 
-                    await orgObj.save();
+                        // Delete all exisiting bookings and send email to client
+                        let deletedNum = 0;
+                        let initialLength = orgObj.bookings.length;
+
+                        for (let i=0; i<initialLength; i++) {
+
+                            if (orgObj.bookings[i - deletedNum] === undefined) break;
+
+                            let bookingDate = orgObj.bookings[i - deletedNum].date;
+                            const userObj = await User.findOne({_id: orgObj.bookings[i - deletedNum].user});
+
+                            if (utilPatches.checkIfDateFromFuture(bookingDate, true) && updatedDays.includes(bookingDate.getDay())) {
+                                
+                                mailClient.sendEmailBookingCancelled(userObj.username, orgObj, orgObj.bookings[i - deletedNum]);
+                                
+                                orgObj.bookings.splice(i - deletedNum, 1);
+                                deletedNum++;
+                            }
+                        }
+    
+                        // Update working_hours of orgObj
+                        orgObj.working_hours = validator.data.working_hours;
+                        
+    
+                        // Update the status if or if not changed
+                        orgObj.status = validator.data.status;
+    
+                        await orgObj.save();
+                    }
+
 
                     res.redirect('/home/my-organizations');
 

@@ -12,12 +12,21 @@ function onLoad() {
     document.querySelector("section#special_holidays div.right-content form input[type='date']").min = tomorrow.toLocaleDateString('fr-ca');
 }
 
+
+function addZeroToStart(number) {
+    if (number < 10) {
+        return `0${number}`
+    } else {
+        return String(number);
+    }
+}
+
 function getTimeTextForSchedule(array) {
     if (array[0] > 12) {
         array[0] = array[0] % 12;
-        return `${array[0]}:${array[1] == 0 ? "00" : array[1]} pm`
+        return `${addZeroToStart(array[0])}:${addZeroToStart(array[1])} pm`
     } else {
-        return `${array[0]}:${array[1] == 0 ? "00" : array[1]} am`
+        return `${addZeroToStart(array[0])}:${addZeroToStart(array[1])} am`
     }
 }
 
