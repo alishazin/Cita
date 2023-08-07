@@ -103,7 +103,6 @@ function holidayValidator(body, orgObj) {
                             break;
                         }
                     }
-                    console.log(userObj);
                     userObj.markModified('my_bookings');
                     await userObj.save();
 

@@ -231,7 +231,6 @@ function myOrganizationsView(app, User, Organization) {
                 res.status(404).send();
             } else {
 
-                // const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
                 res.render("home/single_org_edit.ejs", {org_name: _.startCase(req.params.name), error_msg: null, orgObj: orgObj, addZero: utilPatches.addZeroToStart});
             }
         }
@@ -267,14 +266,28 @@ function myOrganizationsView(app, User, Organization) {
 
                         for (let i=0; i<initialLength; i++) {
 
-                            if (orgObj.bookings[i - deletedNum] === undefined) break;
+                            const bookingObj = orgObj.bookings[i - deletedNum];
 
-                            let bookingDate = orgObj.bookings[i - deletedNum].date;
-                            const userObj = await User.findOne({_id: orgObj.bookings[i - deletedNum].user});
+                            if (bookingObj === undefined) break;
+
+                            let bookingDate = bookingObj.date;
+
+                            const userObj = await User.findOne({_id: bookingObj.user});
 
                             if (utilPatches.checkIfDateFromFuture(bookingDate, true) && updatedDays.includes(bookingDate.getDay())) {
+
+                                // change status of myBookingObj in userObj
+                                for (let myBookingObj of userObj.my_bookings) {
+
+                                    if (myBookingObj.booking_id.toString() === bookingObj.id.toString()) {
+                                        myBookingObj.status = 2;
+                                        break;
+                                    }
+                                }
+                                userObj.markModified('my_bookings');
+                                await userObj.save();
                                 
-                                mailClient.sendEmailBookingCancelled(userObj.username, orgObj, orgObj.bookings[i - deletedNum]);
+                                mailClient.sendEmailBookingCancelled(userObj.username, orgObj, bookingObj);
                                 
                                 orgObj.bookings.splice(i - deletedNum, 1);
                                 deletedNum++;
