@@ -43,7 +43,8 @@ function initializeCollection() {
         reset_password: {
             token: String,
             date_generated: Date,
-        }
+        },
+        my_bookings: Array
     })
     userSchema.plugin(passportLocalMongoose);
     userSchema.plugin(findOrCreate);

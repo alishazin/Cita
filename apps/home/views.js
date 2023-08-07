@@ -8,6 +8,7 @@ const bookingValidator = require('../../utils/booking_validator.js');
 const utilPatches = require('../../utils/patches.js');
 const _ = require('lodash');
 const mailClient = require('../../utils/email.js');
+var mongoose = require('mongoose');
 
 function initializeViews(app, passport, UserModel, OrganizationModel) {
     bookAppointmentView(app, UserModel, OrganizationModel);
@@ -94,18 +95,32 @@ function bookAppointmentView(app, User, Organization) {
                         res.redirect('/home/book-appointment?msg=bookingfailed');
                     } else {
 
+                        const bookingId = new mongoose.mongo.ObjectId();
+
                         const bookingObj = {
+                            id: bookingId,
                             user: req.user.id,
                             date: validator.date,
                             slot_no: Number(slot_no),
                         };
+                        
+                        const myBookingObj = {
+                            booking_id: bookingId,
+                            org_id: validator.orgObj.id,
+                            status: 1,
+                            date: validator.date,
+                            start_time: slot_details[0],
+                            end_time: slot_details[1],
+                            price: slot_details[2],
+                        };
+
+                        const userObj = await User.findOne({_id: req.user.id});
     
-                        if (validator.orgObj.bookings === undefined) {
-                            validator.orgObj.bookings = [bookingObj];
-                        } else {
-                            validator.orgObj.bookings.push(bookingObj);
-                        }
+                        validator.orgObj.bookings.push(bookingObj);
+                        userObj.my_bookings.push(myBookingObj);
                         await validator.orgObj.save();
+                        await userObj.save();
+                        
                         res.render("home/booked.ejs", {org_name: _.startCase(validator.orgObj.name), date_string: validator.date.toDateString(), time: `${utilPatches.addZeroToStart(slot_details[0][0])}:${utilPatches.addZeroToStart(slot_details[0][1])} - ${utilPatches.addZeroToStart(slot_details[1][0])}:${utilPatches.addZeroToStart(slot_details[1][1])}`, price: slot_details[2]});
                     }
 

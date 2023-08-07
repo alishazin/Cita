@@ -87,11 +87,27 @@ function holidayValidator(body, orgObj) {
             
             for (let i=0; i<initialLength; i++) {
 
-                if (orgObj.bookings[i - deletedNum] === undefined) break;
+                const bookingObj = orgObj.bookings[i - deletedNum];
 
-                if (orgObj.bookings[i - deletedNum].date.toLocaleDateString() === date.toLocaleDateString() && (filteredSlotValues === null || filteredSlotValues.includes(Number(orgObj.bookings[i - deletedNum].slot_no)))) {
-                    const userObj = await UserModel.findOne({_id: orgObj.bookings[i - deletedNum].user});
-                    mailClient.sendEmailBookingCancelled(userObj.username, orgObj, orgObj.bookings[i - deletedNum]);
+                if (bookingObj === undefined) break;
+
+                if (bookingObj.date.toLocaleDateString() === date.toLocaleDateString() && (filteredSlotValues === null || filteredSlotValues.includes(Number(orgObj.bookings[i - deletedNum].slot_no)))) {
+                    
+                    const userObj = await UserModel.findOne({_id: bookingObj.user});
+
+                    // change status of myBookingObj in userObj
+                    for (let myBookingObj of userObj.my_bookings) {
+
+                        if (myBookingObj.booking_id.toString() === bookingObj.id.toString()) {
+                            myBookingObj.status = 2;
+                            break;
+                        }
+                    }
+                    console.log(userObj);
+                    userObj.markModified('my_bookings');
+                    await userObj.save();
+
+                    mailClient.sendEmailBookingCancelled(userObj.username, orgObj, bookingObj);
 
                     orgObj.bookings.splice(i - deletedNum, 1);
 
