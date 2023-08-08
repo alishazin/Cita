@@ -296,10 +296,25 @@ function myOrganizationsView(app, User, Organization) {
     
                         // Update working_hours of orgObj
                         orgObj.working_hours = validator.data.working_hours;
-                        
     
                         // Update the status if or if not changed
                         orgObj.status = validator.data.status;
+
+                        // Delete special_holidays on edited day
+                        deletedNum = 0;
+                        initialLength = orgObj.special_holidays.length;
+
+                        for (let i=0; i<initialLength; i++) {
+                            
+                            const holidayObj = orgObj.special_holidays[i - deletedNum];
+
+                            if (holidayObj === undefined) break;
+
+                            if (updatedDays.includes(holidayObj.date.getDay())) {
+                                orgObj.special_holidays.splice(i - deletedNum, 1);
+                                deletedNum++;
+                            }
+                        }
     
                         await orgObj.save();
                     }
