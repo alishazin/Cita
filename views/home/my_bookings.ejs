@@ -1,0 +1,94 @@
+<%- include('header') %>
+<link rel="stylesheet" href="/css/home/my_bookings.css">
+<!-- <script src="/js/home/book_appointment.js"></script> -->
+<main>
+    <div class="header">
+        <h1>My Bookings</h1>
+        <p>All the active and cancelled appointments purchased by you.</p>
+    </div>
+    <section id="nav-area">
+        <% if (instance === 1) { %>
+            <div class="navbar left">
+        <% } else if (instance === 2) { %>
+            <div class="navbar right">
+        <% } %>
+            <div class="slider"></div>
+            <% if (instance === 1) { %>
+                <div class="item user-flex-center left">Upcoming</div>
+                <a class="item user-flex-center right" href="/home/my-bookings?query=recent">Recent</a>
+            <% } else if (instance === 2) { %>
+                <a class="item user-flex-center left" href="/home/my-bookings?query=upcoming">Upcoming</a>
+                <div class="item user-flex-center right">Recent</div>
+            <% } %>
+        </div>
+    </section>
+
+    <section id="results">
+
+        <div class="result three">
+            <div class="date-area">
+                <span class="day">Wed</span>
+                <span class="date">28</span>
+                <div class="sep"></div>
+            </div>
+            <div class="content-area">
+                <div class="col">
+                    <div class="item"><i class="bi bi-building"></i><span>Almas</span></div>
+                    <div class="item"><i class="bi bi-clock-fill"></i><span>09:00 - 09:30</span></div>
+                </div>
+                <div class="col">
+                    <div class="item"><i class="bi bi-currency-rupee"></i><span>200</span></div>
+                    <div class="item"><i class="bi bi-info-circle"></i><span class="status active">active</span></div>
+                </div>
+            </div>
+            <div class="right-area user-flex-center">
+                <form>
+                    <button>cancel</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="result two">
+            <div class="date-area">
+                <span class="day">Wed</span>
+                <span class="date">28</span>
+                <div class="sep"></div>
+            </div>
+            <div class="content-area">
+                <div class="col">
+                    <div class="item"><i class="bi bi-building"></i><span>Almas</span></div>
+                    <div class="item"><i class="bi bi-clock-fill"></i><span>09:00 - 09:30</span></div>
+                </div>
+                <div class="col">
+                    <div class="item"><i class="bi bi-currency-rupee"></i><span>200</span></div>
+                    <div class="item"><i class="bi bi-info-circle"></i><span class="status cancelled">cancelled</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result two">
+            <div class="date-area">
+                <span class="day">Wed</span>
+                <span class="date">28</span>
+                <div class="sep"></div>
+            </div>
+            <div class="content-area">
+                <div class="col">
+                    <div class="item"><i class="bi bi-building"></i><span>Almas</span></div>
+                    <div class="item"><i class="bi bi-clock-fill"></i><span>09:00 - 09:30</span></div>
+                </div>
+                <div class="col">
+                    <div class="item"><i class="bi bi-currency-rupee"></i><span>200</span></div>
+                    <div class="item"><i class="bi bi-info-circle"></i><span class="status compromised">compromised</span></div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</main>
+<script>
+    function onLoad() {
+        document.querySelector("nav a.item:nth-of-type(3)").classList += " active";
+    }
+</script>
+<%- include('footer') %>

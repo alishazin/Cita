@@ -13,9 +13,36 @@ var mongoose = require('mongoose');
 function initializeViews(app, passport, UserModel, OrganizationModel) {
     bookAppointmentView(app, UserModel, OrganizationModel);
     myOrganizationsView(app, UserModel, OrganizationModel);
+    myBookingsView(app, UserModel, OrganizationModel);
     settingsView(app, UserModel);
     getOnlyViews(app, UserModel, OrganizationModel);
     postOnlyViews(app, UserModel, OrganizationModel);
+}
+
+function myBookingsView(app, User, Organization) {
+    app.route("/home/my-bookings")
+
+    .get(async (req, res) => {
+
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
+        if (authenticater) {
+
+            const query = req.query.query;
+
+            if (query === 'upcoming') {
+
+                res.render("home/my_bookings.ejs", {instance: 1});
+            
+            } else if (query === 'recent') {
+
+                res.render("home/my_bookings.ejs", {instance: 2});
+
+            } else {
+                res.redirect('/home/my-bookings?query=upcoming')
+            }
+
+        }
+    })
 }
 
 function bookAppointmentView(app, User, Organization) {
