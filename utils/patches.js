@@ -165,6 +165,7 @@ async function getEjsFormat(array, Organization, instance) {
             obj.org_name = await getOrgName(myBookingObj.org_id, Organization);
             obj.time = `${addZeroToStart(myBookingObj.start_time[0])}:${addZeroToStart(myBookingObj.start_time[1])} - ${addZeroToStart(myBookingObj.end_time[0])}:${addZeroToStart(myBookingObj.end_time[1])}`;
             obj.price = myBookingObj.price;
+            obj.booking_id = myBookingObj.booking_id;
 
             ejsFormat.push({type: 1, content: obj});
         }

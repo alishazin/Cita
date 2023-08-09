@@ -45,7 +45,7 @@ function myBookingsView(app, User, Organization) {
                         }
                         
                         else if (myBookingObj.date.toDateString() === today.toDateString()) {
-                            if (orgValidator.compareTime(myBookingObj.end_time, [today.getHours(), today.getMinutes()], 3)) {
+                            if (orgValidator.compareTime(myBookingObj.start_time, [today.getHours(), today.getMinutes()], 3)) {
                                 allMyBookings.push(myBookingObj);
                             }
                         }
@@ -77,7 +77,7 @@ function myBookingsView(app, User, Organization) {
                         }
                         
                         else if (myBookingObj.date.toDateString() === today.toDateString()) {
-                            if (orgValidator.compareTime(myBookingObj.end_time, [today.getHours(), today.getMinutes()], 1)) {
+                            if (orgValidator.compareTime(myBookingObj.start_time, [today.getHours(), today.getMinutes()], 1)) {
                                 allMyBookings.push(myBookingObj);
                             }
                         }
@@ -96,6 +96,66 @@ function myBookingsView(app, User, Organization) {
             } else {
                 res.redirect('/home/my-bookings?query=upcoming')
             }
+
+        }
+    })
+
+    app.route("/home/my-bookings/cancel")
+
+    .post(async (req, res) => {
+
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
+        if (authenticater) {
+
+            const booking_id = req.body.booking_id;
+
+            if (booking_id === undefined) {
+                res.status(404).send();
+            } else {
+                
+                const userObj = await User.findOne({_id: req.user.id});
+                
+                let myBookingObj = null;
+                for (let obj of userObj.my_bookings) {
+                    
+                    if (obj.booking_id.toString() === booking_id) {
+                        myBookingObj = obj;
+                        break;
+                    }
+                }
+                
+                const today = new Date();
+
+                if (myBookingObj === null) {
+                    res.status(404).send();
+                } else if (myBookingObj.status === 2) {
+                    res.status(404).send();
+                } else if (!utilPatches.checkIfDateFromFuture(myBookingObj.date, true)) {
+                    res.status(404).send();
+                } else if (myBookingObj.date.toDateString() === today.toDateString() && orgValidator.compareTime(myBookingObj.start_time, [today.getHours(), today.getMinutes()], 1)) {
+                    res.status(404).send();
+                } else {
+
+                    const orgObj = await Organization.findOne({_id: myBookingObj.org_id});
+
+                    for (let i in orgObj.bookings) {
+                        if (orgObj.bookings[i].id.toString() === booking_id) {
+                            orgObj.bookings.splice(i, 1);
+                            break;
+                        }
+                    }
+
+                    
+                    myBookingObj.status = 2;
+                    userObj.markModified('my_bookings');
+                    
+                    await orgObj.save();
+                    await userObj.save();
+
+                    res.redirect('/home/my-bookings?query=upcoming');
+                }
+            }
+
 
         }
     })
