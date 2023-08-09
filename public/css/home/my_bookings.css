@@ -91,15 +91,25 @@ section#results {
     align-items: stretch;
 }
 
+section#results div.month-mark {
+    font-weight: 600;
+    margin: 20px 0 30px;
+    color: var(--secondary-clr);
+}
+
 section#results div.result {
     border-radius: 8px;
     border: 2px solid rgb(0, 0, 0, 0.07);
     height: 100px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
+}
+
+section#results div.result.cancelled {
+    background-color: rgb(0, 0, 0, 0.03);
 }
 
 section#results div.result div.date-area {
@@ -222,4 +232,83 @@ section#results div.result div.right-area button {
 section#results div.result div.right-area button:hover {
     background-color: rgba(255, 0, 0, 0.5);
     color: white;
+}
+
+@media (max-width:820px) {
+
+    section#results div.result {
+        height: fit-content;
+    }
+    
+    section#results div.result div.date-area div.sep {
+        position: absolute;
+        width: 1.5px;
+        height: 70%;
+        top: 15%;
+        right: 0;
+    }
+
+    section#results div.result div.content-area {
+        padding: 20px;
+    }
+
+    section#results div.result div.content-area div.col {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start !important;
+        width: 100%;
+        padding: 0 !important;
+    }
+    
+    section#results div.result div.content-area div.col div.item {
+        margin-bottom: 10px;
+        max-width: 100%;
+    }
+}
+
+@media (max-width:700px) {
+
+    section#results div.result {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+    }   
+
+    section#results div.result div.date-area {
+        width: 100%;
+        height: 100px;
+    }
+
+    section#results div.result div.date-area div.sep {
+        height: 1.5px;
+        width: 80%;
+        left: 10%;
+        top: 100%;
+    }
+    
+    section#results div.result div.content-area {
+        width: 100% !important;
+    }
+
+    section#results div.result div.right-area {
+        width: 100% !important;
+        padding: 20px 0;
+        border-top: 1px solid rgb(0, 0, 0, 0.07);
+    }
+}
+    
+@media (max-width:576px) {
+
+    div.header {
+        width: 100%;
+        padding: 20px 20px 20px;
+    }
+
+    section#nav-area {
+        padding: 0 20px;
+    }
+
+    section#results {
+        padding: 30px 20px;
+    }
 }

@@ -103,6 +103,7 @@ div.top-div {
     justify-content: flex-start;
     align-items: center;
     padding: 20px;
+    z-index: 2;
 }
 
 h4 {
@@ -161,7 +162,7 @@ div.top-div div.button:hover {
     div.top-div {
         display: flex;
         position: fixed;
-        z-index: 1;
+        z-index: 2;
     }
     h3 {
         display: none;
