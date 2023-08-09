@@ -69,7 +69,7 @@ function addZeroToStart(number) {
     }
 }
 
-function sortMyBookingByDateAndStartTime(array) {
+function sortMyBookingByDateAndStartTime(array, instance) {
     
     const totalLength = array.length;
     let i,j;
@@ -78,14 +78,28 @@ function sortMyBookingByDateAndStartTime(array) {
         
         for (j=0; j<totalLength - i - 1; j++) {
 
-            if (array[j].date.getTime() > array[j + 1].date.getTime()) {
+            if (array[j].date.getTime() > array[j + 1].date.getTime() && instance === 1) {
+                let temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+            }
+            
+            else if (array[j].date.getTime() < array[j + 1].date.getTime() && instance === 2) {
                 let temp = array[j];
                 array[j] = array[j + 1];
                 array[j + 1] = temp;
             }
 
-            else if (array[j].date.toDateString() === array[j + 1].date.toDateString()) {
+            else if (array[j].date.toDateString() === array[j + 1].date.toDateString() && instance === 1) {
                 if (orgValidator.compareTime(array[j].start_time, array[j+1].start_time, 3)) {
+                    let temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+
+            else if (array[j].date.toDateString() === array[j + 1].date.toDateString() && instance === 2) {
+                if (orgValidator.compareTime(array[j].start_time, array[j+1].start_time, 1)) {
                     let temp = array[j];
                     array[j] = array[j + 1];
                     array[j + 1] = temp;

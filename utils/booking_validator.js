@@ -94,7 +94,7 @@ async function bookingValidator(req, Organization) {
                             }
                         }
 
-                        return {is_valid: true, orgObj: orgObj, date: booking_date, template_vars: {error_msg: null, org_name_before: _.startCase(org_name), booking_date_before: getDateForInputValue(booking_date), result_header: "Search result", search_result: availableSlots, addZero: utilPatches.addZeroToStart}}
+                        return {is_valid: true, orgObj: orgObj, date: booking_date, deletedNum: deletedNum, template_vars: {error_msg: null, org_name_before: _.startCase(org_name), booking_date_before: getDateForInputValue(booking_date), result_header: "Search result", search_result: availableSlots, addZero: utilPatches.addZeroToStart}}
                     }
 
                 }

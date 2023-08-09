@@ -50,19 +50,48 @@ function myBookingsView(app, User, Organization) {
                             }
                         }
                     }
-                    
-                    allMyBookings = utilPatches.sortMyBookingByDateAndStartTime(allMyBookings);
-                    allMyBookings = utilPatches.addMonthStamps(allMyBookings);
-                    allMyBookings = await utilPatches.getEjsFormat(allMyBookings, Organization, 1);
 
-                    console.log(allMyBookings);
+                    if (allMyBookings.length > 0) {
+                        allMyBookings = utilPatches.sortMyBookingByDateAndStartTime(allMyBookings, 1);
+                        allMyBookings = utilPatches.addMonthStamps(allMyBookings);
+                        allMyBookings = await utilPatches.getEjsFormat(allMyBookings, Organization, 1);
+                    }
+                    
                 }
 
                 res.render("home/my_bookings.ejs", {instance: 1, result: allMyBookings});
             
             } else if (query === 'recent') {
 
-                res.render("home/my_bookings.ejs", {instance: 2, result: []});
+                const userObj = await User.findOne({_id: req.user.id});
+                const today = new Date();
+
+                let allMyBookings = [];
+
+                if (userObj.my_bookings.length !== 0) {
+                    
+                    for (let myBookingObj of userObj.my_bookings) {
+    
+                        if (!utilPatches.checkIfDateFromFuture(myBookingObj.date, true)) {
+                            allMyBookings.push(myBookingObj);
+                        }
+                        
+                        else if (myBookingObj.date.toDateString() === today.toDateString()) {
+                            if (orgValidator.compareTime(myBookingObj.end_time, [today.getHours(), today.getMinutes()], 1)) {
+                                allMyBookings.push(myBookingObj);
+                            }
+                        }
+                    }
+
+                    if (allMyBookings.length > 0) {
+                        allMyBookings = utilPatches.sortMyBookingByDateAndStartTime(allMyBookings, 2);
+                        allMyBookings = utilPatches.addMonthStamps(allMyBookings);
+                        allMyBookings = await utilPatches.getEjsFormat(allMyBookings, Organization, 2);
+                    }
+                    
+                }
+
+                res.render("home/my_bookings.ejs", {instance: 2, result: allMyBookings});
 
             } else {
                 res.redirect('/home/my-bookings?query=upcoming')
@@ -144,7 +173,7 @@ function bookAppointmentView(app, User, Organization) {
                 } else {
 
                     const existingBookingNumber = bookingValidator.getExistingBookingNumber(validator.orgObj, validator.date, slot_no);
-                    const slot_details = validator.orgObj.working_hours[validator.date.getDay()][slot_no - 1];
+                    const slot_details = validator.orgObj.working_hours[validator.date.getDay()][slot_no - 1 - validator.deletedNum];
                     if (existingBookingNumber === Number(slot_details[3])) {
                         res.redirect('/home/book-appointment?msg=bookingfailed');
                     } else {
