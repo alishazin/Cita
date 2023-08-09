@@ -234,6 +234,21 @@ section#results div.result div.right-area button:hover {
     color: white;
 }
 
+section#results div.empty-div {
+    border-radius: 8px;
+    width: 100%;
+    padding: 40px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+section#results div.empty-div img {
+    margin: 20px 0;
+}
+
 @media (max-width:820px) {
 
     section#results div.result {

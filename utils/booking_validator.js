@@ -47,7 +47,7 @@ async function bookingValidator(req, Organization) {
                 // Checking availability
                 
                 // checking all slots
-                const allSlots = [...orgObj.working_hours[booking_date.getDay()]];
+                const allSlots = orgObj.working_hours[booking_date.getDay()];
                 
                 if (allSlots === null) {
                     return {is_valid: false, template_vars: {error_msg: null, org_name_before: org_name, booking_date_before: getDateForInputValue(booking_date), result_header: "Not open for appointments.", search_result: null}}

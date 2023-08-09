@@ -24,67 +24,47 @@
     </section>
 
     <section id="results">
+        <% if (result.length > 0) { %>
 
-        <div class="result three active">
-            <div class="date-area">
-                <span class="day">Wed</span>
-                <span class="date">28</span>
-                <div class="sep"></div>
-            </div>
-            <div class="content-area">
-                <div class="col">
-                    <div class="item"><i class="bi bi-building"></i><span>asdaskddddddddkkkkkkkkkkkkkkkkkkkkkkkkkk</span></div>
-                    <div class="item"><i class="bi bi-clock-fill"></i><span>09:00 - 09:30</span></div>
-                </div>
-                <div class="col">
-                    <div class="item"><i class="bi bi-currency-rupee"></i><span>200</span></div>
-                    <div class="item"><i class="bi bi-info-circle"></i><span class="status active">active</span></div>
-                </div>
-            </div>
-            <div class="right-area user-flex-center">
-                <form>
-                    <button>cancel</button>
-                </form>
-            </div>
-        </div>
+            <% for (let myBookingObj of result) { %>
 
-        <div class="month-mark">May, 2023</div>
-        
-        <div class="result two cancelled">
-            <div class="date-area">
-                <span class="day">Wed</span>
-                <span class="date">28</span>
-                <div class="sep"></div>
+                <% if (myBookingObj.type === 0) { %>
+                    <div class="month-mark"><%= myBookingObj.content %></div>
+                <% } else if (myBookingObj.type === 1) { %>
+                    <div class="result three <%= myBookingObj.content.class_name %>">
+                        <div class="date-area">
+                            <span class="day"><%= myBookingObj.content.day_name %></span>
+                            <span class="date"><%= myBookingObj.content.date %></span>
+                            <div class="sep"></div>
+                        </div>
+                        <div class="content-area">
+                            <div class="col">
+                                <div class="item"><i class="bi bi-building"></i><span><%= myBookingObj.content.org_name %></span></div>
+                                <div class="item"><i class="bi bi-clock-fill"></i><span><%= myBookingObj.content.time %></span></div>
+                            </div>
+                            <div class="col">
+                                <div class="item"><i class="bi bi-currency-rupee"></i><span>200</span></div>
+                                <div class="item"><i class="bi bi-info-circle"></i><span class="status <%= myBookingObj.content.class_name %>"><%= myBookingObj.content.class_name %></span></div>
+                            </div>
+                        </div>
+                        <% if (myBookingObj.content.class_name === 'active') { %>
+                            <div class="right-area user-flex-center">
+                                <form>
+                                    <button>cancel</button>
+                                </form>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+
+            <% } %>
+
+        <% } else { %>
+            <div class="empty-div">
+                <img src="/images/home/bookings-empty.png">
+                <p>Empty search result!</p>
             </div>
-            <div class="content-area">
-                <div class="col">
-                    <div class="item"><i class="bi bi-building"></i><span>Almas</span></div>
-                    <div class="item"><i class="bi bi-clock-fill"></i><span>09:00 - 09:30</span></div>
-                </div>
-                <div class="col">
-                    <div class="item"><i class="bi bi-currency-rupee"></i><span>200</span></div>
-                    <div class="item"><i class="bi bi-info-circle"></i><span class="status cancelled">cancelled</span></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="result two compromised">
-            <div class="date-area">
-                <span class="day">Wed</span>
-                <span class="date">28</span>
-                <div class="sep"></div>
-            </div>
-            <div class="content-area">
-                <div class="col">
-                    <div class="item"><i class="bi bi-building"></i><span>Almas</span></div>
-                    <div class="item"><i class="bi bi-clock-fill"></i><span>09:00 - 09:30</span></div>
-                </div>
-                <div class="col">
-                    <div class="item"><i class="bi bi-currency-rupee"></i><span>200</span></div>
-                    <div class="item"><i class="bi bi-info-circle"></i><span class="status compromised">compromised</span></div>
-                </div>
-            </div>
-        </div>
+        <% } %>
 
     </section>
 </main>
