@@ -2,10 +2,36 @@
 <link rel="stylesheet" href="/css/home/all_bookings.css">
 <main>
     <%- include('inner_header', {content: "/ My Organizations / " + org_name + " / All Bookings", href: "/home/my-organizations/" + org_name + "#all_bookings"}) %>
+    <section class="header">
+        <h1>August 29, 2023</h1>
+        <p>All the appointments recieved on this day, classified by slots.</p>
+    </section>
+    
+    <section id="results">
+
+        <div class="slot_header">
+            <span class="time"><i class="bi bi-clock-fill"></i>13:00 - 15:00</span>
+            <span class="slot_num">Slot 1</span>
+        </div>
+
+        <div class="result">
+            <div class="left-side">
+                <span class="name"><i class="bi bi-person"></i>Ali Shazin</span>
+                <span class="email"><i class="bi bi-envelope"></i>alishazin1029@gmail.com</span>
+                <span class="id"><i class="bi bi-database"></i>64d3dde2382efcd8430a90a6</span>
+            </div>
+            <div class="right-side">
+                <form>
+                    <button><i class="bi bi-x-circle"></i></button>
+                </form>
+            </div>
+        </div>
+
+    </section>
 </main>
 <script>
 
-    document.onload = () => {
+    function onLoad() {
         document.querySelector("nav a.item:nth-of-type(2)").classList += " active";
     }
     
