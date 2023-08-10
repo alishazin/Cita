@@ -66,13 +66,14 @@
         <h1>Bookings Recieved</h1>
         <p>Select a date to view the appointments on that day.</p>
 
-        <form>
+        <form method="post" action="/home/my-organizations/<%= org_name %>/all-bookings">
             <div class="field">
                 <i class="bi bi-calendar2"></i>
                 <input type="text" id="id" name="date" placeholder="Select a date.."> 
             </div>
             <button>Confirm</button>
         </form>
+        <div class="error-div"><%= all_bookings_error_msg %></div>
     </section>
 </main>
 
@@ -85,7 +86,7 @@
 
     flatpickr('section#all_bookings form div.field input', {
         altInput: true,
-        altFormat: "F j, Y",
+        altFormat: "(D) F j, Y",
         dateFormat: "Y-m-d",
     });
 

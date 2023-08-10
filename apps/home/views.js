@@ -337,7 +337,11 @@ function myOrganizationsView(app, User, Organization) {
             } else {
 
                 const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-                res.render("home/single_org.ejs", {org_name: _.startCase(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: ''});
+                if (req.query.flag == 1) {
+                    res.render("home/single_org.ejs", {org_name: _.startCase(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: '', all_bookings_error_msg: "Invalid Date!"});
+                } else {
+                    res.render("home/single_org.ejs", {org_name: _.startCase(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: '', all_bookings_error_msg: null});
+                }
             }
         }
     })
@@ -357,9 +361,32 @@ function myOrganizationsView(app, User, Organization) {
                     res.redirect(`/home/my-organizations/${orgObj.name.toLowerCase()}`);
                 } else {
                     const returnValue = utilPatches.SingleOrgGetDetails(orgObj)
-                    res.render("home/single_org.ejs", {org_name: _.startCase(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: validator.err_msg});
+                    res.render("home/single_org.ejs", {org_name: _.startCase(req.params.name), weeklySchedule: orgObj.working_hours, upcomingHolidays : returnValue.upcomingHolidays, recentHolidays : returnValue.recentHolidays, addHolidayErrorMsg: validator.err_msg, all_bookings_error_msg: null});
                 }
                 
+            }
+        }
+    })
+
+    app.route("/home/my-organizations/:name/all-bookings")
+
+    .post(async (req, res) => {
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
+        if (authenticater) {
+            const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
+            if (!orgObj) {
+                res.status(404).send();
+            } else {
+
+                const date = new Date(req.body.date);
+
+                if (date == "Invalid Date") {
+                    res.redirect(`/home/my-organizations/${orgObj.name}?flag=1`);
+                } else {
+
+                    res.send("Good");
+                }
+
             }
         }
     })

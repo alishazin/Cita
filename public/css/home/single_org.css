@@ -390,6 +390,11 @@ section#all_bookings form button:hover {
     opacity: 0.9;
 }
 
+section#all_bookings div.error-div {
+    color: red;
+    margin-top: 10px;
+}
+
 @media (max-width:576px) {
     section {
         padding: 20px;
