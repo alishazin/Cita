@@ -1,0 +1,13 @@
+<%- include('header') %>
+<link rel="stylesheet" href="/css/home/all_bookings.css">
+<main>
+    <%- include('inner_header', {content: "/ My Organizations / " + org_name + " / All Bookings", href: "/home/my-organizations/" + org_name + "#all_bookings"}) %>
+</main>
+<script>
+
+    document.onload = () => {
+        document.querySelector("nav a.item:nth-of-type(2)").classList += " active";
+    }
+    
+</script>
+<%- include('footer') %>

@@ -370,6 +370,18 @@ function myOrganizationsView(app, User, Organization) {
 
     app.route("/home/my-organizations/:name/all-bookings")
 
+    .get(async (req, res) => {
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
+        if (authenticater) {
+            const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
+            if (!orgObj) {
+                res.status(404).send();
+            } else {
+                res.redirect(`/home/my-organizations/${orgObj.name}#all_bookings`);
+            }
+        }
+    })
+
     .post(async (req, res) => {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
@@ -384,7 +396,7 @@ function myOrganizationsView(app, User, Organization) {
                     res.redirect(`/home/my-organizations/${orgObj.name}?flag=1`);
                 } else {
 
-                    res.send("Good");
+                    res.render("home/all_bookings.ejs", {org_name: _.startCase(req.params.name)});
                 }
 
             }

@@ -100,7 +100,7 @@ section#results div.month-mark {
 section#results div.result {
     border-radius: 8px;
     border: 2px solid rgb(0, 0, 0, 0.07);
-    height: 100px;
+    height: 120px;
     margin-bottom: 10px;
 
     display: flex;
@@ -125,7 +125,7 @@ section#results div.result div.date-area {
 section#results div.result div.date-area div.sep {
     position: absolute;
     width: 1.5px;
-    height: 70px;
+    height: 90px;
     top: 15px;
     right: 0;
     background-color: rgb(0, 0, 0, 0.07);
@@ -170,12 +170,14 @@ section#results div.result div.content-area div.col {
 
 section#results div.result div.content-area div.col:first-of-type {
     align-items: flex-end;  
-    padding-bottom: 5px;
+}
+
+section#results div.result div.content-area div.col:nth-of-type(2) {
+    align-items: center;  
 }
 
 section#results div.result div.content-area div.col:last-of-type {
-    padding-top: 5px;
-    align-items: flex-start;  
+    align-items: flex-start;
 }
 
 section#results div.result div.content-area div.col div.item {
@@ -186,6 +188,10 @@ section#results div.result div.content-area div.col div.item {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+}
+
+section#results div.result div.content-area div.col div.item.id {
+    max-width: 100%;
 }
 
 section#results div.result div.content-area div.col div.item i {
@@ -281,7 +287,7 @@ section#results div.empty-div img {
     }
 }
 
-@media (max-width:700px) {
+@media (max-width:760px) {
 
     section#results div.result {
         flex-direction: column;
