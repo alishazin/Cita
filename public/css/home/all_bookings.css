@@ -66,7 +66,7 @@ section#results div.result div.right-side button {
     border: none;
     background-color: white;
     border-radius: 50%;
-    color: red;
+    color: coral;
 }
 
 section#results div.result span {
@@ -90,12 +90,30 @@ section#results div.result span i {
         padding: 20px;
     } 
     section#results div.result {
-        flex-direction: column-reverse;
+        flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
     }   
     section#results div.result div.right-side {
         margin: 0;
-        margin-left: auto;
+        width: 100%;
+    }
+    section#results div.result div.right-side form {
+        width: 100%;
+    }
+    section#results div.result div.right-side form button {
+        min-width: 100%;
+        text-align: center;
+        border: 1px solid coral;
+        color: coral;
+        border-radius: 0;
+        margin-top: 10px;
+        padding: 5px 0;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    section#results div.result div.right-side form button:hover {
+        background-color: coral;
+        color: white;
     }
 }
