@@ -1,5 +1,7 @@
 <%- include('header') %>
+<link rel="stylesheet" href="/flatpickr/flatpickr.min.css">
 <link rel="stylesheet" href="/css/home/single_org.css">
+<script src="/flatpickr/flatpickr.min.js"></script>
 <script src="/js/home/single_org.js"></script>
 <main>
     <%- include('inner_header', {content: "/ My Organizations / " + org_name, href: "/home/my-organizations/"}) %>
@@ -60,13 +62,32 @@
             </div>
         </div>
     </section>
+    <section id="all_bookings">
+        <h1>Bookings Recieved</h1>
+        <p>Select a date to view the appointments on that day.</p>
+
+        <form>
+            <div class="field">
+                <i class="bi bi-calendar2"></i>
+                <input type="text" id="id" name="date" placeholder="Select a date.."> 
+            </div>
+            <button>Confirm</button>
+        </form>
+    </section>
 </main>
+
 <script>
     
     var org_name = "<%= org_name %>";
     var weeklyScheduleData = <%- JSON.stringify(weeklySchedule) %>;
     var SpecialHolidaysUpcomingData = <%- JSON.stringify(upcomingHolidays) %>;
     var RecentHolidaysData = <%- JSON.stringify(recentHolidays) %>;
+
+    flatpickr('section#all_bookings form div.field input', {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+    });
 
     document.onload = () => {
         onLoad();

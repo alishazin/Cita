@@ -272,7 +272,6 @@ section#special_holidays div.left-content div.list div.items div.empty-div {
 
 section#special_holidays div.right-content {
     width: 50%;
-    /* background-color: red; */
     border: 1.5px dashed var(--primary-clr);
     margin: 0 10px;
     padding: 15px;
@@ -334,10 +333,84 @@ section#special_holidays div.right-content button:hover {
     opacity: 0.9;
 }
 
+section#all_bookings {
+    min-height: 300px;
+    margin-top: 20px;
+}
+
+section#all_bookings p {
+    color: var(--tertiary-clr);
+    font-weight: 400;
+}
+
+section#all_bookings form {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    height: 50px;
+}
+
+section#all_bookings form div.field {
+    width: calc(100% - 90px);
+    border: 1.5px solid rgb(0, 0, 0, 0.4);
+    cursor: pointer;
+    background-color: white;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+section#all_bookings form div.field i {
+    display: block;
+    width: 50px;
+    color: black;
+    text-align: center;
+}
+
+section#all_bookings form div.field input {
+    padding: 0 20px;
+    height: 100%;
+    width: calc(100% - 50px);
+    border: none;
+    border-radius: 0;
+    outline: 2px solid rgb(175, 175, 175);
+    z-index: 1;
+}
+
+section#all_bookings form button {
+    width: 90px;
+    border: none;
+    background-color: var(--ter-clr);
+    color: white;
+}
+
+section#all_bookings form button:hover {
+    opacity: 0.9;
+}
+
 @media (max-width:576px) {
     section {
         padding: 20px;
         padding-bottom: 0;
+    }
+    section#all_bookings form {
+        flex-direction: column;
+        height: 110px;
+    }
+    section#all_bookings form div.field {
+        height: 50px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    section#all_bookings form button {
+        height: 50px;
+        width: 100%;
+        text-transform: uppercase;
+    }
+    section#all_bookings form button:hover {
+        opacity: 0.85;
     }
 }
 
