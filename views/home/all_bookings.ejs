@@ -9,12 +9,51 @@
     
     <section id="results">
 
-        <div class="slot_header">
+        <% if (total_slots === 0) { %>
+            <div class="empty-day">
+                <img src="/images/home/bookings-empty.png">
+                <p>There are no slots available on this day!</p>
+            </div>
+        <% } else { %>
+            <% for (let i=1; i<=total_slots; i++) { %>
+                <div class="slot_header">
+                    <span class="time"><i class="bi bi-clock-fill"></i><%= slot_details[i].timing %></span>
+                    <span class="slot_num">Slot <%= i %></span>
+                </div>
+                <% if (slot_details[i].bookings.length === 0) { %>
+                    <div class="empty-slot">
+                        <img src="/images/home/bookings-empty.png">
+                        <p>No bookings are made on this slot!</p>
+                    </div>
+                <% } else { %>
+                    <% for (let j=0; j<slot_details[i].bookings.length; j++) { %>
+                        <div class="result">
+                            <div class="left-side">
+                                <span class="name"><i class="bi bi-person"></i><%= slot_details[i].bookings[j].name %></span>
+                                <span class="email"><i class="bi bi-envelope"></i><%= slot_details[i].bookings[j].email %></span>
+                                <span class="id"><i class="bi bi-database"></i><%= slot_details[i].bookings[j].id %></span>
+                            </div>
+                            <% if (slot_details[i].cancellable === true) { %>
+                                <div class="right-side" onsubmit="return confirm('Are you sure about cancelling the booking ?\nCancellation of the booking will be informed to the client through an email.')">
+                                    <form method="post" action="/home/my-organizations/<%= org_name %>/all-bookings/cancel-one">
+                                        <input type="text" name="org_name" value="<%= org_name %>" hidden>
+                                        <input type="text" name="id" value="<%= slot_details[i].bookings[j].id %>" hidden>
+                                        <button><i class="bi bi-x-circle"></i></button>
+                                    </form>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% } %>
+                <% } %>
+            <% } %>
+        <% } %>
+
+        <!-- <div class="slot_header">
             <span class="time"><i class="bi bi-clock-fill"></i>13:00 - 15:00</span>
             <span class="slot_num">Slot 1</span>
-        </div>
+        </div> -->
 
-        <div class="result">
+        <!-- <div class="result">
             <div class="left-side">
                 <span class="name"><i class="bi bi-person"></i>Ali Shazin</span>
                 <span class="email"><i class="bi bi-envelope"></i>alishazin1029@gmail.com</span>
@@ -25,7 +64,7 @@
                     <button><i class="bi bi-x-circle"></i></button>
                 </form>
             </div>
-        </div>
+        </div> -->
 
     </section>
 </main>

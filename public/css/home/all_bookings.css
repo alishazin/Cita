@@ -21,7 +21,7 @@ section.header p {
 }
 
 section#results {
-    padding: 0 40px;
+    padding: 0 40px 40px;
 }
 
 section#results div.slot_header {
@@ -82,12 +82,33 @@ section#results div.result span i {
     margin-right: 10px;
 }
 
+section#results div.empty-slot, section#results div.empty-day {
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid var(--primary-clr);
+    padding-bottom: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+section#results div.empty-day {
+    border: none;
+}
+
+section#results div.empty-slot p, section#results div.empty-day p {
+    color: var(--tertiary-clr);
+    font-weight: 300;
+}
+
 @media (max-width:576px) {
     main div.list-container {
         padding: 0 20px;
     }
     main section.header, main section#results {
-        padding: 20px;
+        padding: 0 20px 20px;
     } 
     section#results div.result {
         flex-direction: column;

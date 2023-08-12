@@ -169,9 +169,9 @@ function bookAppointmentView(app, User, Organization) {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
             if (req.query.msg === 'bookingfailed') {
-                res.render("home/book_appointment.ejs", {error_msg: "Booking failed", org_name_before: null, booking_date_before: null, result_header: null, search_result: null});
+                res.render("home/book_appointment.ejs", {error_msg: "Booking failed", org_name_before: null, booking_date_before: null, result_header: null, search_result: null, _: _});
             } else {
-                res.render("home/book_appointment.ejs", {error_msg: null, org_name_before: null, booking_date_before: null, result_header: null, search_result: null});
+                res.render("home/book_appointment.ejs", {error_msg: null, org_name_before: null, booking_date_before: null, result_header: null, search_result: null, _: _});
             }
         }
     })
@@ -182,6 +182,7 @@ function bookAppointmentView(app, User, Organization) {
         if (authenticater) {
             
             const validator = await bookingValidator.validate(req, Organization);
+            validator.template_vars._ = _;
             res.render("home/book_appointment.ejs", validator.template_vars);
             
         }

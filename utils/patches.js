@@ -243,7 +243,7 @@ async function getAllBookingsData(date, orgObj, UserModel) {
         returnObj.slot_details[i+1].bookings = [];
 
         for (let bookingObj of orgObj.bookings) {
-            if (bookingObj.date.toDateString() === date.toDateString()) {
+            if (bookingObj.slot_no === Number(i+1) && bookingObj.date.toDateString() === date.toDateString()) {
                 const clientUserObj = await UserModel.findOne({_id: bookingObj.user});
                 returnObj.slot_details[i+1].bookings.push({
                     name: `${clientUserObj.firstName} ${clientUserObj.lastName}`,
@@ -254,7 +254,6 @@ async function getAllBookingsData(date, orgObj, UserModel) {
         }
 
     }
-
 
     console.log(returnObj);
     return returnObj

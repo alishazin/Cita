@@ -7,7 +7,7 @@
         <form method="post">
             <div class="search-bar">
                 <div class="name-area">
-                    <input type="text" value="<%= org_name_before %>" placeholder="Search" id="name" name="org_name" autocomplete="off" required>
+                    <input type="text" value="<%= _.startCase(org_name_before) %>" placeholder="Search" id="name" name="org_name" autocomplete="off" required>
                     <div class="dropdown custom-slidebar custom-slidebar-thin"></div>
                 </div>
                 <input type="date" id="date" name="booking_date" value="<%= booking_date_before %>" required>
