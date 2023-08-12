@@ -80,9 +80,9 @@
 <script>
     
     var org_name = "<%= org_name %>";
-    var weeklyScheduleData = <%- JSON.stringify(weeklySchedule) %>;
-    var SpecialHolidaysUpcomingData = <%- JSON.stringify(upcomingHolidays) %>;
-    var RecentHolidaysData = <%- JSON.stringify(recentHolidays) %>;
+    var weeklyScheduleData = JSON.parse('<%- JSON.stringify(weeklySchedule) %>');
+    var SpecialHolidaysUpcomingData = JSON.parse('<%- JSON.stringify(upcomingHolidays) %>');
+    var RecentHolidaysData = JSON.parse('<%- JSON.stringify(recentHolidays) %>');
 
     flatpickr('section#all_bookings form div.field input', {
         altInput: true,
