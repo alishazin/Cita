@@ -3,7 +3,7 @@
 <main>
     <%- include('inner_header', {content: "/ My Organizations / " + org_name + " / All Bookings", href: "/home/my-organizations/" + org_name + "#all_bookings"}) %>
     <section class="header">
-        <h1>August 29, 2023</h1>
+        <h1><%= date_string %></h1>
         <p>All the appointments recieved on this day, classified by slots.</p>
     </section>
     

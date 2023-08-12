@@ -27,7 +27,22 @@ const intToMonth = {
     11 : "Dec",
 }
 
-module.exports = {SingleOrgGetDetails: SingleOrgGetDetails, checkIfDateFromFuture: checkIfDateFromFuture, addZeroToStart: addZeroToStart, sortMyBookingByDateAndStartTime: sortMyBookingByDateAndStartTime, addMonthStamps: addMonthStamps, getOrgName: getOrgName, getEjsFormat: getEjsFormat};
+const intToMonthFull = {
+    0 : "January",
+    1 : "February",
+    2 : "March",
+    3 : "April",
+    4 : "May",
+    5 : "June",
+    6 : "July",
+    7 : "August",
+    8 : "September",
+    9 : "October",
+    10 : "November",
+    11 : "December",
+}
+
+module.exports = {SingleOrgGetDetails: SingleOrgGetDetails, checkIfDateFromFuture: checkIfDateFromFuture, addZeroToStart: addZeroToStart, sortMyBookingByDateAndStartTime: sortMyBookingByDateAndStartTime, addMonthStamps: addMonthStamps, getOrgName: getOrgName, getEjsFormat: getEjsFormat, getAllBookingsData: getAllBookingsData};
 
 function SingleOrgGetDetails(orgObj) {
     var daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -173,4 +188,74 @@ async function getEjsFormat(array, Organization, instance) {
 
     return ejsFormat;
 
+}
+
+async function getAllBookingsData(date, orgObj, UserModel) {
+
+    let returnObj = {}
+    // {
+    //     org_name: ,
+    //     date_string: ,
+    //     total_slots: ,
+    //     slot_details: {
+    //         '1' : {
+    //             timing: String,
+    //             cancellable: Bool,
+    //             bookings: [
+    //                 {name: , email: , id: },
+    //                 {name: , email: , id: },
+    //             ]
+    //         }, 
+    //         '2': ..
+    //     }
+    // }
+
+    returnObj.org_name = _.startCase(orgObj.name);
+    returnObj.date_string = `${intToMonth[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+
+    const working_hours = orgObj.working_hours[date.getDay()];
+
+    returnObj.total_slots = working_hours === null ? 0 : working_hours.length;
+    returnObj.slot_details = {};
+
+    for (let i=0; i<returnObj.total_slots; i++) {
+
+        returnObj.slot_details[i+1] = {};
+
+        returnObj.slot_details[i+1].timing = `${addZeroToStart(working_hours[i][0][0])}:${addZeroToStart(working_hours[i][0][1])} - ${addZeroToStart(working_hours[i][1][0])}:${addZeroToStart(working_hours[i][1][1])}`;
+
+        if (checkIfDateFromFuture(date, false)) {
+            returnObj.slot_details[i+1].cancellable = true;    
+        } else {
+
+            const today = new Date();
+            if (date.toDateString() === today.toDateString()) {
+                if (orgValidator.compareTime(working_hours[i][0], [today.getHours(), today.getMinutes()], 3)) {
+                    returnObj.slot_details[i+1].cancellable = true;    
+                } else {
+                    returnObj.slot_details[i+1].cancellable = false;    
+                }
+            } else {
+                returnObj.slot_details[i+1].cancellable = false;    
+            }
+        }
+        
+        returnObj.slot_details[i+1].bookings = [];
+
+        for (let bookingObj of orgObj.bookings) {
+            if (bookingObj.date.toDateString() === date.toDateString()) {
+                const clientUserObj = await UserModel.findOne({_id: bookingObj.user});
+                returnObj.slot_details[i+1].bookings.push({
+                    name: `${clientUserObj.firstName} ${clientUserObj.lastName}`,
+                    email: clientUserObj.username,
+                    id: bookingObj.id,
+                });
+            }
+        }
+
+    }
+
+
+    console.log(returnObj);
+    return returnObj
 }

@@ -396,7 +396,10 @@ function myOrganizationsView(app, User, Organization) {
                     res.redirect(`/home/my-organizations/${orgObj.name}?flag=1`);
                 } else {
 
-                    res.render("home/all_bookings.ejs", {org_name: _.startCase(req.params.name)});
+                    const contentObj = await utilPatches.getAllBookingsData(date, orgObj, User);
+
+                    // res.render("home/all_bookings.ejs", {org_name: _.startCase(req.params.name)});
+                    res.render("home/all_bookings.ejs", contentObj);
                 }
 
             }
