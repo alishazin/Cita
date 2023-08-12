@@ -32,6 +32,7 @@ section#results div.slot_header {
     background-color: rgb(2, 84, 100, 0.1);
     
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 }
 
@@ -45,6 +46,11 @@ section#results div.slot_header span.time i {
 
 section#results div.slot_header span.slot_num {
     font-weight: 300;
+    padding-left: 10px;
+}
+
+section#results div.slot_header span.slot_num span {
+    font-weight: 700;
 }
 
 section#results div.result {

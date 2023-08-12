@@ -200,6 +200,8 @@ async function getAllBookingsData(date, orgObj, UserModel) {
     //     slot_details: {
     //         '1' : {
     //             timing: String,
+    //             filled_bookings: ,
+    //             total_available: ,
     //             cancellable: Bool,
     //             bookings: [
     //                 {name: , email: , id: },
@@ -224,6 +226,8 @@ async function getAllBookingsData(date, orgObj, UserModel) {
         returnObj.slot_details[i+1] = {};
 
         returnObj.slot_details[i+1].timing = `${addZeroToStart(working_hours[i][0][0])}:${addZeroToStart(working_hours[i][0][1])} - ${addZeroToStart(working_hours[i][1][0])}:${addZeroToStart(working_hours[i][1][1])}`;
+        returnObj.slot_details[i+1].total_available = working_hours[i][3];
+        returnObj.slot_details[i+1].filled_bookings = 0;
 
         if (checkIfDateFromFuture(date, false)) {
             returnObj.slot_details[i+1].cancellable = true;    
@@ -251,11 +255,11 @@ async function getAllBookingsData(date, orgObj, UserModel) {
                     email: clientUserObj.username,
                     id: bookingObj.id,
                 });
+                returnObj.slot_details[i+1].filled_bookings++;
             }
         }
 
     }
 
-    console.log(returnObj);
     return returnObj
 }

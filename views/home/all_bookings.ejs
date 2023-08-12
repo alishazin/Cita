@@ -21,7 +21,7 @@
             <% for (let i=1; i<=total_slots; i++) { %>
                 <div class="slot_header">
                     <span class="time"><i class="bi bi-clock-fill"></i><%= slot_details[i].timing %></span>
-                    <span class="slot_num">Slot <%= i %></span>
+                    <span class="slot_num"><%= slot_details[i].filled_bookings %> / <span><%= slot_details[i].total_available %></span></span>
                 </div>
                 <% if (slot_details[i].bookings.length === 0) { %>
                     <div class="empty-slot">
