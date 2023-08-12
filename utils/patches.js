@@ -212,6 +212,7 @@ async function getAllBookingsData(date, orgObj, UserModel) {
 
     returnObj.org_name = _.startCase(orgObj.name);
     returnObj.date_string = `${intToMonth[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    returnObj.date = `${date.getFullYear()}-${addZeroToStart(date.getMonth() + 1)}-${addZeroToStart(date.getDate())}`;
 
     const working_hours = orgObj.working_hours[date.getDay()];
 

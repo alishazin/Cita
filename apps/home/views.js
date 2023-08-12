@@ -9,6 +9,7 @@ const utilPatches = require('../../utils/patches.js');
 const _ = require('lodash');
 const mailClient = require('../../utils/email.js');
 var mongoose = require('mongoose');
+const email = require('../../utils/email.js');
 
 function initializeViews(app, passport, UserModel, OrganizationModel) {
     bookAppointmentView(app, UserModel, OrganizationModel);
@@ -378,10 +379,26 @@ function myOrganizationsView(app, User, Organization) {
             if (!orgObj) {
                 res.status(404).send();
             } else {
-                res.redirect(`/home/my-organizations/${orgObj.name}#all_bookings`);
+
+                const date = new Date(req.query.date);
+
+                if (date == "Invalid Date") {
+                    res.redirect(`/home/my-organizations/${orgObj.name}?flag=1`);
+                } else {
+
+                    const contentObj = await utilPatches.getAllBookingsData(date, orgObj, User);
+
+                    if (req.query.flag === '1') contentObj.error = true; 
+                    else contentObj.error = false;
+
+                    res.render("home/all_bookings.ejs", contentObj);
+                }
+
             }
         }
     })
+
+    app.route("/home/my-organizations/:name/all-bookings/cancel-one")
 
     .post(async (req, res) => {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
@@ -391,16 +408,39 @@ function myOrganizationsView(app, User, Organization) {
                 res.status(404).send();
             } else {
 
-                const date = new Date(req.body.date);
+                const id = req.body.id;
+                const date = req.body.date;
 
-                if (date == "Invalid Date") {
-                    res.redirect(`/home/my-organizations/${orgObj.name}?flag=1`);
+                let bookingObj = null;
+                let count = 0;
+                for (let obj of orgObj.bookings) {
+                    if (obj.id.toString() === id) {
+                        bookingObj = obj;
+                        orgObj.bookings.splice(count, 1);
+                        break;
+                    }
+                    count++;
+                }
+
+                if (bookingObj === null) {
+                    res.redirect(`/home/my-organizations/${orgObj.name}/all-bookings?date=${date}&flag=1`);
                 } else {
 
-                    const contentObj = await utilPatches.getAllBookingsData(date, orgObj, User);
+                    await orgObj.save();
 
-                    // res.render("home/all_bookings.ejs", {org_name: _.startCase(req.params.name)});
-                    res.render("home/all_bookings.ejs", contentObj);
+                    const clientObj = await User.findOne({_id: bookingObj.user});
+
+                    for (let clientBookingObj of clientObj.my_bookings) {
+                        if (clientBookingObj.booking_id.toString() === id) {
+                            clientBookingObj.status = 2;
+                            email.sendEmailBookingCancelled(clientObj.username, orgObj, bookingObj);
+                        }
+                    }
+
+                    clientObj.markModified('my_bookings');
+                    await clientObj.save();
+
+                    res.redirect(`/home/my-organizations/${orgObj.name}/all-bookings?date=${date}`);
                 }
 
             }

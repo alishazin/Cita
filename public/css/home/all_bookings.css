@@ -108,7 +108,7 @@ section#results div.empty-slot p, section#results div.empty-day p {
         padding: 0 20px;
     }
     main section.header, main section#results {
-        padding: 0 20px 20px;
+        padding: 20px 20px 20px;
     } 
     section#results div.result {
         flex-direction: column;

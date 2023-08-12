@@ -66,10 +66,10 @@
         <h1>Bookings Recieved</h1>
         <p>Select a date to view the appointments on that day.</p>
 
-        <form method="post" action="/home/my-organizations/<%= org_name %>/all-bookings">
+        <form method="get" action="/home/my-organizations/<%= org_name %>/all-bookings">
             <div class="field">
                 <i class="bi bi-calendar2"></i>
-                <input type="text" id="id" name="date" placeholder="Select a date.."> 
+                <input type="text" id="name" name="date" placeholder="Select a date.."> 
             </div>
             <button>Confirm</button>
         </form>
@@ -88,6 +88,7 @@
         altInput: true,
         altFormat: "(D) F j, Y",
         dateFormat: "Y-m-d",
+        disableMobile: true
     });
 
     document.onload = () => {

@@ -5,6 +5,9 @@
     <section class="header">
         <h1><%= date_string %></h1>
         <p>All the appointments recieved on this day, classified by slots.</p>
+        <% if (error === true) { %>
+            <div style="color:red;">Something went wrong, cancellation failed!</div>
+        <% } %>
     </section>
     
     <section id="results">
@@ -36,8 +39,8 @@
                             <% if (slot_details[i].cancellable === true) { %>
                                 <div class="right-side" onsubmit="return confirm('Are you sure about cancelling the booking ?\nCancellation of the booking will be informed to the client through an email.')">
                                     <form method="post" action="/home/my-organizations/<%= org_name %>/all-bookings/cancel-one">
-                                        <input type="text" name="org_name" value="<%= org_name %>" hidden>
                                         <input type="text" name="id" value="<%= slot_details[i].bookings[j].id %>" hidden>
+                                        <input type="text" name="date" value="<%= date %>" hidden>
                                         <button><i class="bi bi-x-circle"></i></button>
                                     </form>
                                 </div>
@@ -48,28 +51,11 @@
             <% } %>
         <% } %>
 
-        <!-- <div class="slot_header">
-            <span class="time"><i class="bi bi-clock-fill"></i>13:00 - 15:00</span>
-            <span class="slot_num">Slot 1</span>
-        </div> -->
-
-        <!-- <div class="result">
-            <div class="left-side">
-                <span class="name"><i class="bi bi-person"></i>Ali Shazin</span>
-                <span class="email"><i class="bi bi-envelope"></i>alishazin1029@gmail.com</span>
-                <span class="id"><i class="bi bi-database"></i>64d3dde2382efcd8430a90a6</span>
-            </div>
-            <div class="right-side">
-                <form>
-                    <button><i class="bi bi-x-circle"></i></button>
-                </form>
-            </div>
-        </div> -->
-
     </section>
 </main>
 <script>
 
+    
     function onLoad() {
         document.querySelector("nav a.item:nth-of-type(2)").classList += " active";
     }
