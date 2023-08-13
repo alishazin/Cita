@@ -380,7 +380,26 @@ function myOrganizationsView(app, User, Organization) {
                 res.status(404).send();
             } else {
 
-                res.send("Deleted");
+                for (let bookingObj of orgObj.bookings) {
+                    
+                    const clientObj = await User.findOne({_id: bookingObj.user});
+
+                    for (let clientBookingObj of clientObj.my_bookings) {
+                        if (clientBookingObj.booking_id.toString() === bookingObj.id.toString()) {
+                            clientBookingObj.status = 2;
+                            email.sendEmailOrgDeleted(clientObj.username, orgObj, bookingObj);
+                            break;
+                        }
+                    }
+
+                    clientObj.markModified('my_bookings');
+                    await clientObj.save();
+
+                    await Organization.deleteOne({ _id: orgObj.id });
+
+                }
+
+                res.redirect("/home/my-organizations/");
             }
         }
     })
@@ -449,6 +468,7 @@ function myOrganizationsView(app, User, Organization) {
                         if (clientBookingObj.booking_id.toString() === id) {
                             clientBookingObj.status = 2;
                             email.sendEmailBookingCancelled(clientObj.username, orgObj, bookingObj);
+                            break;
                         }
                     }
 
@@ -537,9 +557,6 @@ function myOrganizationsView(app, User, Organization) {
     
                         // Update working_hours of orgObj
                         orgObj.working_hours = validator.data.working_hours;
-    
-                        // Update the status if or if not changed
-                        orgObj.status = validator.data.status;
 
                         // Delete special_holidays on edited day
                         deletedNum = 0;
@@ -557,9 +574,12 @@ function myOrganizationsView(app, User, Organization) {
                             }
                         }
     
-                        await orgObj.save();
                     }
 
+                    // Update the status if or if not changed
+                    orgObj.status = validator.data.status;
+
+                    await orgObj.save();
 
                     res.redirect('/home/my-organizations');
 

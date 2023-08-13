@@ -152,7 +152,11 @@ function addMonthStamps(array) {
 
 async function getOrgName(id, Organization) {
     const orgObj = await Organization.findOne({_id: id});
-    return _.startCase(orgObj.name);
+    if (orgObj === undefined) {
+        return _.startCase(orgObj.name);
+    } else {
+        return '[ Deleted Organization ]'
+    }
 }
 
 async function getEjsFormat(array, Organization, instance) {
