@@ -1,0 +1,35 @@
+body {
+    background-color: #235866;
+    font-family: 'Inter';
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+img {
+    max-width: 100%;
+    margin: auto;
+}
+
+p {
+    color: var(--secondary-clr);
+    text-transform: uppercase;
+    font-size: 24px;
+}
+
+a {
+    border: 1px solid var(--ter-clr);
+    color: var(--ter-clr);
+    background-color: transparent;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: var(--ter-clr);
+    color: #235866;
+}

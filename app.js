@@ -87,6 +87,12 @@ async function(accessToken, refreshToken, profile, cb) {
 authViews.initialize(app, passport, User);
 homeViews.initialize(app, passport, User, Organization);
 
+// Custom 404 page (Add at last)
+app.use(function(req, res) {
+    res.status(404).render('auth/404.ejs');
+});
+
+
 // Starting Server
 app.listen(3000, () => {
     console.log("Server started on port 3000");

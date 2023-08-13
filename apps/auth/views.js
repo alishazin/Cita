@@ -106,12 +106,8 @@ function googleSignIn(app, passport, User) {
 
     app.get(
         '/auth/signup/google/callback', 
-        passport.authenticate('google', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/test' })
+        passport.authenticate('google', { failureRedirect: '/auth/signup/google/failed', successRedirect: '/home/book-appointment' })
     );
-
-    app.get("/test", async (req, res) => {
-        res.send(req.user);
-    })
 
     app.get("/auth/signup/google/failed", (req, res) => {
         res.render("auth/signup_duplicate_user.ejs");
