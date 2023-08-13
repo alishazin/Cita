@@ -370,6 +370,21 @@ function myOrganizationsView(app, User, Organization) {
         }
     })
 
+    app.route("/home/my-organizations/:name/delete-org")
+    
+    .post(async (req, res) => {
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
+        if (authenticater) {
+            const orgObj = await Organization.findOne({name: req.params.name.toLowerCase(), admin: req.user.id});
+            if (!orgObj) {
+                res.status(404).send();
+            } else {
+
+                res.send("Deleted");
+            }
+        }
+    })
+
     app.route("/home/my-organizations/:name/all-bookings")
 
     .get(async (req, res) => {

@@ -74,6 +74,24 @@
             <button>Confirm</button>
         </form>
         <div class="error-div"><%= all_bookings_error_msg %></div>
+    
+    </section>
+    <section id="danger_zone">
+        <h1><i class="bi bi-exclamation-triangle"></i>Danger Zone</h1>
+        <p>Actions in this section can have permanent impact, so be cautious.</p>
+
+        <form id="delete" method="post" action="/home/my-organizations/<%= org_name %>/delete-org">
+            <label>Before you delete:</label>
+            <ul>
+                <li>This change cannot be reversed.</li>
+                <li>All the pending bookings will be cancelled.</li>
+                <li>Retrieval of the organization is not possible.</li>
+            </ul>
+            <input oninput="deleteConfirmationInput(this)"><br>
+            <label>Type 'I understand' for confirmation.</label><br><br>
+            <button disabled>Delete Organization</button>
+        </form>
+
     </section>
 </main>
 

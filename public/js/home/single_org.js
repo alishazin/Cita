@@ -236,3 +236,11 @@ function urlencodeFormData(formdata) {
     var params = new URLSearchParams(formdata);
     return params.toString();
 }
+
+function deleteConfirmationInput(field) {
+    if (field.value.toLowerCase() === "i understand") {
+        document.querySelector("section#danger_zone form#delete button").disabled = false;
+    } else {
+        document.querySelector("section#danger_zone form#delete button").disabled = true;
+    }
+}

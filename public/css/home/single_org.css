@@ -20,6 +20,10 @@ section {
     width: 100%;
 }
 
+section:last-of-type {
+    padding-bottom: 40px;
+}
+
 section#weekly_schedule div.table-container {
     width: 100%;
     height: fit-content;
@@ -334,7 +338,6 @@ section#special_holidays div.right-content button:hover {
 }
 
 section#all_bookings {
-    min-height: 300px;
     margin-top: 20px;
 }
 
@@ -393,6 +396,61 @@ section#all_bookings form button:hover {
 section#all_bookings div.error-div {
     color: red;
     margin-top: 10px;
+}
+
+section#danger_zone {
+    margin-top: 10px;
+}
+
+section#danger_zone h1 i {
+    padding-right: 10px;
+    color: red;
+}
+
+section#danger_zone p {
+    color: var(--tertiary-clr);
+    font-weight: 400;
+    margin-bottom: 30px;
+}
+
+section#danger_zone form#delete label:first-of-type {
+    display: block;
+    margin-bottom: 10px;
+}
+
+section#danger_zone form#delete label:last-of-type {
+    font-size: 13px;
+}
+
+section#danger_zone form#delete input {
+    padding: 4px 8px;
+    border: 1px solid var(--secondary-clr);
+    outline: none;
+    border-radius: 2px;
+}
+
+section#danger_zone form#delete input:focus {
+    outline: 1.5px solid var(--secondary-clr);
+}
+
+section#danger_zone form#delete button {
+    padding: 8px 15px;
+    background-color: white;
+    color: red;
+    border-radius: 4px;
+    border: 2px solid red;
+    font-weight: 600;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+section#danger_zone form#delete button:not(:disabled):hover {
+    background-color: red;
+    color: white;
+}
+
+section#danger_zone form#delete button:disabled {
+    color: var(--quaternary-clr);
+    border-color: var(--quaternary-clr);
 }
 
 @media (max-width:576px) {
