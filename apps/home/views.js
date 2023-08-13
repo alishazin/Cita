@@ -15,7 +15,7 @@ function initializeViews(app, passport, UserModel, OrganizationModel) {
     bookAppointmentView(app, UserModel, OrganizationModel);
     myOrganizationsView(app, UserModel, OrganizationModel);
     myBookingsView(app, UserModel, OrganizationModel);
-    settingsView(app, UserModel);
+    settingsView(app, UserModel, OrganizationModel);
     getOnlyViews(app, UserModel, OrganizationModel);
     postOnlyViews(app, UserModel, OrganizationModel);
 }
@@ -119,7 +119,7 @@ function myBookingsView(app, User, Organization) {
                 let myBookingObj = null;
                 for (let obj of userObj.my_bookings) {
                     
-                    if (obj.booking_id.toString() === booking_id) {
+                    if (obj.booking_id.toString() === booking_id && obj.status === 1) {
                         myBookingObj = obj;
                         break;
                     }
@@ -394,10 +394,10 @@ function myOrganizationsView(app, User, Organization) {
 
                     clientObj.markModified('my_bookings');
                     await clientObj.save();
-
-                    await Organization.deleteOne({ _id: orgObj.id });
-
+                    
                 }
+
+                await Organization.findByIdAndDelete(orgObj._id);
 
                 res.redirect("/home/my-organizations/");
             }
@@ -594,13 +594,55 @@ function myOrganizationsView(app, User, Organization) {
 
 }
 
-function settingsView(app, User) {
+function settingsView(app, User, Organization) {
     app.route("/home/settings")
 
     .get(async (req, res) => {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
             res.render("home/settings.ejs");
+        }
+    })
+    
+    app.route("/home/settings/delete-account")
+
+    .post(async (req, res) => {
+        const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
+        if (authenticater) {
+
+            const userObj = await User.findOne({_id: req.user.id});
+
+            let cancelledBookings = [];
+
+            for (let myBookingObj of userObj.my_bookings) {
+
+                if (myBookingObj.status === 2) continue;
+
+                const orgObj = await Organization.findOne({_id: myBookingObj.org_id});
+
+                for (let i=0; i<orgObj.bookings.length; i++) {
+                    if (orgObj.bookings[i].id.toString() === myBookingObj.booking_id.toString()) {
+                        cancelledBookings.push({
+                            org_name: _.startCase(orgObj.name),
+                            date: myBookingObj.date.toDateString(),
+                            time: `${utilPatches.addZeroToStart(myBookingObj.start_time[0])}:${utilPatches.addZeroToStart(myBookingObj.start_time[1])} - ${utilPatches.addZeroToStart(myBookingObj.end_time[0])}:${utilPatches.addZeroToStart(myBookingObj.end_time[1])}`,
+                            price: myBookingObj.price,
+                        });
+                        orgObj.bookings.splice(i, 1);
+                        break;
+                    }
+                }
+            
+                await orgObj.save();
+
+            }
+
+            console.log(cancelledBookings);
+            email.sendEmailUserDeleted(userObj.username, cancelledBookings);
+ 
+            await User.findByIdAndDelete(userObj._id);
+
+            res.redirect("/auth/login/");
         }
     })
 }

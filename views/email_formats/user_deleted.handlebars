@@ -50,16 +50,21 @@
     <div class="container">
         <div class="main">
             <h1>Cita.</h1>
-            <p>Email sent to notify you that your appointment is cancelled due to the deletion of the organization '{{org_name}}'.</p>
-            <div class="link-box">
-                <div>Booking Details,</div>
-                <div>Organization: <span>{{org_name}}</span></div>
-                <div>Date: <span>{{date}}</span></div>
-                <div>Time: <span>{{time}}</span></div>
-                <div>Price: <span>₹ {{price}}</span></div>
-            </div>
-            <p>We would like to inform you that <b>{{org_name}}</b> has discontinued their service.</p>
-            <p>Your money will be refunded in 1-2 bussiness days.</p>
+            <p>Email sent to notify you that your account is successfully deleted.</p>
+            {{#if cancelledBookings }}
+                <p>Details of the bookings that got cancelled during the process:</p>
+                {{#each cancelledBookings}}
+                    <div class="link-box">
+                        <div>Organization: <span>{{this.org_name}}</span></div>
+                        <div>Date: <span>{{this.date}}</span></div>
+                        <div>Time: <span>{{this.time}}</span></div>
+                        <div>Price: <span>₹ {{this.price}}</span></div>
+                    </div>
+                {{/each}}
+                <p>Your money will be refunded in 1-2 bussiness days.</p>
+            {{else}}
+                <p>No bookings were cancelled during the process.</p>
+            {{/if}}
             <br>
             <p>Thank you.</p>
             <p>Team Cita.</p>

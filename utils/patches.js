@@ -152,10 +152,10 @@ function addMonthStamps(array) {
 
 async function getOrgName(id, Organization) {
     const orgObj = await Organization.findOne({_id: id});
-    if (orgObj === undefined) {
-        return _.startCase(orgObj.name);
-    } else {
+    if (orgObj === null) {
         return '[ Deleted Organization ]'
+    } else {
+        return _.startCase(orgObj.name);
     }
 }
 
