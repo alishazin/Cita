@@ -439,8 +439,9 @@ section#danger_zone form#delete button {
     color: red;
     border-radius: 4px;
     border: 2px solid red;
+    border-color: red;
     font-weight: 600;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 section#danger_zone form#delete button:not(:disabled):hover {

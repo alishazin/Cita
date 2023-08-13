@@ -1,10 +1,40 @@
 <%- include('header') %>
+<link rel="stylesheet" href="/css/home/settings.css">
 <main>
-
+    <div class="header">
+        <h1>Settings</h1>
+        <p>You can edit your preferences here.</p>
+    </div>
+    <div class="content">
+        <form class="delete-row">
+            <div class="top">
+                <span><i class="bi bi-exclamation-triangle" style="color:red;margin-right: 10px;"></i>Delete account</span>
+                <button disabled>Confirm</button>
+            </div>
+            <div class="bottom">
+                <ul>
+                    <li>This will permanently delete your acccount.</li>
+                    <li>This change is not reversible.</li>
+                    <li>All the bookings will be cancelled.</li>
+                </ul>
+            </div>
+            <input oninput="deleteConfirmationInput(this)">
+            <label>Type 'I understand' to confirm</label>
+        </form>
+    </div>
 </main>
 <script>
     function onLoad() {
         document.querySelector("nav a.item:nth-of-type(4)").classList += " active";
+        
+    }
+    
+    function deleteConfirmationInput(field) {
+        if (field.value.toLowerCase() === "i understand") {
+            document.querySelector("main div.content form.delete-row div.top button").disabled = false;
+        } else {
+            document.querySelector("main div.content form.delete-row div.top button").disabled = true;
+        }
     }
 </script>
 <%- include('footer') %>
