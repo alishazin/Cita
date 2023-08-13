@@ -36,6 +36,7 @@ main div.content form.delete-row {
     border-radius: 8px;
     height: fit-content;
     border: 1px solid var(--primary-clr);
+    padding-bottom: 25px;
 
     display: flex;
     flex-direction: column;
@@ -94,8 +95,13 @@ main div.content form.delete-row input:focus {
 }
 
 main div.content form.delete-row label {
-    margin: 0 20px 20px;
+    margin: 0 20px 0px;
     font-size: 13px;
+}
+
+main div.content form.delete-row div.error-msg {
+    color: red;
+    margin: 0 20px;
 }
 
 @media (max-width:576px) {

@@ -16,10 +16,14 @@
                     <li>This will permanently delete your acccount.</li>
                     <li>This change is not reversible.</li>
                     <li>All the bookings will be cancelled.</li>
+                    <li>Account deletion won't work if the user is admin of an organization.</li>
                 </ul>
             </div>
             <input oninput="deleteConfirmationInput(this)">
             <label>Type 'I understand' to confirm</label>
+            <% if (delete_error_msg) { %>
+                <div class="error-msg"><%= delete_error_msg %></div>
+            <% } %>
         </form>
     </div>
 </main>

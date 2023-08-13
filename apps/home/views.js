@@ -600,7 +600,11 @@ function settingsView(app, User, Organization) {
     .get(async (req, res) => {
         const authenticater = await viewAuthenticator({req: req, res: res, UserModel: User, unauthenticatedRedirect: `/auth/login?invalid=2&redirect=${req.url}`});
         if (authenticater) {
-            res.render("home/settings.ejs");
+            if (req.query.flag === '1') {
+                res.render("home/settings.ejs", {delete_error_msg: "Deletion failed: You are admin of an organization."});
+            } else {
+                res.render("home/settings.ejs", {delete_error_msg: null});
+            }
         }
     })
     
@@ -611,38 +615,42 @@ function settingsView(app, User, Organization) {
         if (authenticater) {
 
             const userObj = await User.findOne({_id: req.user.id});
-
-            let cancelledBookings = [];
-
-            for (let myBookingObj of userObj.my_bookings) {
-
-                if (myBookingObj.status === 2) continue;
-
-                const orgObj = await Organization.findOne({_id: myBookingObj.org_id});
-
-                for (let i=0; i<orgObj.bookings.length; i++) {
-                    if (orgObj.bookings[i].id.toString() === myBookingObj.booking_id.toString()) {
-                        cancelledBookings.push({
-                            org_name: _.startCase(orgObj.name),
-                            date: myBookingObj.date.toDateString(),
-                            time: `${utilPatches.addZeroToStart(myBookingObj.start_time[0])}:${utilPatches.addZeroToStart(myBookingObj.start_time[1])} - ${utilPatches.addZeroToStart(myBookingObj.end_time[0])}:${utilPatches.addZeroToStart(myBookingObj.end_time[1])}`,
-                            price: myBookingObj.price,
-                        });
-                        orgObj.bookings.splice(i, 1);
-                        break;
-                    }
-                }
             
-                await orgObj.save();
+            if (await utilPatches.checkIfOrgExistForUser(userObj, Organization)) {
+                res.redirect("/home/settings?flag=1");
+            } else {
 
+                let cancelledBookings = [];
+    
+                for (let myBookingObj of userObj.my_bookings) {
+    
+                    if (myBookingObj.status === 2) continue;
+    
+                    const orgObj = await Organization.findOne({_id: myBookingObj.org_id});
+    
+                    for (let i=0; i<orgObj.bookings.length; i++) {
+                        if (orgObj.bookings[i].id.toString() === myBookingObj.booking_id.toString()) {
+                            cancelledBookings.push({
+                                org_name: _.startCase(orgObj.name),
+                                date: myBookingObj.date.toDateString(),
+                                time: `${utilPatches.addZeroToStart(myBookingObj.start_time[0])}:${utilPatches.addZeroToStart(myBookingObj.start_time[1])} - ${utilPatches.addZeroToStart(myBookingObj.end_time[0])}:${utilPatches.addZeroToStart(myBookingObj.end_time[1])}`,
+                                price: myBookingObj.price,
+                            });
+                            orgObj.bookings.splice(i, 1);
+                            break;
+                        }
+                    }
+                
+                    await orgObj.save();
+    
+                }
+    
+                email.sendEmailUserDeleted(userObj.username, cancelledBookings);
+     
+                await User.findByIdAndDelete(userObj._id);
+    
+                res.redirect("/auth/login/");
             }
-
-            console.log(cancelledBookings);
-            email.sendEmailUserDeleted(userObj.username, cancelledBookings);
- 
-            await User.findByIdAndDelete(userObj._id);
-
-            res.redirect("/auth/login/");
         }
     })
 }

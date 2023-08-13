@@ -42,7 +42,7 @@ const intToMonthFull = {
     11 : "December",
 }
 
-module.exports = {SingleOrgGetDetails: SingleOrgGetDetails, checkIfDateFromFuture: checkIfDateFromFuture, addZeroToStart: addZeroToStart, sortMyBookingByDateAndStartTime: sortMyBookingByDateAndStartTime, addMonthStamps: addMonthStamps, getOrgName: getOrgName, getEjsFormat: getEjsFormat, getAllBookingsData: getAllBookingsData};
+module.exports = {SingleOrgGetDetails: SingleOrgGetDetails, checkIfDateFromFuture: checkIfDateFromFuture, addZeroToStart: addZeroToStart, sortMyBookingByDateAndStartTime: sortMyBookingByDateAndStartTime, addMonthStamps: addMonthStamps, getOrgName: getOrgName, getEjsFormat: getEjsFormat, getAllBookingsData: getAllBookingsData, checkIfOrgExistForUser: checkIfOrgExistForUser};
 
 function SingleOrgGetDetails(orgObj) {
     var daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -197,24 +197,6 @@ async function getEjsFormat(array, Organization, instance) {
 async function getAllBookingsData(date, orgObj, UserModel) {
 
     let returnObj = {}
-    // {
-    //     org_name: ,
-    //     date_string: ,
-    //     total_slots: ,
-    //     slot_details: {
-    //         '1' : {
-    //             timing: String,
-    //             filled_bookings: ,
-    //             total_available: ,
-    //             cancellable: Bool,
-    //             bookings: [
-    //                 {name: , email: , id: },
-    //                 {name: , email: , id: },
-    //             ]
-    //         }, 
-    //         '2': ..
-    //     }
-    // }
 
     returnObj.org_name = _.startCase(orgObj.name);
     returnObj.date_string = `${intToMonth[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
@@ -266,4 +248,12 @@ async function getAllBookingsData(date, orgObj, UserModel) {
     }
 
     return returnObj
+}
+
+async function checkIfOrgExistForUser(userObj, OrganizationModel) {
+
+    const orgObj = await OrganizationModel.findOne({admin: userObj._id});
+
+    if (orgObj === null) return false;
+    return true;
 }
