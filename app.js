@@ -83,6 +83,14 @@ async function(accessToken, refreshToken, profile, cb) {
 }
 ));
 
+app.get("/", (req, res) => {
+    if (req.user) {
+        res.redirect("/home/book-appointment");
+    } else {
+        res.redirect("/auth/login");
+    }
+});
+
 // Views
 authViews.initialize(app, passport, User);
 homeViews.initialize(app, passport, User, Organization);
